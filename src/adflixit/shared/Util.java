@@ -1217,7 +1217,7 @@ public final class Util {
 
 	/** @param p power
 	 * @param a 0 to 1 value
-	 * @return exponential interpolation of {@code a} defined by {@code p}. */
+	 * @return exponential interpolation of {@code a} based on {@code p}. */
 	public static float easeIn(float p, float a) {
 		return fpow(a,p);
 	}
@@ -1230,7 +1230,7 @@ public final class Util {
 	
 	/** @param p power
 	 * @param a 0 to 1 value
-	 * @return exponential interpolation of {@code a} defined by {@code p}. */
+	 * @return exponential interpolation of {@code a} based on {@code p}. */
 	public static float easeOut(float p, float a) {
 		float m = fpow(-1,ffloor(p)-1);
 		boolean c = p > 2;
@@ -1245,7 +1245,7 @@ public final class Util {
 	
 	/** @param p power
 	 * @param a 0 to 1 value
-	 * @return exponential interpolation of {@code a} defined by {@code p}. */
+	 * @return exponential interpolation of {@code a} based on {@code p}. */
 	public static float easeInOut(float p, float a) {
 		float m = fpow(-1,ffloor(p)-1), b = p>2?2:1;
 		if ((a*=2) < 1) {
@@ -1262,7 +1262,7 @@ public final class Util {
 	
 	/** @param p power
 	 * @param a 0 to 1 value
-	 * @return exponential interpolation of {@code a} defined by {@code p}. */
+	 * @return exponential interpolation of {@code a} based on {@code p}. */
 	public static double easeIn(double p, double a) {
 		return pow(a,p);
 	}
@@ -1275,7 +1275,7 @@ public final class Util {
 	
 	/** @param p power
 	 * @param a 0 to 1 value
-	 * @return exponential interpolation of {@code a} defined by {@code p}. */
+	 * @return exponential interpolation of {@code a} based on {@code p}. */
 	public static double easeOut(double p, double a) {
 		double m = pow(-1,floor(p)-1);
 		boolean c = p > 2;
@@ -1290,7 +1290,7 @@ public final class Util {
 	
 	/** @param p power
 	 * @param a 0 to 1 value
-	 * @return exponential interpolation of {@code a} defined by {@code p}. */
+	 * @return exponential interpolation of {@code a} based on {@code p}. */
 	public static double easeInOut(double p, double a) {
 		double m = pow(-1,floor(p)-1), b = p>2?2:1;
 		if ((a*=2) < 1) {
