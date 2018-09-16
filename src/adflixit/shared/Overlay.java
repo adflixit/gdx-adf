@@ -375,15 +375,16 @@ public class Overlay extends ScreenComponent<BaseScreen<?>> {
 	}
 
 	public void resize() {
-		sheers.setPosition(-1, -1);
-		blackouts.setPosition(-1, -1);
-		tint.setPosition(-1, -1);
-		dim.setPosition(-1, -1);
-		vignette.setSize(-1, -1);
-		sheers.setSize(scr.screenWidth()+5, scr.screenHeight()+5);
-		blackouts.setSize(scr.screenWidth()+5, scr.screenHeight()+5);
-		tint.setSize(scr.screenWidth()+5, scr.screenHeight()+5);
-		dim.setSize(scr.screenWidth()+5, scr.screenHeight()+5);
-		vignette.setSize(scr.screenWidth()+5, scr.screenHeight()+5);
+		// texture filtering workaround
+		sheers.setPosition(-2, -2);
+		blackouts.setPosition(-2, -2);
+		tint.setPosition(-2, -2);
+		dim.setPosition(-2, -2);
+		vignette.setSize(-2, -2);
+		sheers.setSize(scr.screenWidth()+4, scr.screenHeight()+4);
+		blackouts.setSize(scr.screenWidth()+4, scr.screenHeight()+4);
+		tint.setSize(scr.screenWidth()+4, scr.screenHeight()+5);
+		dim.setSize(scr.screenWidth()+4, scr.screenHeight()+4);
+		vignette.setSize(scr.screenWidth()+4, scr.screenHeight()+4);
 	}
 }
