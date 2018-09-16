@@ -3355,7 +3355,7 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
 		tapper.setOnce(parent, z, cb, true);
 	}
 
-	/** Starts a timer that calls the callback at the beginning and at the end.
+	/** Starts a timer that calls the callback at the start and at the end.
 	 * @param d delay
 	 * @param cb callback
 	 * @return tween handle */
@@ -3363,7 +3363,7 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
 		return $setTimer(d, cb).start(tweenMgr);
 	}
 
-	/** Starts a timer that calls the callback at the beginning and at the end and repeats specified number of times.
+	/** Starts a timer that calls the callback at the start and at the end and repeats specified number of times.
 	 * @param d delay
 	 * @param r repetition
 	 * @param cb callback
@@ -3372,7 +3372,7 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
 		return $setTimer(d, r, cb).start(tweenMgr);
 	}
 
-	/** Starts a timer counted by the timescale that calls the callback at the beginning and at the end.
+	/** Starts a timer counted by the timescale that calls the callback at the start and at the end.
 	 * @param d delay
 	 * @param cb callback
 	 * @return tween handle */
@@ -3380,7 +3380,7 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
 		return $setTimer(d, cb).start(tscTweenMgr);
 	}
 
-	/** Starts a timer counted by the timescale that calls the callback at the beginning and at the end and repeats specified number of times.
+	/** Starts a timer counted by the timescale that calls the callback at the start and at the end and repeats specified number of times.
 	 * @param d delay
 	 * @param r repetition
 	 * @param cb callback
@@ -3389,7 +3389,7 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
 		return $setTimer(d, r, cb).start(tscTweenMgr);
 	}
 
-	/** Creates a timer handle that calls the callback at the beginning and at the end.
+	/** Creates a timer handle that calls the callback at the start and at the end.
 	 * @param d duration
 	 * @param cb callback
 	 * @return tween handle */
@@ -3399,7 +3399,7 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
 				.setCallbackTriggers(BEGIN|COMPLETE);
 	}
 
-	/** Creates a timer handle that calls the callback at the beginning and at the end and repeats specified number of times.
+	/** Creates a timer handle that calls the callback at the start and at the end and repeats specified number of times.
 	 * @param d duration
 	 * @param r repetition
 	 * @param cb callback
