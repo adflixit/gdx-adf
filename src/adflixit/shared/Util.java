@@ -1317,13 +1317,13 @@ public final class Util {
 
 	public static String				toJson(Object obj)						{return (new Json()).toJson(obj);}
 	public static <T extends Object> T	readJson(Class<T> type, String data)	{return (new Json()).fromJson(type, data);}
-	public static int					JGetInt(JSONObject obj, String key)		{return ((Long)obj.get(key)).intValue();}
-	public static short					JGetShort(JSONObject obj, String key)	{return ((Long)obj.get(key)).shortValue();}
-	public static long					JGetLong(JSONObject obj, String key)	{return ((Long)obj.get(key)).longValue();}
-	public static float					JGetFloat(JSONObject obj, String key)	{return ((Double)obj.get(key)).floatValue();}
-	public static double				JGetDouble(JSONObject obj, String key)	{return ((Double)obj.get(key)).doubleValue();}
-	public static boolean				JGetBool(JSONObject obj, String key)	{return ((Boolean)obj.get(key)).booleanValue();}
-	public static String				JGetString(JSONObject obj, String key)	{return (String)obj.get(key);}
-	public static JSONObject			JGetObject(JSONObject obj, String key)	{return (JSONObject)obj.get(key);}
-	public static JSONArray				JGetArray(JSONObject obj, String key)	{return (JSONArray)obj.get(key);}
+	public static int					JsonInt(JSONObject obj, String key)		{return ((Long)obj.get(key)).intValue();}
+	public static short					JsonShort(JSONObject obj, String key)	{return ((Long)obj.get(key)).shortValue();}
+	public static long					JsonLong(JSONObject obj, String key)	{return ((Long)obj.get(key)).longValue();}
+	public static float					JsonFloat(JSONObject obj, String key)	{return ((Double)obj.get(key)).floatValue();}
+	public static double				JsonDouble(JSONObject obj, String key)	{return ((Double)obj.get(key)).doubleValue();}
+	public static boolean				JsonBool(JSONObject obj, String key)	{return ((Boolean)obj.get(key)).booleanValue();}
+	public static String				JsonString(JSONObject obj, String key)	{return (String)obj.get(key);}
+	public static JSONObject			JsonObject(JSONObject obj, String key)	{return (JSONObject)obj.get(key);}
+	public static JSONArray				JsonArray(JSONObject obj, String key)	{return (JSONArray)obj.get(key);}
 }
