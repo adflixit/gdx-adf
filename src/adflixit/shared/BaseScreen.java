@@ -81,7 +81,7 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
 		updater.remove(a);
 	}
 
-	// The screen lesser dimension which determines the bigger dimension by it being scaled by the aspect ratio.
+	// The screen lesser dimension which determines the larger dimension by scaling it by the aspect ratio.
 	// It can only be changed once during lifetime of the app, preferably at the very start.
 	private static float					ldm					= 1080;
 	private static boolean					ldmDeadlock;
