@@ -185,7 +185,7 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
 	private boolean							lastScreenSizeJunc;
 	private final Vector2					evenLastScreenSize	= new Vector2();
 	private final Vector2					oddLastScreenSize	= new Vector2();
-	private boolean							firstResize			= true;	// was it the first resize
+	private boolean							firstResize			= true;
 
 	private final Color						black				= new Color(0x0f1114ff);
 
