@@ -166,7 +166,7 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
 	protected final Vector2					touchPoint			= new Vector2();
 	protected FrameBuffer					frameBuffer;
 
-	private final MutableFloat				camShake			= new MutableFloat(0);	// current amplitude of camera shake
+	private final MutableFloat				camShake			= new MutableFloat(0);	// current camera shake amplitude
 	private final MutableFloat				timescale			= new MutableFloat(1);	// time multiplier
 	private final MutableFloat				uiTimescale			= new MutableFloat(1);
 	private final MutableFloat				masterVolume		= new MutableFloat(1);	// sound volume
