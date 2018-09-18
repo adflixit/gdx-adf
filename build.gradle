@@ -1,0 +1,58 @@
+apply plugin: "java"
+apply plugin: "eclipse"
+apply plugin: "idea"
+
+sourceCompatibility = 1.8
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+sourceSets.main.java.srcDirs = [ "src/" ]
+sourceSets.test.java.srcDirs = [ "test/" ]
+
+version = '1.0'
+ext {
+	gdxVersion = '1.9.8'
+	roboVMVersion = '2.3.1'
+	protobufVersion = '3.6.1'
+}
+
+repositories {
+	mavenLocal()
+	mavenCentral()
+	maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+	maven { url "https://oss.sonatype.org/content/repositories/releases/" }
+}
+
+dependencies {
+	compile "com.badlogicgames.gdx:gdx:$gdxVersion"
+	compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
+	compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
+	compile "com.badlogicgames.gdx:gdx-bullet:$gdxVersion"
+	compile "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
+	compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
+	compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+	compile "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
+	compile "com.googlecode.json-simple:json-simple:1.1.1"
+	compile "com.google.protobuf:protobuf-java:$protobufVersion"
+	compile "org.mini2Dx:universal-tween-engine:6.3.3"
+	compile "org.mini2Dx:universal-tween-engine:6.3.3:sources"
+	compile "com.google.android:android:4.1.1.4"
+	compile fileTree(dir: 'E:/libs', include: '*.jar')
+}
+
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:2.2.0'
+		classpath 'com.mobidevelop.robovm:robovm-gradle-plugin:2.3.1'
+        classpath 'org.multi-os-engine:moe-gradle:1.4.0'
+    }
+}
+
+eclipse.project {
+    name = "Shared"
+}
