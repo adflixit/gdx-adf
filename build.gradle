@@ -36,7 +36,7 @@ dependencies {
 	compile "org.mini2Dx:universal-tween-engine:6.3.3"
 	compile "org.mini2Dx:universal-tween-engine:6.3.3:sources"
 	compile "com.google.android:android:4.1.1.4"
-	compile fileTree(dir: 'E:/libs', include: '*.jar')
+	compile fileTree(dir: '/*libs folder path*/', include: '*.jar')
 }
 
 buildscript {
