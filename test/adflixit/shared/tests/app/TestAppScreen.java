@@ -14,7 +14,6 @@ public class TestAppScreen extends BaseScreen<TestApp> {
 	}
 
 	public static void launch(BaseScreen<?> screen) {
-		int h = 680;
-		new LwjglApplication(new TestApp(screen), "Test App", (int)(h*(9/16f)), h);
+		new LwjglApplication(new TestApp(screen), "Test App", 360, 640);
 	}
 }
