@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *   http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -39,9 +39,9 @@ public abstract class Logger {
 		}
 	}
 
-	public static final void glogDone(String msg) {
+	public static final void glogDone() {
 		if (Gdx.app.getType()==ApplicationType.Android) {
-			Gdx.app.log("App", msg);
+			Gdx.app.log("App", "Done");
 		} else {
 			System.out.print(" -> done\n");
 		}
@@ -63,9 +63,9 @@ public abstract class Logger {
 		}
 	}
 
-	public final void logDone(String msg) {
+	public final void logDone() {
 		if (Gdx.app.getType()==ApplicationType.Android) {
-			Gdx.app.log("App", getClass().getSimpleName()+": "+msg);
+			Gdx.app.log("App", getClass().getSimpleName()+": Done");
 		} else {
 			System.out.print(" -> done\n");
 		}

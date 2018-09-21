@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *   http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -50,6 +50,7 @@ public class Console {
 		};
 		thread.start();
 		registerCommand("print", (args) -> print(arrayToStringF("%s ", args)));
+		registerCommand("reset", (args) -> var(args[0]).reset());
 	}
 
 	public Console() {
@@ -81,7 +82,7 @@ public class Console {
 	}
 
 	/** Evaluates a given text as a command sequence. */
-	public synchronized void load(String data) {
+	public void load(String data) {
 		Matcher m = Pattern.compile("\\r?\\n").matcher(data);
 		while (m.find()) {
 			eval(m.group(1));
@@ -90,7 +91,7 @@ public class Console {
 
 	/** Loads a file and evaluates it's contents as a command sequence.
 	 * @see {@link #eval(String)} */
-	public synchronized void parse(FileHandle file) {
+	public void parse(FileHandle file) {
 		try {
 			load(file.readString());
 		} catch (Exception e) {

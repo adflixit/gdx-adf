@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *   http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -56,7 +56,7 @@ import java.util.Arrays;
  * <li>Cross-platform API handling.</li>
  * <li>A {@link Console}.</li>
  * <li>{@link Skin} handles.</li>
- * <li>Mutable configurations {@link MutableProperties}.</li>
+ * <li>{@link MutableProperties}.</li>
  * <li>Preferences handles.</li>
  * </ul>
  */
@@ -162,42 +162,42 @@ public abstract class BaseGame extends Logger implements ApplicationListener {
 	public static void showAd() {
 		glogSetup("Showing ad");
 		xApi.showAd();
-		glogDone("Ad shown");
+		glogDone();
 	}
 
 	/** @see XApi#hideAd() */
 	public static void hideAd() {
 		glogSetup("Hiding ad");
 		xApi.hideAd();
-		glogDone("Ad hidden");
+		glogDone();
 	}
 
 	/** @see XApi#refreshAd() */
 	public static void refreshAd() {
 		glogSetup("Refreshing ad");
 		xApi.refreshAd();
-		glogDone("Ad refreshed");
+		glogDone();
 	}
 
 	/** @see XApi#showLeaderboard(String) */
 	public static void showLeaderboard(String id) {
 		glogSetup("Showing leaderboard");
 		xApi.showLeaderboard(id);
-		glogDone("Leaderboard shown");
+		glogDone();
 	}
 
 	/** @see XApi#showAchievements() */
 	public static void showAchievements() {
 		glogSetup("Showing achievements");
 		xApi.showAchievements();
-		glogDone("Achievements shown");
+		glogDone();
 	}
 
 	/** @see XApi#shareText(String) */
 	public static void shareText(String txt) {
 		glogSetup("Sharing text \""+txt+"\"");
 		xApi.shareText(txt);
-		glogDone("Text shared");
+		glogDone();
 	}
 
 	/** @see XApi#isSignedIn() */
@@ -209,7 +209,7 @@ public abstract class BaseGame extends Logger implements ApplicationListener {
 	public static void signIn() {
 		glogSetup("Signing in");
 		xApi.signIn();
-		glogDone("Signed in");
+		glogDone();
 	}
 
 	/** @see XApi#getPlayerId() */
@@ -245,20 +245,20 @@ public abstract class BaseGame extends Logger implements ApplicationListener {
 	public static void submitScore(String id, long score) {
 		glogSetup("Submitting score "+score);
 		xApi.submitScore(id, score);
-		glogDone("Score submitted");
+		glogDone();
 	}
 
 	/** @see XApi#unlockAchievement(String) */
 	public static void unlockAchievement(String id) {
 		glogSetup("Unlocking achievement");
 		xApi.unlockAchievement(id);
-		glogDone("Achievement unlocked");
+		glogDone();
 	}
 
 	public static void initSkin(FileHandle skinFile, TextureAtlas atlas) {
 		glogSetup("Loading skin \""+skinFile+"\"");
 		skin = new Skin(skinFile, atlas);
-		glogDone("Skin loaded");
+		glogDone();
 	}
 
 	public static void registerConsoleCommand(String name, ConCmd cmd) {
@@ -268,7 +268,7 @@ public abstract class BaseGame extends Logger implements ApplicationListener {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		glogDone(name+" console command registered");
+		glogDone();
 	}
 
 	public static void registerConsoleVariable(String name, ConVar var) {
@@ -278,26 +278,61 @@ public abstract class BaseGame extends Logger implements ApplicationListener {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		glogDone(name+" console variable registered");
+		glogDone();
 	}
 
 	public static Skin skin() {
 		return skin;
 	}
-	
+
+	/** @return console variable. */
+	public static ConVar conVar(String name) {
+		return console.var(name);
+	}
+
+	/** @return console variable {@code String} value. */
+	public static String cvS(String name) {
+		return conVar(name).raw();
+	}
+
+	/** @return console variable {@code int} value. */
+	public static int cvI(String name) {
+		return conVar(name).intValue();
+	}
+
+	/** @return console variable {@code long} value. */
+	public static long cvL(String name) {
+		return conVar(name).longValue();
+	}
+
+	/** @return console variable {@code float} value. */
+	public static float cvF(String name) {
+		return conVar(name).floatValue();
+	}
+
+	/** @return console variable {@code double} value. */
+	public static double cvD(String name) {
+		return conVar(name).doubleValue();
+	}
+
+	/** @return console variable {@code boolean} value. */
+	public static boolean cvB(String name) {
+		return conVar(name).boolValue();
+	}
+
 	/** Loads the specified properties.
 	 * @deprecated Not used anymore due to the introduced ability to change properties during runtime. */
 	public static void loadProps(FileHandle... files) {
 		glogSetup("Loading properties "+arrayToString("\"%s\"", files));
 		props.loadProps(files);
-		glogDone("Properties loaded");
+		glogDone();
 	}
 
 	/** Loads the specified properties. */
 	public static void loadProps(FileHandle file) {
 		glogSetup("Loading properties \""+file+"\"");
 		props.load(file);
-		glogDone("Properties loaded");
+		glogDone();
 	}
 
 	/** Interprets all properties entries as {@code float} and stores the digest to the quick access array. */
@@ -347,63 +382,63 @@ public abstract class BaseGame extends Logger implements ApplicationListener {
 	public static void setPropI(String key, int value) {
 		glog("Changing property \""+key+"\" from \""+prop(key)+"\" to \""+value+"\"");
 		props.setPropI(key, value);
-		glogDone("Property \""+key+"\" is changed");
+		glogDone();
 	}
 
 	/** Changes the existing property to an {@code long} value. */
 	public static void setPropL(String key, long value) {
 		glog("Changing property \""+key+"\" from \""+prop(key)+"\" to \""+value+"\"");
 		props.setPropL(key, value);
-		glogDone("Property \""+key+"\" is changed");
+		glogDone();
 	}
 
 	/** Changes the existing property to an {@code float} value. */
 	public static void setPropF(String key, float value) {
 		glog("Changing property \""+key+"\" from \""+prop(key)+"\" to \""+value+"\"");
 		props.setPropF(key, value);
-		glogDone("Property \""+key+"\" is changed");
+		glogDone();
 	}
 
 	/** Changes the existing property to an {@code double} value. */
 	public static void setPropD(String key, double value) {
 		glog("Changing property \""+key+"\" from \""+prop(key)+"\" to \""+value+"\"");
 		props.setPropD(key, value);
-		glogDone("Property \""+key+"\" is changed");
+		glogDone();
 	}
 
 	/** Changes the existing property to an {@code boolean} value. */
 	public static void setPropB(String key, boolean value) {
 		glog("Changing property \""+key+"\" from \""+prop(key)+"\" to \""+value+"\"");
 		props.setPropB(key, value);
-		glogDone("Property \""+key+"\" is changed");
+		glogDone();
 	}
 
 	/** Resets the property to the default value. */
 	public static void resetProp(String key) {
 		glogSetup("Resetting property \""+key+"\"");
 		props.resetProp(key);
-		glogDone("Property \""+key+"\" reset");
+		glogDone();
 	}
 
 	/** Resets all property to the default values. */
 	public static void resetProps() {
 		glogSetup("Resetting properties");
 		props.resetProps();
-		glogDone("Properties reset");
+		glogDone();
 	}
 
 	/** Saves the specified property to the file. */
 	public static void flushProp(String key) {
 		glogSetup("Flushing property \""+key+"\"");
 		props.flushProp(key);
-		glogDone("Property \""+key+"\" flushed");
+		glogDone();
 	}
 
 	/** Saves properties to the file. */
 	public static void flushProps() {
 		glogSetup("Flushing properties");
 		props.flushProps();
-		glogDone("Properties flushed");
+		glogDone();
 	}
 
 	public static String propList() {
@@ -413,7 +448,7 @@ public abstract class BaseGame extends Logger implements ApplicationListener {
 	public static void loadPrefs(String name) {
 		glogSetup("Loading preferences \""+name+"\"");
 		prefs = Gdx.app.getPreferences(name);
-		glogDone("Preferences loaded");
+		glogDone();
 	}
 
 	/** @return do preferences contain the key entry. */
@@ -450,42 +485,42 @@ public abstract class BaseGame extends Logger implements ApplicationListener {
 	public static void putPrefS(String key, String value) {
 		glogSetup("Setting preference "+key+" to "+value);
 		prefs.putString(key, value);
-		glogDone("Preference "+key+" set to "+value);
+		glogDone();
 	}
 
 	/** Adds an int entry to the preferences. */
 	public static void putPrefI(String key, int value) {
 		glogSetup("Setting preference "+key+" to "+value);
 		prefs.putInteger(key, value);
-		glogDone("Preference "+key+" set to "+value);
+		glogDone();
 	}
 
 	/** Adds a long entry to the preferences. */
 	public static void putPrefL(String key, long value) {
 		glogSetup("Setting preference "+key+" to "+value);
 		prefs.putLong(key, value);
-		glogDone("Preference "+key+" set to "+value);
+		glogDone();
 	}
 
 	/** Adds a float entry to the preferences. */
 	public static void putPrefF(String key, float value) {
 		glogSetup("Setting preference "+key+" to "+value);
 		prefs.putFloat(key, value);
-		glogDone("Preference "+key+" set to "+value);
+		glogDone();
 	}
 
 	/** Adds a boolean entry to the preferences. */
 	public static void putPrefB(String key, boolean value) {
 		glogSetup("Setting preference "+key+" to "+value);
 		prefs.putBoolean(key, value);
-		glogDone("Preference "+key+" set to "+value);
+		glogDone();
 	}
 
 	/** Has to be called after every set of preference changes to save them. */
 	public static void flushPrefs() {
 		glogSetup("Flushing preferences");
 		prefs.flush();
-		glogDone("Preferences flushed");
+		glogDone();
 	}
 
 	public static int getFps() {
@@ -546,21 +581,21 @@ public abstract class BaseGame extends Logger implements ApplicationListener {
 	public void startup() {
 		glogSetup("Starting up");
 		screen.startup();
-		glogDone("Started up");
+		glogDone();
 	}
 
 	@Override public void dispose() {
 		glogSetup("Disposing of skin");
 		skin.dispose();
-		glogDone("Skin disposed");
+		glogDone();
 		if (screen != null) {
 			glogSetup("Disposing of screen");
 			screen.dispose();
-			glogDone("Screen disposed");
+			glogDone();
 		}
 		glogSetup("Disposing of console");
 		console.dispose();
-		glogDone("Console disposed");
+		glogDone();
 	}
 
 	@Override public void pause() {
@@ -592,11 +627,11 @@ public abstract class BaseGame extends Logger implements ApplicationListener {
 			if (dispose) {
 				glogSetup("Disposing of screen");
 				screen.dispose();
-				glogDone("Screen disposed");
+				glogDone();
 			} else {
 				glogSetup("Hiding screen");
 				screen.hide();
-				glogDone("Screen hidden");
+				glogDone();
 			}
 		}
 		screen = newScreen;
