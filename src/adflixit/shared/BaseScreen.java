@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *   http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -148,7 +148,7 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
 		advancedPerformance = v;
 	}
 
-	protected final G						game;
+	protected G								game;
 	protected final SpriteBatch				batch				= new SpriteBatch();
 	protected final OrthographicCamera		camera				= new OrthographicCamera();
 	protected final Vector3					camBasePos			= new Vector3();
@@ -190,7 +190,11 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
 	private final Color						black				= new Color(0x0f1114ff);
 
 	public BaseScreen(G game) {
+		this();
 		this.game = game;
+	}
+	
+	protected BaseScreen() {
 		ui.setViewport(uiViewport);
 		// add all UI layers to the stage
 		for (Group layer : uiLayers) {
@@ -255,7 +259,7 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
 		for (Texture tex : skin().getAtlas().getTextures()) {
 			tex.setFilter(textureFilterLq, textureFilterLq);
 		}
-		logDone("Simple graphics enabled");
+		logDone();
 	}
 
 	/** Disables the advanced feature limitation and changes the texture atlases' filter to linear. */
@@ -265,7 +269,7 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
 		for (Texture tex : skin().getAtlas().getTextures()) {
 			tex.setFilter(textureFilterHq, textureFilterHq);
 		}
-		logDone("Simple graphics disabled");
+		logDone();
 	}
 
 	/** @return the frame buffer texture. */
@@ -3533,7 +3537,7 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
 			frameBuffer.dispose();
 		}
 		frameBuffer = new FrameBuffer(Format.RGB888, frameBufferWidth(), frameBufferHeight(), false);
-		logDone("resized = "+screenWidth()+" "+screenHeight());
+		logDone();
 	}
 
 	/** Called when the app first starts fully working, i.e. after the screen turns on. */
