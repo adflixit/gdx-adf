@@ -34,8 +34,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.TransformDrawable;
 
 /**
  * Widget to draw an arc. Draws it by drawing multiple one-degree fragments of a circle.
- * This also can be called radial progress bar, which it is.
- * It's being drawn clockwise.
+ * This can also be called radial progress bar, which it is.
+ * It draws clockwise.
  */
 public class Arc extends Widget {
 	private TransformDrawable		drawable;		// drawable of a single degree
