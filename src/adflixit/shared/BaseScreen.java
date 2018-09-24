@@ -148,7 +148,7 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
 		advancedPerformance = v;
 	}
 
-	protected G								game;
+	protected final G						game;
 	protected final SpriteBatch				batch				= new SpriteBatch();
 	protected final OrthographicCamera		camera				= new OrthographicCamera();
 	protected final Vector3					camBasePos			= new Vector3();
@@ -190,11 +190,7 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
 	private final Color						black				= new Color(0x0f1114ff);
 
 	public BaseScreen(G game) {
-		this();
 		this.game = game;
-	}
-	
-	protected BaseScreen() {
 		ui.setViewport(uiViewport);
 		// add all UI layers to the stage
 		for (Group layer : uiLayers) {
