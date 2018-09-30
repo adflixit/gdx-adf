@@ -16,7 +16,6 @@
 
 package adflixit.shared;
 
-import static adflixit.shared.BaseGame.*;
 import static adflixit.shared.TweenUtils.*;
 import static adflixit.shared.Util.*;
 import static aurelienribon.tweenengine.TweenCallback.*;
@@ -71,30 +70,31 @@ public class Postprocessor extends ScreenComponent<BaseScreen<?>> {
 	private final TweenCallback[]		locksCallbacks		= new TweenCallback[uniLength];
 	private final TweenCallback[]		schedulesCallbacks	= new TweenCallback[uniLength];
 
-	public Postprocessor(BaseScreen<?> screen, FileHandle vert, FileHandle frag) {
+	public Postprocessor(BaseScreen<?> screen) {
 		super(screen);
-		load(vert, frag);
 		for (int i=0; i < uniLength; i++) {
 			values.add(new MutableFloat(0));
 			locksCallbacks[i] = createLockCallback(i);
 			schedulesCallbacks[i] = createScheduleCallback(i);
 		}
 	}
+
+	public Postprocessor(BaseScreen<?> screen, FileHandle vert, FileHandle frag) {
+		this(screen);
+		load(vert, frag);
+	}
 	
 	public Postprocessor(BaseScreen<?> screen, String vert, String frag) {
-		this(screen, internalFile(vert), internalFile(frag));
+		this(screen);
+		load(vert, frag);
 	}
 
-	public Postprocessor(BaseScreen<?> screen) {
-		this(screen, "shared/data/main.vert", "shared/data/pp.frag");
-	}
-	
 	public void load(FileHandle vert, FileHandle frag) {
 		shader = new ShaderProgram(vert, frag);
 	}
 
 	public void load(String vert, String frag) {
-		shader = new ShaderProgram(internalFile(vert), internalFile(frag));
+		shader = new ShaderProgram(vert, frag);
 	}
 
 	public void reset() {

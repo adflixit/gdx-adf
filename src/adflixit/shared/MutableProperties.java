@@ -34,6 +34,7 @@ public class MutableProperties extends Properties {
 
 	/** Loads the specified properties.
 	 * @deprecated Not used anymore due to the introduced ability to change properties during runtime. */
+	@Deprecated
 	public void loadProps(FileHandle... files) {
 		Properties tmp = new Properties();
 		try {

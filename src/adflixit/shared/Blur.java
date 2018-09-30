@@ -16,7 +16,6 @@
 
 package adflixit.shared;
 
-import static adflixit.shared.BaseGame.*;
 import static adflixit.shared.TweenUtils.*;
 import static aurelienribon.tweenengine.TweenCallback.*;
 
@@ -52,33 +51,42 @@ public class Blur extends ScreenComponent<BaseScreen<?>> {
 		}
 	};
 	private final TweenCallback		scheduleCallback	= (type, source) -> schedule();
-	
-	public Blur(BaseScreen<?> screen, int passes, FileHandle hvert, FileHandle hfrag, FileHandle vvert, FileHandle vfrag) {
-		super(screen);
-		setPasses(passes);
-		load(hvert, hfrag, vvert, vfrag);
-	}
-
-	public Blur(BaseScreen<?> screen, int passes, String hvert, String hfrag, String vvert, String vfrag) {
-		this(screen, passes, internalFile(hvert), internalFile(hfrag), internalFile(vvert), internalFile(vfrag));
-	}
 
 	public Blur(BaseScreen<?> screen, int passes) {
-		this(screen, passes, "shared/data/hblur.vert", "shared/data/blur.frag", "shared/data/vblur.vert", "shared/data/blur.frag");
+		super(screen);
+		setPasses(passes);
 	}
 
 	public Blur(BaseScreen<?> screen) {
 		this(screen, 1);
 	}
-	
+
+	public Blur(BaseScreen<?> screen, int passes, FileHandle hvert, FileHandle hfrag, FileHandle vvert, FileHandle vfrag) {
+		this(screen, passes);
+		load(hvert, hfrag, vvert, vfrag);
+	}
+
+	public Blur(BaseScreen<?> screen, FileHandle hvert, FileHandle hfrag, FileHandle vvert, FileHandle vfrag) {
+		this(screen, 1, hvert, hfrag, vvert, vfrag);
+	}
+
+	public Blur(BaseScreen<?> screen, int passes, String hvert, String hfrag, String vvert, String vfrag) {
+		this(screen, passes);
+		load(hvert, hfrag, vvert, vfrag);
+	}
+
+	public Blur(BaseScreen<?> screen, String hvert, String hfrag, String vvert, String vfrag) {
+		this(screen, 1, hvert, hfrag, vvert, vfrag);
+	}
+
 	public void load(FileHandle hvert, FileHandle hfrag, FileHandle vvert, FileHandle vfrag) {
 		firstPass = new ShaderProgram(hvert, hfrag);
 		lastPass = new ShaderProgram(vvert, vfrag);
 	}
 
 	public void load(String hvert, String hfrag, String vvert, String vfrag) {
-		firstPass = new ShaderProgram(internalFile(hvert), internalFile(hfrag));
-		lastPass = new ShaderProgram(internalFile(vvert), internalFile(vfrag));
+		firstPass = new ShaderProgram(hvert, hfrag);
+		lastPass = new ShaderProgram(vvert, vfrag);
 	}
 
 	public void setPasses(int i) {

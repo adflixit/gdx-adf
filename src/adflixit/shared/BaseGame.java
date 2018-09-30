@@ -25,7 +25,6 @@ import adflixit.shared.console.ConVar;
 import adflixit.shared.console.Console;
 import android.view.View;
 import aurelienribon.tweenengine.Tween;
-import aurelienribon.tweenengine.TweenManager;
 import aurelienribon.tweenengine.primitives.MutableFloat;
 import aurelienribon.tweenengine.primitives.MutableInteger;
 import com.badlogic.gdx.ApplicationListener;
@@ -88,7 +87,6 @@ public abstract class BaseGame extends Logger implements ApplicationListener {
 	private static Skin						skin;
 	private static MutableProperties		props					= new MutableProperties();
 	private static Preferences				prefs;
-
 	protected BaseScreen<?>					screen;					// current screen
 
 	public BaseGame() {
@@ -115,38 +113,38 @@ public abstract class BaseGame extends Logger implements ApplicationListener {
 		Tween.registerAccessor(MutableInteger.class,		new MutableInteger(0));
 		Tween.registerAccessor(MutableFloat.class,			new MutableFloat(0));
 		// default console commands
-		registerConsoleCommand("prop", (args) -> {
+		registerConsoleCommand("prop", args -> {
 			try {
 				glog(prop(args[0]));
 			} catch (Exception e) {
 				glog(e.getLocalizedMessage());
 			}
 		});
-		registerConsoleCommand("setprop", (args) -> {
+		registerConsoleCommand("setprop", args -> {
 			try {
 				setProp(args[0], arrayToStringF("%s ", Arrays.copyOfRange(args, 1, args.length)));
 			} catch (Exception e) {
 				glog(e.getLocalizedMessage());
 			}
 		});
-		registerConsoleCommand("resetprop", (args) -> {
+		registerConsoleCommand("resetprop", args -> {
 			try {
 				resetProp(args[0]);
 			} catch (Exception e) {
 				glog(e.getLocalizedMessage());
 			}
 		});
-		registerConsoleCommand("resetprops", (args) -> resetProps());
-		registerConsoleCommand("flushprop", (args) -> {
+		registerConsoleCommand("resetprops", args -> resetProps());
+		registerConsoleCommand("flushprop", args -> {
 			try {
 				flushProp(args[0]);
 			} catch (Exception e) {
 				glog(e.getLocalizedMessage());
 			}
 		});
-		registerConsoleCommand("flushprops", (args) -> flushProps());
-		registerConsoleCommand("proplist", (args) -> glog(propList()));
-		registerConsoleCommand("quit", (args) -> quit());
+		registerConsoleCommand("flushprops", args -> flushProps());
+		registerConsoleCommand("proplist", args -> glog(propList()));
+		registerConsoleCommand("quit", args -> quit());
 	}
 
 	private static void setXApi(XApi api) {
@@ -262,23 +260,19 @@ public abstract class BaseGame extends Logger implements ApplicationListener {
 	}
 
 	public static void registerConsoleCommand(String name, ConCmd cmd) {
-		glogSetup("Registering console command "+name);
 		try {
 			console.registerCommand(name, cmd);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		glogDone();
 	}
 
 	public static void registerConsoleVariable(String name, ConVar var) {
-		glogSetup("Registering console variable "+name);
 		try {
 			console.registerVariable(name, var);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		glogDone();
 	}
 
 	public static Skin skin() {
@@ -322,6 +316,7 @@ public abstract class BaseGame extends Logger implements ApplicationListener {
 
 	/** Loads the specified properties.
 	 * @deprecated Not used anymore due to the introduced ability to change properties during runtime. */
+	@Deprecated
 	public static void loadProps(FileHandle... files) {
 		glogSetup("Loading properties "+arrayToString("\"%s\"", files));
 		props.loadProps(files);

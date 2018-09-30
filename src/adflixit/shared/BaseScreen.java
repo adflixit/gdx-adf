@@ -163,7 +163,7 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
 	protected final Tapper					tapper				= new Tapper(this);
 	protected final Timestamp				timestamp			= new Timestamp();
 	protected final InputMultiplexer		inputMultiplexer	= new InputMultiplexer();
-	protected final Vector2					touchPoint			= new Vector2();
+	protected final Vector2					touch				= new Vector2();
 	protected FrameBuffer					frameBuffer;
 
 	private final MutableFloat				camShake			= new MutableFloat(0);	// current camera shake amplitude
@@ -3569,7 +3569,7 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
 	}
 
 	@Override public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		touchPoint.set(unproject(screenX, screenY));
+		touch.set(unproject(screenX, screenY));
 		return false;
 	}
 

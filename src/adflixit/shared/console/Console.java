@@ -49,8 +49,8 @@ public class Console {
 			}
 		};
 		thread.start();
-		registerCommand("print", (args) -> print(arrayToStringF("%s ", args)));
-		registerCommand("reset", (args) -> var(args[0]).reset());
+		registerCommand("print", args -> print(arrayToStringF("%s ", args)));
+		registerCommand("reset", args -> var(args[0]).reset());
 	}
 
 	public Console() {

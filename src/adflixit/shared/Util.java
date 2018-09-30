@@ -42,7 +42,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.utils.Json;
-import java.util.List;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -779,11 +778,11 @@ public final class Util {
 	public static float ffloor(float a)				{return (float)floor(a);}
 	public static float frint(float a)				{return (float)rint(a);}
 	public static float fatan2(float y, float x)	{return (float)atan2(y,x);}
-	public static float fpow(float a, float b)		{return (float)pow(a, b);}
+	public static float fpow(float a, float b)		{return (float)pow(a,b);}
 	public static float fsinh(float x)				{return (float)sinh(x);}
 	public static float fcosh(float x)				{return (float)cosh(x);}
 	public static float ftanh(float x)				{return (float)tanh(x);}
-	public static float fhypot(float x, float y)	{return (float)hypot(x, y);}
+	public static float fhypot(float x, float y)	{return (float)hypot(x,y);}
 	
 	/** @return if {@code flag} intersects {@code flags}. {@code flag} has to be one single bit. */
 	public static boolean hasFlag(int flags, int flag) {

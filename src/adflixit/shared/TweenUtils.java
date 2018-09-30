@@ -24,7 +24,6 @@ import static aurelienribon.tweenengine.TweenCallback.*;
 import static com.badlogic.gdx.utils.Align.*;
 
 import android.view.View;
-import aurelienribon.tweenengine.BaseTween;
 import aurelienribon.tweenengine.Timeline;
 import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenAccessor;
