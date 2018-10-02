@@ -157,8 +157,8 @@ public class Arc extends Widget {
 		float scaleX = getScaleX() * (radius/height);
 		float scaleY = getScaleY() * (radius/height);
 		float rotation = getRotation();
-		for (int i=0; i < degrees()/2; i++) {
-			drawable.draw(batch, x, y, 0, 0, width, height, scaleX, scaleY, rotation - i*2);
+		for (int i=0; i < degrees(); i++) {
+			drawable.draw(batch, x, y, 0, 0, width, height, scaleX, scaleY, rotation - i);
 		}
 	}
 
