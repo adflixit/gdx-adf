@@ -572,22 +572,22 @@ public final class Util {
 		setRgb(spr, clr.r, clr.g, clr.b);
 	}
 
-	/** @return a {@link ImageButton} with specified image and background. */
+	/** @return a {@link ImageButton} with the specified image and background. */
 	public static ImageButton simpleImageButton(Drawable image, Drawable bg) {
 		return new ImageButton(new ImageButtonStyle(bg, null, null, image, null, null));
 	}
 
-	/** @return a {@link ImageButton} with specified image without background. */
+	/** @return a {@link ImageButton} with the specified image without background. */
 	public static ImageButton simpleImageButton(Drawable image) {
 		return simpleImageButton(image, drawable("btn_bg"));
 	}
 
-	/** @return a {@link ImageButton} with specified image and background skin drawable names. */
+	/** @return a {@link ImageButton} with the specified image and background skin drawable names. */
 	public static ImageButton simpleImageButton(String image, String bg) {
 		return simpleImageButton(drawable(image), drawable(bg));
 	}
 
-	/** @return a {@link ImageButton} with specified image skin drawable name without background. */
+	/** @return a {@link ImageButton} with the specified image skin drawable name without background. */
 	public static ImageButton simpleImageButton(String image) {
 		return simpleImageButton(drawable(image));
 	}
@@ -598,9 +598,9 @@ public final class Util {
 	}
 
 	/** Because there is no other workaround in libgdx to do this, this function converts an existing {@link TextButtonStyle} 
-	 * to a rounded one by turning it's background into a {@link RoundedDrawable}.<br><br>
+	 * to a rounded one by turning its background into a {@link RoundedDrawable}.<br><br>
 	 * Warning: this function permanently mutates the specified {@link TextButtonStyle}.
-	 * @return a {@link TextButton} with {@link TextButtonStyle} with the {@link RoundedDrawable} background.
+	 * @return a {@link TextButton} with a {@link RoundedDrawable} background.
 	 * FIXME: still not working properly. */
 	public static TextButton roundedTextButton(String text, Skin skin, String styleName) {
 		TextButton btn = new TextButton(text, skin, styleName);

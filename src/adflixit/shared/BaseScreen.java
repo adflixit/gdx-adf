@@ -278,7 +278,7 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
 		return fbTex();
 	}
 	
-	/** Adds actor to the UI layer specified by index. */
+	/** Adds actor to the UI layer specified by the index. */
 	public void addToUiLayer(int i, Actor a) {
 		uiLayers[i].addActor(a);
 	}
@@ -2359,7 +2359,7 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
 		$fadeTo(cb).start(tweenMgr);
 	}
 
-	/** Flashes the screen with a specified color.
+	/** Flashes the screen with the specified color.
 	 * @param clr color */
 	public void flashFx(Color clr) {
 		$flashFx(clr).start(tweenMgr);
@@ -2370,7 +2370,7 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
 		$flashFx().start(tweenMgr);
 	}
 
-	/** Flashes the vignette with a specified color.
+	/** Flashes the vignette with the specified color.
 	 * @param clr color */
 	public void flashFxVig(Color clr) {
 		$flashFxVig(clr).start(tweenMgr);
@@ -3232,7 +3232,7 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
 		return $fadeTo(C_D, cb);
 	}
 
-	/** Creates a tween that flashes the {@link Overlay} sheers layer with specified color.
+	/** Creates a tween that flashes the {@link Overlay} sheers layer with the specified color.
 	 * @param clr color
 	 * @return tween handle */
 	public Timeline $flashFx(Color clr) {
@@ -3246,7 +3246,7 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
 		return $flashFx(WHITE);
 	}
 
-	/** Creates a tween that flashes the {@link Overlay} vignette layer with specified color.
+	/** Creates a tween that flashes the {@link Overlay} vignette layer with the specified color.
 	 * @param clr color
 	 * @return tween handle */
 	public Timeline $flashFxVig(Color clr) {
@@ -3363,7 +3363,7 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
 		return $setTimer(d, cb).start(tweenMgr);
 	}
 
-	/** Starts a timer that calls the callback at the start and at the end and repeats specified number of times.
+	/** Starts a timer that calls the callback at the start and at the end and repeats the specified number of times.
 	 * @param d delay
 	 * @param r repetition
 	 * @param cb callback
@@ -3380,7 +3380,7 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
 		return $setTimer(d, cb).start(tscTweenMgr);
 	}
 
-	/** Starts a timer counted by the timescale that calls the callback at the start and at the end and repeats specified number of times.
+	/** Starts a timer counted by the timescale that calls the callback at the start and at the end and repeats the specified number of times.
 	 * @param d delay
 	 * @param r repetition
 	 * @param cb callback
@@ -3399,7 +3399,7 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
 				.setCallbackTriggers(BEGIN|COMPLETE);
 	}
 
-	/** Creates a timer handle that calls the callback at the start and at the end and repeats specified number of times.
+	/** Creates a timer handle that calls the callback at the start and at the end and repeats the specified number of times.
 	 * @param d duration
 	 * @param r repetition
 	 * @param cb callback

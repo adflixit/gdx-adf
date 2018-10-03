@@ -34,7 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Draws the specified texture (which is typically the frame buffer output) with a shader filter.
+ * Draws the specified texture (usually the frame buffer output) with a shader filter.
  */
 public class Postprocessor extends ScreenComponent<BaseScreen<?>> {
 	private TweenCallback createLockCallback(final int i) {
@@ -155,12 +155,12 @@ public class Postprocessor extends ScreenComponent<BaseScreen<?>> {
 		return (locks|schedules) != 0;
 	}
 
-	/** @return does the filtering occupy the whole screen.  */
+	/** @return does the filter occupy the whole screen.  */
 	public boolean isFull() {
 		return values.get(uniBlur).floatValue() > 0;
 	}
 
-	/** Gives access to the update route for the filter specified by index. */
+	/** Grants access to the update route for a filter specified by the index. */
 	private void unlock(int i) {
 		int m = 1<<i;
 		if (!hasFlag(locks, m)) {
@@ -168,7 +168,7 @@ public class Postprocessor extends ScreenComponent<BaseScreen<?>> {
 		}
 	}
 
-	/** Recalls access to the update route for the filter specified by index. */
+	/** Revokes access to the update route for a filter specified by the index. */
 	private void lock(int i) {
 		int m = 1<<i;
 		if (hasFlag(locks, m)) {
