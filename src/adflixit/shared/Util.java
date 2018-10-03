@@ -92,7 +92,7 @@ public final class Util {
 		throw new IllegalArgumentException("Illegal argument(s): "+info+".");
 	}
 
-	/** Template for calculating the position of one point relative to the other in single dimension.
+	/** A template for calculating the position of one point relative to another in a single dimension.
 	 * @param p position
 	 * @param l length
 	 * @param aln alignment flags
@@ -122,7 +122,7 @@ public final class Util {
 		return p;
 	}
 
-	/** Template for undoing the alignment of one point relative to the other in single dimension.
+	/** A template for undoing the alignment of one point relative to another in a single dimension.
 	 * @param p position
 	 * @param l length
 	 * @param aln alignment flags
