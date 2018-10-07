@@ -933,23 +933,43 @@ public final class Util {
 		return tmpv3.set(ffloor(v3.x), ffloor(v3.y), ffloor(v3.z));
 	}
 	
-	/** @return {@code a} bounded to {@code min} and {@code max}. */
+	/** @return {@code a} bounded between {@code min} and {@code max}. */
 	public static int clamp(int a, int min, int max) {
+		if (min>max) {
+			int t = min;
+			min = max;
+			max = t;
+		}
 		return a<min ? min : a>max?max:a;
 	}
 
-	/** @return {@code a} bounded to {@code min} and {@code max}. */
+	/** @return {@code a} bounded between {@code min} and {@code max}. */
 	public static long clamp(long a, long min, long max) {
+		if (min>max) {
+			long t = min;
+			min = max;
+			max = t;
+		}
 		return a<min ? min : a>max?max:a;
 	}
 
-	/** @return {@code a} bounded to {@code min} and {@code max}. */
-	public static double clamp(double a, double min, double max) {
-		return a<min ? min : a>max?max:a;
-	}
-
-	/** @return {@code a} bounded to {@code min} and {@code max}. */
+	/** @return {@code a} bounded between {@code min} and {@code max}. */
 	public static float clamp(float a, float min, float max) {
+		if (min>max) {
+			float t = min;
+			min = max;
+			max = t;
+		}
+		return a<min ? min : a>max?max:a;
+	}
+
+	/** @return {@code a} bounded between {@code min} and {@code max}. */
+	public static double clamp(double a, double min, double max) {
+		if (min>max) {
+			double t = min;
+			min = max;
+			max = t;
+		}
 		return a<min ? min : a>max?max:a;
 	}
 
