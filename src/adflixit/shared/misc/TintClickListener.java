@@ -17,8 +17,8 @@
 package adflixit.shared.misc;
 
 import static adflixit.shared.BaseGame.*;
-import static adflixit.shared.Defs.*;
 import static adflixit.shared.TweenUtils.*;
+import static adflixit.shared.Util.*;
 import static com.badlogic.gdx.graphics.Color.*;
 
 import com.badlogic.gdx.graphics.Color;

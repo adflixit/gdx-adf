@@ -19,8 +19,8 @@ package adflixit.shared.misc;
 import static com.badlogic.gdx.utils.Align.*;
 import static adflixit.shared.BaseGame.*;
 import static adflixit.shared.BaseScreen.*;
-import static adflixit.shared.Defs.*;
 import static adflixit.shared.TweenUtils.*;
+import static adflixit.shared.Util.*;
 
 import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenEquation;

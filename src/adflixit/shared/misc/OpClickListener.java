@@ -16,8 +16,8 @@
 
 package adflixit.shared.misc;
 
-import static adflixit.shared.Defs.*;
 import static adflixit.shared.TweenUtils.*;
+import static adflixit.shared.Util.*;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;

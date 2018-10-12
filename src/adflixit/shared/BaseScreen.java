@@ -17,7 +17,6 @@
 package adflixit.shared;
 
 import static adflixit.shared.BaseGame.*;
-import static adflixit.shared.Defs.*;
 import static adflixit.shared.TweenUtils.*;
 import static adflixit.shared.Util.*;
 import static aurelienribon.tweenengine.TweenCallback.*;
@@ -56,13 +55,13 @@ import java.util.List;
 /**
  * Includes:
  * <ul>
- * <li>Three levels of {@link TweenManager}:<ul><li>General</li><li>Timescaled</li><li>UI</li></ul></li>
+ * <li>Three instances of {@link TweenManager}:<ul><li>General</li><li>Timescaled</li><li>UI</li></ul></li>
  * <li>Adaptive viewport adjustments.</li>
  * <li>UI layers:<ul><li>Overlay</li><li>Game</li><li>Menus</li></ul></li>
  * <li>Benchmark.</li>
  * <li>Graphics and postprocessing adjustments.</li>
  * <li>Blur.</li>
- * <li>Tweening handlers:<ul><li>Timescale</li><li>Sound volume</li><li>Camera</li><li>UI layers</li><li>Overlay</li><li>Blur</li></ul></li>
+ * <li>Tween handlers:<ul><li>Timescale</li><li>Sound volume</li><li>Camera</li><li>UI layers</li><li>Overlay</li><li>Blur</li></ul></li>
  * </ul>
  * @param <G> a {@link BaseGame} instance.
  */

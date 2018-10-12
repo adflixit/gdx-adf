@@ -17,8 +17,8 @@
 package adflixit.shared;
 
 import static adflixit.shared.BaseScreen.*;
-import static adflixit.shared.Defs.*;
 import static adflixit.shared.TweenUtils.*;
+import static adflixit.shared.Util.*;
 import static java.lang.Math.*;
 
 import aurelienribon.tweenengine.Tween;

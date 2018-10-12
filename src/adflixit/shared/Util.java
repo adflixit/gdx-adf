@@ -58,6 +58,52 @@ public final class Util {
 						GOLDENRATIO		= (1+sqrt(5))/2,
 						INVGOLDENRATIO		= 1/GOLDENRATIO;
 
+	public static final float		C_D			= .4f,		// duration
+						C_TD			= .025f,	// tiny duration
+						C_SD			= .1f,		// small duration
+						C_HD			= .2f,		// half duration
+						C_OD			= .6f,		// one and a half duration
+						C_DD			= .8f,		// double duration
+						C_MD			= 1f,		// moderate duration
+						C_ID			= 1.5f,		// intermediate duration
+						C_FD			= 2f,		// fair duration
+						C_BD			= 2.5f,		// big duration
+						C_GD			= 4,		// giant duration
+						C_DT			= 120,		// distance
+						C_SDT			= 60,		// small distance
+						C_MDT			= 240,		// moderate distance
+						C_BDT			= 360,		// big distance
+						C_GDT			= 720,		// giant distance
+						C_WDT			= 1080,		// width
+						C_HGT			= 668,		// height
+						C_MRG			= 27,		// margin
+						C_PAD			= 32,		// padding
+						C_PAD_S			= 16,		// small padding
+						C_INT			= 16,		// interval
+						C_SHD_RAD		= 8,		// shadow radius
+						C_SHD_OFS		= 4,		// shadow offset
+						C_SHD_OP		= .2f,		// shadow opacity
+						C_POPUP_IN_SC		= 1.2f,		// popup intro scale
+						C_POPUP_OUT_SC		= .8f,		// popup outro scale
+						C_OP			= .3f,		// opacity
+						C_OP_DIM		= .8f,		// dim opacity
+						C_OP_DIM_L		= .6f,		// dim light opacity
+						C_IDLEACTION_D		= 30,		// idle action delay
+						C_REPACTION_D		= 10,		// repetitive action delay
+
+						OL_VIG_OP		= .2f,		// overlay vignette opacity
+						OL_FLASH_OP		= .4f,		// overlay flash opacity
+
+						PLXBG_FC		= .8f,		// parallax background scrolling factor
+
+						// Button sizes
+						BTN_BG			= 220,
+						BTN_MD			= 160,
+						BTN_SM			= 120,
+
+						SPARKS_FPS		= 60,		// sparks frame rate
+						CIRCOUT_FPS		= 60;		// circout animation framerate
+
 	// Common use temporary variables
 	public static final Vector2		tmpv2			= new Vector2();
 	public static final Vector3		tmpv3			= new Vector3();

@@ -18,7 +18,6 @@ package adflixit.shared;
 
 import static adflixit.shared.BaseGame.*;
 import static adflixit.shared.BaseScreen.*;
-import static adflixit.shared.Defs.*;
 import static adflixit.shared.Util.*;
 import static aurelienribon.tweenengine.TweenCallback.*;
 import static com.badlogic.gdx.utils.Align.*;

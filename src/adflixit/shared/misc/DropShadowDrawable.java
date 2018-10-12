@@ -17,7 +17,7 @@
 package adflixit.shared.misc;
 
 import static adflixit.shared.BaseGame.*;
-import static adflixit.shared.Defs.*;
+import static adflixit.shared.Util.*;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
