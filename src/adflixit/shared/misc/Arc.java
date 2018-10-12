@@ -38,9 +38,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.TransformDrawable;
  * It draws clockwise.
  */
 public class Arc extends Widget {
-	private TransformDrawable		drawable;		// drawable of a single degree
-	private final MutableFloat		progress		= new MutableFloat(0);
-	private float					radius;
+	private TransformDrawable	drawable;	// drawable of a single degree
+	private final MutableFloat	progress	= new MutableFloat(0);
+	private float			radius;
 
 	public Arc(Drawable drawable, float radius) {
 		setDrawable(drawable);

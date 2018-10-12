@@ -17,13 +17,13 @@
 package adflixit.shared.console;
 
 public class ConVar {
-	private final String		defValue;
-	private String				rawValue;
-	private int					intValue;
-	private long				longValue;
-	private double				doubleValue;
-	private float				floatValue;
-	private boolean				boolValue;
+	private final String	defValue;
+	private String		rawValue;
+	private int		intValue;
+	private long		longValue;
+	private double		doubleValue;
+	private float		floatValue;
+	private boolean		boolValue;
 
 	public ConVar(String def) {
 		defValue = def;
@@ -45,8 +45,8 @@ public class ConVar {
 		return set(defValue);
 	}
 
-	public String def()			{return defValue;}
-	public String raw()			{return rawValue;}
+	public String def()		{return defValue;}
+	public String raw()		{return rawValue;}
 	public int intValue()		{return intValue;}
 	public long longValue()		{return longValue;}
 	public float floatValue()	{return floatValue;}

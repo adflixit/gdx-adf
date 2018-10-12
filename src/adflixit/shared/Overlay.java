@@ -30,12 +30,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
  * Set of full-screen overlay rectangles which create effects such as screen fading, tinting, flashing, etc.
  */
 public class Overlay extends ScreenComponent<BaseScreen<?>> {
-	private final Group		root			= new Group();
-	private final Image		sheers			= new Image(drawable("white"));		// used for light color effects
-	private final Image		blackouts		= new Image(drawable("white"));		// used for fading the screen in and out
-	private final Image		tint			= new Image(drawable("white"));		// used for long-term screen tinting
-	private final Image		dim				= new Image(drawable("white"));		// used to add contrast to focus out the menus
-	private final Image		vignette		= new Image(drawable("vignette"));
+	private final Group	root		= new Group();
+	private final Image	sheers		= new Image(drawable("white"));		// used for light color effects
+	private final Image	blackouts	= new Image(drawable("white"));		// used for fading the screen in and out
+	private final Image	tint		= new Image(drawable("white"));		// used for long-term screen tinting
+	private final Image	dim		= new Image(drawable("white"));		// used to add contrast to focus out the menus
+	private final Image	vignette	= new Image(drawable("vignette"));
 
 	public Overlay(BaseScreen<?> screen) {
 		super(screen);

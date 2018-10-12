@@ -30,14 +30,14 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Console {
-	private boolean						active		= true;
-	private Thread						thread;
-	private InputStream					in;
-	private PrintStream					out;
-	private final Scanner				scanner;
+	private boolean				active		= true;
+	private Thread				thread;
+	private InputStream			in;
+	private PrintStream			out;
+	private final Scanner			scanner;
 	private final Map<String, ConCmd>	cmds		= new HashMap<>();
 	private final Map<String, ConVar>	vars		= new HashMap<>();
-	private final List<String>			parsed		= new ArrayList<>();
+	private final List<String>		parsed		= new ArrayList<>();
 
 	public Console(InputStream sin, PrintStream sout) {
 		in = sin;

@@ -28,9 +28,9 @@ import org.json.simple.parser.ParseException;
  */
 public class DataPacker {
 	public static final JSONParser	parser		= new JSONParser();
-	private JSONObject				read		= new JSONObject();
-	private JSONObject				write		= new JSONObject();
-	private boolean					isValid		= true;
+	private JSONObject		read		= new JSONObject();
+	private JSONObject		write		= new JSONObject();
+	private boolean			isValid		= true;
 
 	public void read(String data) {
 		read.clear();

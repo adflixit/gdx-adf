@@ -51,22 +51,22 @@ public class Postprocessor extends ScreenComponent<BaseScreen<?>> {
 		return (type, source) -> schedule(i);
 	}
 
-	public static final int				uniBlur				= 0,
-										uniTiltshiftY		= 1,
-										uniTiltshiftX		= 2;
-	private static final String[]		uniNames			= {
+	public static final int			uniBlur			= 0,
+						uniTiltshiftY		= 1,
+						uniTiltshiftX		= 2;
+	private static final String[]		uniNames		= {
 		"u_blur",
 		"u_tiltshiftY",
 		"u_tiltshiftX"
 	};
-	private static final int			uniLength			= uniNames.length;
-	private static final String			uniResName			= "u_res";
+	private static final int		uniLength		= uniNames.length;
+	private static final String		uniResName		= "u_res";
 
-	private ShaderProgram				shader;
-	private FrameBuffer					frameBuffer;
-	private final List<MutableFloat>	values				= new ArrayList<>();
-	private int							locks;				// update route permits
-	private int							schedules;			// one-time access tickets
+	private ShaderProgram			shader;
+	private FrameBuffer			frameBuffer;
+	private final List<MutableFloat>	values			= new ArrayList<>();
+	private int				locks;			// update route permits
+	private int				schedules;		// one-time access tickets
 	private final TweenCallback[]		locksCallbacks		= new TweenCallback[uniLength];
 	private final TweenCallback[]		schedulesCallbacks	= new TweenCallback[uniLength];
 

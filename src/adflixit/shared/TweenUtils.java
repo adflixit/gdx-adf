@@ -43,9 +43,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 public final class TweenUtils {
 	private TweenUtils() {}
 
-	public static Tween			emptyTween()			{return Tween.mark();}
-	public static Tween			delayTween(float d)		{return Tween.to(null, -1, d);}
-	public static Timeline		emptyTimeline()			{return Timeline.createSequence();}
+	public static Tween		emptyTween()		{return Tween.mark();}
+	public static Tween		delayTween(float d)	{return Tween.to(null, -1, d);}
+	public static Timeline		emptyTimeline()		{return Timeline.createSequence();}
 
 	/** Removes {@code target} from all trackers. */
 	public static void killTweenTarget(Object target) {
@@ -367,9 +367,9 @@ public final class TweenUtils {
 	 * {@link #L}: lightness. */
 	public static class ActorAccessor implements TweenAccessor<Actor> {
 		public static final int		POS = 0, X = 1, Y = 2, POS_C = 3, X_C = 4, Y_C = 5,
-									ORIGIN = 6, ORG_X = 7, ORG_Y = 8,
-									SCALE = 9, SCL_X = 10, SCL_Y = 11, ROT = 12,
-									RGB = 13, R = 14, G = 15, B = 16, A = 17, H = 18, S = 19, L = 20;
+						ORIGIN = 6, ORG_X = 7, ORG_Y = 8,
+						SCALE = 9, SCL_X = 10, SCL_Y = 11, ROT = 12,
+						RGB = 13, R = 14, G = 15, B = 16, A = 17, H = 18, S = 19, L = 20;
 
 		@Override public int getValues(Actor target, int tweenType, float[] returnValues) {
 			switch (tweenType) {
@@ -533,9 +533,9 @@ public final class TweenUtils {
 	 * {@link #L}: lightness. */
 	public static class LabelAccessor implements TweenAccessor<Label> {
 		public static final int		POS = 0, X = 1, Y = 2, POS_C = 3, X_C = 4, Y_C = 5,
-									ORIGIN = 6, ORG_X = 7, ORG_Y = 8,
-									SCALE = 9, SCL_X = 10, SCL_Y = 11, ROT = 12,
-									RGB = 13, R = 14, G = 15, B = 16, A = 17, H = 18, S = 19, L = 20;
+						ORIGIN = 6, ORG_X = 7, ORG_Y = 8,
+						SCALE = 9, SCL_X = 10, SCL_Y = 11, ROT = 12,
+						RGB = 13, R = 14, G = 15, B = 16, A = 17, H = 18, S = 19, L = 20;
 
 		@Override public int getValues(Label target, int tweenType, float[] returnValues) {
 			switch (tweenType) {
@@ -697,8 +697,8 @@ public final class TweenUtils {
 	 * {@link #L}: lightness. */
 	public static class SpriteAccessor implements TweenAccessor<Sprite> {
 		public static final int		POS = 0, X = 1, Y = 2, POS_C = 3, X_C = 4, Y_C = 5,
-									SCALE = 6, SCL_X = 7, SCL_Y = 8, ROT = 9,
-									RGB = 10, R = 11, G = 12, B = 13, A = 14, H = 15, S = 16, L = 17;
+						SCALE = 6, SCL_X = 7, SCL_Y = 8, ROT = 9,
+						RGB = 10, R = 11, G = 12, B = 13, A = 14, H = 15, S = 16, L = 17;
 
 		@Override public int getValues(Sprite target, int tweenType, float[] returnValues) {
 			switch (tweenType) {
@@ -943,8 +943,8 @@ public final class TweenUtils {
 	 * {@link #ROT}: rotation. */
 	public static class AndViewAccessor implements TweenAccessor<View> {
 		public static final int		POS = 0, X = 1, Y = 2, POS_C = 3, X_C = 4, Y_C = 5,
-									PIVOT = 6, PVT_X = 7, PVT_Y = 8,
-									SCALE = 9, SCL_X = 10, SCL_Y = 11, ROT = 12, ALPHA = 13;
+						PIVOT = 6, PVT_X = 7, PVT_Y = 8,
+						SCALE = 9, SCL_X = 10, SCL_Y = 11, ROT = 12, ALPHA = 13;
 
 		@Override public int getValues(View target, int tweenType, float[] returnValues) {
 			switch (tweenType) {

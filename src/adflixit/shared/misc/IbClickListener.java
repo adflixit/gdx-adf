@@ -33,12 +33,12 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
  * {@link ImageButton} {@link ClickListener}. Tweens the ImageButton image color and the background color.
  */
 public class IbClickListener extends ClickListener {
-	private ImageButton		btn;
-	private Image			image;
-	private Color			initBgClr;		// initial background color
-	private Color			initImageClr;	// initial image color
-	private Color			bgClr;
-	private Color			imageClr;
+	private ImageButton	btn;
+	private Image		image;
+	private Color		initBgClr;	// initial background color
+	private Color		initImageClr;	// initial image color
+	private Color		bgClr;
+	private Color		imageClr;
 
 	public IbClickListener(ImageButton button, Color initBgClr, Color initImageClr, Color bgClr, Color imageClr) {
 		super();

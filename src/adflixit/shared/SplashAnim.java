@@ -26,8 +26,8 @@ import com.badlogic.gdx.utils.Array;
  */
 public class SplashAnim extends Animation<TextureRegion> {
 	private final Timestamp		time		= new Timestamp();	// playtime mark
-	private float				x, y;
-	private float				baseScale, scale;
+	private float			x, y;
+	private float			baseScale, scale;
 
 	public SplashAnim(float frameDuration, Array<? extends TextureRegion> keyFrames, float baseScale) {
 		super(frameDuration, keyFrames);

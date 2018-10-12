@@ -39,9 +39,9 @@ import com.badlogic.gdx.utils.Array;
  */
 public class AnimatedWidget extends Widget {
 	private Animation<TextureRegion>	anim;
-	private float						duration;
-	private Tween						tween;		// used to manipulate the playtime mark
-	private final MutableFloat			time		= new MutableFloat(0);	// current playtime mark
+	private float				duration;
+	private Tween				tween;		// used to manipulate the playtime mark
+	private final MutableFloat		time		= new MutableFloat(0);	// current playtime mark
 
 	public AnimatedWidget(float frameDuration, Array<? extends TextureRegion> keyFrames, PlayMode playMode) {
 		setAnimation(new Animation<TextureRegion>(frameDuration, keyFrames, playMode));

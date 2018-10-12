@@ -27,8 +27,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
  * {@link ClickListener} that operates the target actor's opacity.
  */
 public class OpClickListener extends ClickListener {
-	private Actor		actor;
-	private float		initOp, fadeOp;
+	private Actor	actor;
+	private float	initOp, fadeOp;
 
 	public OpClickListener(Actor actor, float iop, float fop) {
 		super();

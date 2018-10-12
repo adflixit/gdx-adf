@@ -33,12 +33,12 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
  * {@link TextButton} {@link ClickListener}. Tweens the TextButton font color and the background color.
  */
 public class TbClickListener extends ClickListener {
-	private TextButton		btn;
-	private Label			label;
-	private Color			initBgClr;		// initial background color
-	private Color			initFontClr;	// initial font color
-	private Color			bgClr;
-	private Color			fontClr;
+	private TextButton	btn;
+	private Label		label;
+	private Color		initBgClr;	// initial background color
+	private Color		initFontClr;	// initial font color
+	private Color		bgClr;
+	private Color		fontClr;
 
 	public TbClickListener(TextButton button, Color initBgClr, Color initFontClr, Color bgClr, Color fontClr) {
 		super();

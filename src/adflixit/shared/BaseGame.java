@@ -81,13 +81,13 @@ public abstract class BaseGame extends Logger implements ApplicationListener {
 	};
 
 	public static Class<? extends Actor>	actorClassDescendants;	// used as the Actor class signature for the tween engine
-	public static boolean					debug;
-	private static XApi						xApi;
-	public static final Console				console					= new Console();
-	private static Skin						skin;
-	private static MutableProperties		props					= new MutableProperties();
-	private static Preferences				prefs;
-	protected BaseScreen<?>					screen;					// current screen
+	public static boolean			debug;
+	private static XApi			xApi;
+	public static final Console		console					= new Console();
+	private static Skin			skin;
+	private static MutableProperties	props					= new MutableProperties();
+	private static Preferences		prefs;
+	protected BaseScreen<?>			screen;					// current screen
 
 	public BaseGame() {
 		setXApi(noXApi);
@@ -99,19 +99,20 @@ public abstract class BaseGame extends Logger implements ApplicationListener {
 
 	@Override public void create() {
 		ShaderProgram.pedantic = false;
-		Tween.registerAccessor(Actor.class,					new ActorAccessor());
+		Tween.setWaypointsLimit(10);
+		Tween.registerAccessor(Actor.class,			new ActorAccessor());
 		Tween.registerAccessor(actorClassDescendants,		new ActorAccessor());
-		Tween.registerAccessor(Label.class,					new LabelAccessor());
-		Tween.registerAccessor(Sprite.class,				new SpriteAccessor());
-		Tween.registerAccessor(Music.class,					new MusicAccessor());
+		Tween.registerAccessor(Label.class,			new LabelAccessor());
+		Tween.registerAccessor(Sprite.class,			new SpriteAccessor());
+		Tween.registerAccessor(Music.class,			new MusicAccessor());
 		Tween.registerAccessor(OrthographicCamera.class,	new OrthoCameraAccessor());
-		Tween.registerAccessor(Body.class,					new Box2DBodyAccessor());
-		Tween.registerAccessor(View.class,					new AndViewAccessor());
-		Tween.registerAccessor(Vector2.class,				new Vector2Accessor());
-		Tween.registerAccessor(Vector3.class,				new Vector3Accessor());
-		Tween.registerAccessor(Color.class,					new ColorAccessor());
+		Tween.registerAccessor(Body.class,			new Box2DBodyAccessor());
+		Tween.registerAccessor(View.class,			new AndViewAccessor());
+		Tween.registerAccessor(Vector2.class,			new Vector2Accessor());
+		Tween.registerAccessor(Vector3.class,			new Vector3Accessor());
+		Tween.registerAccessor(Color.class,			new ColorAccessor());
 		Tween.registerAccessor(MutableInteger.class,		new MutableInteger(0));
-		Tween.registerAccessor(MutableFloat.class,			new MutableFloat(0));
+		Tween.registerAccessor(MutableFloat.class,		new MutableFloat(0));
 		// default console commands
 		registerConsoleCommand("prop", args -> {
 			try {

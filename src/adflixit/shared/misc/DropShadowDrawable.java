@@ -30,12 +30,12 @@ import com.badlogic.gdx.scenes.scene2d.utils.TransformDrawable;
  * The shadow has to be a pre-made {@link TextureRegion}.
  */
 public class DropShadowDrawable extends BaseDrawable implements TransformDrawable {
-	private Drawable				drawable;
-	private Drawable				shadow;
-	private TransformDrawable		transDrawable;	// in case it is a TransformDrawable
-	private TransformDrawable		transShadow;	// ditto
-	private float					radius;			// shadow radius, should be specified manually
-	private float					offset;			// shadow vertical offset
+	private Drawable		drawable;
+	private Drawable		shadow;
+	private TransformDrawable	transDrawable;	// in case it is a TransformDrawable
+	private TransformDrawable	transShadow;	// ditto
+	private float			radius;		// shadow radius, should be specified manually
+	private float			offset;		// shadow vertical offset
 
 	public DropShadowDrawable(Drawable drawable, Drawable shadow, float radius, float offset) {
 		this.drawable = drawable;

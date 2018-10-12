@@ -26,8 +26,8 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
  * Creates a full-screen layer which receives the input.
  */
 public class Tapper extends ScreenComponent<BaseScreen<?>> {
-	private final Actor			area		= new Actor();
-	private InputListener		listener;
+	private final Actor	area		= new Actor();
+	private InputListener	listener;
 
 	public Tapper(BaseScreen<?> screen) {
 		super(screen);

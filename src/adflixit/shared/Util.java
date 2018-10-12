@@ -48,20 +48,20 @@ import org.json.simple.JSONObject;
 public final class Util {
 	private Util() {}
 
-	public static final double		SQRT2				= sqrt(2),
-									SQRT3				= sqrt(3),
-									LOG2				= log(2),
-									CIRCLE				= PI*2,
-									SEMICIRCLE			= PI,
-									QTRCIRCLE			= PI/2,
-									DEGREE				= PI/180,
-									GOLDENRATIO			= (1+sqrt(5))/2,
-									INVGOLDENRATIO		= 1/GOLDENRATIO;
+	public static final double		SQRT2			= sqrt(2),
+						SQRT3			= sqrt(3),
+						LOG2			= log(2),
+						CIRCLE			= PI*2,
+						SEMICIRCLE		= PI,
+						QTRCIRCLE		= PI/2,
+						DEGREE			= PI/180,
+						GOLDENRATIO		= (1+sqrt(5))/2,
+						INVGOLDENRATIO		= 1/GOLDENRATIO;
 
 	// Common use temporary variables
-	public static final Vector2		tmpv2				= new Vector2();
-	public static final Vector3		tmpv3				= new Vector3();
-	public static final Color		tmpclr				= new Color();
+	public static final Vector2		tmpv2			= new Vector2();
+	public static final Vector3		tmpv3			= new Vector3();
+	public static final Color		tmpclr			= new Color();
 
 	/** @return current time in milliseconds. */
 	public static long currentTime() {
@@ -763,25 +763,25 @@ public final class Util {
 
 	/************** Math utilities ************/
 
-	public static float fsin(float a)				{return (float)sin(a);}
-	public static float fcos(float a)				{return (float)cos(a);}
-	public static float ftan(float a)				{return (float)tan(a);}
-	public static float fasin(float a)				{return (float)asin(a);}
-	public static float facos(float a)				{return (float)acos(a);}
-	public static float fatan(float a)				{return (float)atan(a);}
-	public static float fexp(float a)				{return (float)exp(a);}
-	public static float flog(float a)				{return (float)log(a);}
-	public static float flog10(float a)				{return (float)log10(a);}
-	public static float fsqrt(float a)				{return (float)sqrt(a);}
-	public static float fcbrt(float a)				{return (float)cbrt(a);}
-	public static float fceil(float a)				{return (float)ceil(a);}
-	public static float ffloor(float a)				{return (float)floor(a);}
-	public static float frint(float a)				{return (float)rint(a);}
+	public static float fsin(float a)		{return (float)sin(a);}
+	public static float fcos(float a)		{return (float)cos(a);}
+	public static float ftan(float a)		{return (float)tan(a);}
+	public static float fasin(float a)		{return (float)asin(a);}
+	public static float facos(float a)		{return (float)acos(a);}
+	public static float fatan(float a)		{return (float)atan(a);}
+	public static float fexp(float a)		{return (float)exp(a);}
+	public static float flog(float a)		{return (float)log(a);}
+	public static float flog10(float a)		{return (float)log10(a);}
+	public static float fsqrt(float a)		{return (float)sqrt(a);}
+	public static float fcbrt(float a)		{return (float)cbrt(a);}
+	public static float fceil(float a)		{return (float)ceil(a);}
+	public static float ffloor(float a)		{return (float)floor(a);}
+	public static float frint(float a)		{return (float)rint(a);}
 	public static float fatan2(float y, float x)	{return (float)atan2(y,x);}
-	public static float fpow(float a, float b)		{return (float)pow(a,b);}
-	public static float fsinh(float x)				{return (float)sinh(x);}
-	public static float fcosh(float x)				{return (float)cosh(x);}
-	public static float ftanh(float x)				{return (float)tanh(x);}
+	public static float fpow(float a, float b)	{return (float)pow(a,b);}
+	public static float fsinh(float x)		{return (float)sinh(x);}
+	public static float fcosh(float x)		{return (float)cosh(x);}
+	public static float ftanh(float x)		{return (float)tanh(x);}
 	public static float fhypot(float x, float y)	{return (float)hypot(x,y);}
 	
 	/** @return if {@code flag} intersects {@code flags}. {@code flag} has to be one single bit. */
@@ -1184,15 +1184,15 @@ public final class Util {
 
 	/************** JSON utilities ************/
 
-	public static String				toJson(Object obj)						{return (new Json()).toJson(obj);}
+	public static String			toJson(Object obj)			{return (new Json()).toJson(obj);}
 	public static <T extends Object> T	readJson(Class<T> type, String data)	{return (new Json()).fromJson(type, data);}
-	public static int					JsonInt(JSONObject obj, String key)		{return ((Long)obj.get(key)).intValue();}
-	public static short					JsonShort(JSONObject obj, String key)	{return ((Long)obj.get(key)).shortValue();}
-	public static long					JsonLong(JSONObject obj, String key)	{return ((Long)obj.get(key)).longValue();}
-	public static float					JsonFloat(JSONObject obj, String key)	{return ((Double)obj.get(key)).floatValue();}
-	public static double				JsonDouble(JSONObject obj, String key)	{return ((Double)obj.get(key)).doubleValue();}
-	public static boolean				JsonBool(JSONObject obj, String key)	{return ((Boolean)obj.get(key)).booleanValue();}
-	public static String				JsonString(JSONObject obj, String key)	{return (String)obj.get(key);}
-	public static JSONObject			JsonObject(JSONObject obj, String key)	{return (JSONObject)obj.get(key);}
-	public static JSONArray				JsonArray(JSONObject obj, String key)	{return (JSONArray)obj.get(key);}
+	public static int			JsonInt(JSONObject obj, String key)	{return ((Long)obj.get(key)).intValue();}
+	public static short			JsonShort(JSONObject obj, String key)	{return ((Long)obj.get(key)).shortValue();}
+	public static long			JsonLong(JSONObject obj, String key)	{return ((Long)obj.get(key)).longValue();}
+	public static float			JsonFloat(JSONObject obj, String key)	{return ((Double)obj.get(key)).floatValue();}
+	public static double			JsonDouble(JSONObject obj, String key)	{return ((Double)obj.get(key)).doubleValue();}
+	public static boolean			JsonBool(JSONObject obj, String key)	{return ((Boolean)obj.get(key)).booleanValue();}
+	public static String			JsonString(JSONObject obj, String key)	{return (String)obj.get(key);}
+	public static JSONObject		JsonObject(JSONObject obj, String key)	{return (JSONObject)obj.get(key);}
+	public static JSONArray			JsonArray(JSONObject obj, String key)	{return (JSONArray)obj.get(key);}
 }

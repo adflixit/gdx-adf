@@ -27,9 +27,9 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 public class TintClickListener extends ClickListener {
-	private Actor		actor;
-	private Color		initClr;
-	private Color		clr;
+	private Actor	actor;
+	private Color	initClr;
+	private Color	clr;
 
 	public TintClickListener(Actor actor, Color initClr, Color clr) {
 		super();

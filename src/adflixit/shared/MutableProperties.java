@@ -26,11 +26,11 @@ import java.util.Map;
 import java.util.Properties;
 
 public class MutableProperties extends Properties {
-	private final Properties			original	= new Properties();		// the original properties unchanged during runtime
-	private final List<String>			flushed		= new ArrayList<>();	// a list of the flushed properties
-	private final List<String>			raw			= new ArrayList<>();	// raw properties file text
-	private final Map<String, Float>	floats		= new HashMap<>();		// the entries pre-interpreted as float
-	private FileHandle					file;
+	private final Properties		original	= new Properties();	// the original properties unchanged during runtime
+	private final List<String>		flushed		= new ArrayList<>();	// a list of the flushed properties
+	private final List<String>		raw		= new ArrayList<>();	// raw properties file text
+	private final Map<String, Float>	floats		= new HashMap<>();	// the entries pre-interpreted as float
+	private FileHandle			file;
 
 	/** Loads the specified properties.
 	 * @deprecated Not used anymore due to the introduced ability to change properties during runtime. */

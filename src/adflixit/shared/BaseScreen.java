@@ -67,11 +67,11 @@ import java.util.List;
  * @param <G> a {@link BaseGame} instance.
  */
 public abstract class BaseScreen<G extends BaseGame> extends Logger implements InputProcessor, GestureListener {
-	public static final TweenManager		tweenMgr			= new TweenManager();	// general tween manager
-	public static final TweenManager		tscTweenMgr			= new TweenManager();	// timescaled tween manager
-	public static final TweenManager		uiTweenMgr			= new TweenManager();	// UI tween manager
+	public static final TweenManager	tweenMgr	= new TweenManager();	// general tween manager
+	public static final TweenManager	tscTweenMgr	= new TweenManager();	// timescaled tween manager
+	public static final TweenManager	uiTweenMgr	= new TweenManager();	// UI tween manager
 
-	public static final Updater				updater				= new Updater();
+	public static final Updater		updater		= new Updater();
 
 	public static void addUpdatable(Updatable a) {
 		updater.add(a);
@@ -83,8 +83,8 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
 
 	// The screen lesser dimension which determines the larger dimension by scaling it by the aspect ratio.
 	// It can only be changed once during lifetime of the app, preferably at the very start.
-	private static float					ldm					= 1080;
-	private static boolean					ldmDeadlock;
+	private static float			ldm			= 1080;
+	private static boolean			ldmDeadlock;
 
 	/** Changes the screen lesser dimension once during the runtime. */
 	public static void setLdm(float v) {
@@ -101,17 +101,17 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
 	}
 
 	// UI layers
-	public static final int					// indices
-											UIL_OVERLAY			= 0,
-											UIL_GAME			= 1,
-											UIL_MENUS			= 2,
-											UIL_LENGTH			= 3,
-											// flags
-											UIL_OVERLAY_F		= 1<<0,
-											UIL_GAME_F			= 1<<1,
-											UIL_MENUS_F			= 1<<2,
-											UIL_ALL				= sumFlags(UIL_MENUS_F),
-											UIL_GENERAL			= UIL_GAME_F | UIL_MENUS_F;
+	public static final int			// indices
+						UIL_OVERLAY		= 0,
+						UIL_GAME		= 1,
+						UIL_MENUS		= 2,
+						UIL_LENGTH		= 3,
+						// flags
+						UIL_OVERLAY_F		= 1<<0,
+						UIL_GAME_F		= 1<<1,
+						UIL_MENUS_F		= 1<<2,
+						UIL_ALL			= sumFlags(UIL_MENUS_F),
+						UIL_GENERAL		= UIL_GAME_F | UIL_MENUS_F;
 
 	/** Benchmarking events. */
 	public static interface BenchmarkCallback {
@@ -120,14 +120,14 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
 	}
 
 	// Benchmark is used to determine whether the device is capable of using the advanced performance features such as postprocessing.
-	public static final String				benchmarkKey		= "benchmark";
-	public static final float				benchmarkDuration	= 3;	// duration of benchmarking in seconds
-	private static boolean					benchmarked;		// assigned whether when the benchmark info is loaded or when benchmarking is done
-	private static BenchmarkCallback		benchmarkCallback;	// called whether benchmarking started of finished
-	private static boolean					benchmarkTesting;	// whether it is running or not
-	private static float					benchmarkTime;		// relative time spent on benchmarking
-	private static int						benchmarkFrames;	// number of frames rendered during benchmarking
-	private static float					benchmarkFps;		// FPS during the benchmarking
+	public static final String		benchmarkKey		= "benchmark";
+	public static final float		benchmarkDuration	= 3;	// duration of benchmarking in seconds
+	private static boolean			benchmarked;		// assigned whether when the benchmark info is loaded or when benchmarking is done
+	private static BenchmarkCallback	benchmarkCallback;	// called whether benchmarking started of finished
+	private static boolean			benchmarkTesting;	// whether it is running or not
+	private static float			benchmarkTime;		// relative time spent on benchmarking
+	private static int			benchmarkFrames;	// number of frames rendered during benchmarking
+	private static float			benchmarkFps;		// FPS during the benchmarking
 
 	public static void loadBenchmarkInfo() {
 		if (prefsContain(benchmarkKey)) {
@@ -137,57 +137,57 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
 	}
 
 	// Indicates whether the app has to run without any advanced graphical features, such as both postprocessing and texture filtering other than nearest.
-	private static boolean					simpleGraphics;
-	private static boolean					advancedPerformance;		// indicates whether the app may use advanced performance features, such as a GPU
-	public static final int					resDenom			= 4;	// resolution denominator used by the postprocessing resource economy
-	public static final TextureFilter		textureFilterHq		= TextureFilter.Linear,
-											textureFilterLq		= TextureFilter.Nearest;
+	private static boolean			simpleGraphics;
+	private static boolean			advancedPerformance;		// indicates whether the app may use advanced performance features, such as a GPU
+	public static final int			resDenom		= 4;	// resolution denominator used by the postprocessing resource economy
+	public static final TextureFilter	textureFilterHq		= TextureFilter.Linear,
+						textureFilterLq		= TextureFilter.Nearest;
 
 	private static void setAdvancedPerformance(boolean v) {
 		glog("Advanced performance "+(v?"enabled":"disabled"));
 		advancedPerformance = v;
 	}
 
-	protected final G						game;
-	protected final SpriteBatch				batch				= new SpriteBatch();
-	protected final OrthographicCamera		camera				= new OrthographicCamera();
-	protected final Vector3					camBasePos			= new Vector3();
-	protected final AdaptiveViewport		viewport			= new AdaptiveViewport(camera);
-	protected final ShapeRenderer			shapeRenderer		= new ShapeRenderer();
-	protected final AdaptiveViewport		uiViewport			= new AdaptiveViewport();
-	protected final Stage					ui					= new Stage(uiViewport);
-	protected final Group[]					uiLayers			= {new Group(), new Group(), new Group()};
-	protected final Overlay					overlay				= new Overlay(this);
-	//protected final Postprocessor			postprocessor		= new Postprocessor(this);
-	protected final Blur					blur				= new Blur(this);
-	protected final Tapper					tapper				= new Tapper(this);
-	protected final Timestamp				timestamp			= new Timestamp();
-	protected final InputMultiplexer		inputMultiplexer	= new InputMultiplexer();
-	protected final Vector2					touch				= new Vector2();
-	protected FrameBuffer					frameBuffer;
+	protected final G			game;
+	protected final SpriteBatch		batch			= new SpriteBatch();
+	protected final OrthographicCamera	camera			= new OrthographicCamera();
+	protected final Vector3			camBasePos		= new Vector3();
+	protected final AdaptiveViewport	viewport		= new AdaptiveViewport(camera);
+	protected final ShapeRenderer		shapeRenderer		= new ShapeRenderer();
+	protected final AdaptiveViewport	uiViewport		= new AdaptiveViewport();
+	protected final Stage			ui			= new Stage(uiViewport);
+	protected final Group[]			uiLayers		= {new Group(), new Group(), new Group()};
+	protected final Overlay			overlay			= new Overlay(this);
+	//protected final Postprocessor		postprocessor		= new Postprocessor(this);
+	protected final Blur			blur			= new Blur(this);
+	protected final Tapper			tapper			= new Tapper(this);
+	protected final Timestamp		timestamp		= new Timestamp();
+	protected final InputMultiplexer	inputMultiplexer	= new InputMultiplexer();
+	protected final Vector2			touch			= new Vector2();
+	protected FrameBuffer			frameBuffer;
 
-	private final MutableFloat				camShake			= new MutableFloat(0);	// current camera shake amplitude
-	private final MutableFloat				timescale			= new MutableFloat(1);	// time multiplier
-	private final MutableFloat				uiTimescale			= new MutableFloat(1);
-	private final MutableFloat				masterVolume		= new MutableFloat(1);	// sound volume
-	private final MutableFloat				sfxVolume			= new MutableFloat(1);	// sound effects volume
-	private final MutableFloat				musicVolume			= new MutableFloat(1);
-	private final List<Music>				musicList			= new ArrayList<>();	// music volume has to be manually update on a transition
-	private boolean							updatingVolume;
-	private final TweenCallback				masterVolumeCallback = (type, source) -> updatingVolume = type==BEGIN;
+	private final MutableFloat		camShake		= new MutableFloat(0);	// current camera shake amplitude
+	private final MutableFloat		timescale		= new MutableFloat(1);	// time multiplier
+	private final MutableFloat		uiTimescale		= new MutableFloat(1);
+	private final MutableFloat		masterVolume		= new MutableFloat(1);	// sound volume
+	private final MutableFloat		sfxVolume		= new MutableFloat(1);	// sound effects volume
+	private final MutableFloat		musicVolume		= new MutableFloat(1);
+	private final List<Music>		musicList		= new ArrayList<>();	// music volume has to be manually update on a transition
+	private boolean				updatingVolume;
+	private final TweenCallback		masterVolumeCallback = (type, source) -> updatingVolume = type==BEGIN;
 
 	// Temporal values
-	protected final Vector2					tmpv2				= new Vector2();
-	protected final Vector3					tmpv3				= new Vector3();
-	protected final Color					tmpclr				= new Color();
+	protected final Vector2			tmpv2			= new Vector2();
+	protected final Vector3			tmpv3			= new Vector3();
+	protected final Color			tmpclr			= new Color();
 
 	// Last screen size info is stored in two different fields switching after every other resize
-	private boolean							lastScreenSizeJunc;
-	private final Vector2					evenLastScreenSize	= new Vector2();
-	private final Vector2					oddLastScreenSize	= new Vector2();
-	private boolean							firstResize			= true;
+	private boolean				lastScreenSizeJunc;
+	private final Vector2			evenLastScreenSize	= new Vector2();
+	private final Vector2			oddLastScreenSize	= new Vector2();
+	private boolean				firstResize		= true;
 
-	private final Color						black				= new Color(0x0f1114ff);
+	private final Color			black			= new Color(0x0f1114ff);
 
 	public BaseScreen(G game) {
 		this.game = game;
@@ -774,7 +774,7 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
 	 * @param v value */
 	public void setMusicVolume(float v) {
 		killTweenTarget(musicVolume);
-		musicVolume.setValue(v);
+		musicVolume.setValue(clamp(v,0,1));
 	}
 
 	/** Sets the music volume to 1. */
@@ -1220,7 +1220,7 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
 	public Tween $tweenMasterVolume(float v, float d) {
 		killTweenTarget(masterVolume);
 		return Tween.to(masterVolume, 0, d).target(v).ease(Quart.OUT)
-				.setCallbackTriggers(BEGIN|COMPLETE).setCallback(masterVolumeCallback);
+			.setCallbackTriggers(BEGIN|COMPLETE).setCallback(masterVolumeCallback);
 	}
 
 	/** Creates a handle to tween the master volume.
@@ -1343,7 +1343,7 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
 	public Tween $tweenMusicVolume(float v, float d) {
 		killTweenTarget(musicVolume);
 		return Tween.to(musicVolume, 0, d).target(v).ease(Quart.OUT)
-				.setCallbackTriggers(BEGIN|COMPLETE).setCallback(masterVolumeCallback);
+			.setCallbackTriggers(BEGIN|COMPLETE).setCallback(masterVolumeCallback);
 	}
 
 	/** Creates a handle to tween the music volume.
@@ -2601,8 +2601,8 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
 	 * @return tween handle */
 	public Timeline $fadeSheersInOut(Color clr, float v, float id, float od) {
 		return Timeline.createSequence()
-				.push($fadeSheers(clr, v, id))
-				.push($fadeSheersOut(od));
+			.push($fadeSheers(clr, v, id))
+			.push($fadeSheersOut(od));
 	}
 
 	/** Creates a handle to set the color and fade the {@link Overlay} sheers layer to 1 and to 0 successively.
@@ -2629,8 +2629,8 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
 	 * @return tween handle */
 	public Timeline $fadeSheersInTo(Color clr, float iv, float ov, float id, float od) {
 		return Timeline.createSequence()
-				.push($fadeSheers(clr, iv, id))
-				.push($fadeSheers(clr, ov, od));
+			.push($fadeSheers(clr, iv, id))
+			.push($fadeSheers(clr, ov, od));
 	}
 
 	/** Creates a handle to set the color and fade the {@link Overlay} sheers layer in and to the specified opacity successively.
@@ -2751,8 +2751,8 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
 	 * @return tween handle */
 	public Timeline $fadeBoInOut(Color clr, float v, float id, float od) {
 		return Timeline.createSequence()
-				.push($fadeBo(clr, v, id))
-				.push($fadeBoOut(od));
+			.push($fadeBo(clr, v, id))
+			.push($fadeBoOut(od));
 	}
 
 	/** Creates a handle to set the color and fade the {@link Overlay} blackouts layer to 1 and to 0 successively.
@@ -2864,8 +2864,8 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
 	 * @return tween handle */
 	public Timeline $fadeTintInOut(Color clr, float v, float id, float od) {
 		return Timeline.createSequence()
-				.push($fadeTint(clr, v, id))
-				.push($fadeTintOut(od));
+			.push($fadeTint(clr, v, id))
+			.push($fadeTintOut(od));
 	}
 
 	/** Creates a handle to set the color and fade the {@link Overlay} tint layer to 1 and to 0 successively.
@@ -2984,8 +2984,8 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
 	 * @return tween handle */
 	public Timeline $fadeVignetteInOut(Color clr, float v, float id, float od) {
 		return Timeline.createSequence()
-				.push($fadeVignette(clr, v, id))
-				.push($fadeVignetteOut(od));
+			.push($fadeVignette(clr, v, id))
+			.push($fadeVignetteOut(od));
 	}
 
 	/** Creates a handle to set the color and fade the {@link Overlay} vignette layer to 1 and to 0 successively.
@@ -3005,8 +3005,8 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
 	 * @return tween handle */
 	public Timeline $fadeVignetteInTo(Color clr, float iv, float ov, float id, float od) {
 		return Timeline.createSequence()
-				.push($fadeVignette(clr, iv, id))
-				.push($fadeVignette(clr, ov, od));
+			.push($fadeVignette(clr, iv, id))
+			.push($fadeVignette(clr, ov, od));
 	}
 
 	/** Creates a handle to set the color and fade the {@link Overlay} vignette layer in and to the specified opacity successively.
@@ -3059,12 +3059,12 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
 	 * @return tween handle */
 	public Timeline $fadeIn(int fl, float d) {
 		return Timeline.createSequence()
-				.push($setBlackouts())
-				.push($resetUiLayersAlpha(fl))
-				.beginParallel()
-					.push($fadeBoOut(d))
-					.push($fadeUiLayersIn(fl, d))
-				.end();
+			.push($setBlackouts())
+			.push($resetUiLayersAlpha(fl))
+			.beginParallel()
+				.push($fadeBoOut(d))
+				.push($fadeUiLayersIn(fl, d))
+			.end();
 	}
 
 	/** Creates a handle to fade the screen and the general UI layers (game and menus) in after it first sets it black and invisible respectively.
@@ -3093,8 +3093,8 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
 	 * @return tween handle */
 	public Timeline $fadeOut(int fl, float d) {
 		return Timeline.createParallel()
-				.push($fadeBo(1, d))
-				.push($fadeUiLayersOut(fl, d));
+			.push($fadeBo(1, d))
+			.push($fadeUiLayersOut(fl, d));
 	}
 
 	/** Creates a handle to fade the screen to black and fade the general UI layers (game and menus) out.
@@ -3126,9 +3126,9 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
 	 * @return tween handle */
 	public Timeline $fadeOutIn(int fli, int flo, float id, float od, TweenCallback cb) {
 		return Timeline.createSequence()
-				.push($fadeOut(fli, id))
-				.push(Tween.call(cb))
-				.push($fadeIn(flo, od));
+			.push($fadeOut(fli, id))
+			.push(Tween.call(cb))
+			.push($fadeIn(flo, od));
 	}
 
 	/** Creates a handle to fade the screen and the general UI layers (game and menus) out, call the callback and fade it all back in.
@@ -3166,8 +3166,8 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
 	 * @return tween handle */
 	public Timeline $fadeOutInTo(int fli, int flo, float id, float od, TweenCallback cb) {
 		return Timeline.createSequence()
-				.push($fadeOut(fli, id))
-				.push($fadeIn(flo, od).setCallback(cb).setCallbackTriggers(BEGIN|COMPLETE));
+			.push($fadeOut(fli, id))
+			.push($fadeIn(flo, od).setCallback(cb).setCallbackTriggers(BEGIN|COMPLETE));
 	}
 
 	/** Creates a handle to fade the screen and the general UI layers (game and menus) out, call the first part of the callback, 
@@ -3205,8 +3205,8 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
 	 * @return tween handle */
 	public Timeline $fadeTo(int fl, float d, TweenCallback cb) {
 		return Timeline.createSequence()
-				.push($fadeOut(d))
-				.push(Tween.call(cb));
+			.push($fadeOut(d))
+			.push(Tween.call(cb));
 	}
 
 	/** Creates a handle to fade the screen and the specified UI layers out and call the the callback.
