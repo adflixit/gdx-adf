@@ -26,6 +26,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 /**
  * {@link Viewport} that scales the larger dimension while preserving the aspect ratio.
+ * 
  * TODO: apparently doesn't scale correctly when in landscape mode.
  */
 public class AdaptiveViewport extends Viewport {

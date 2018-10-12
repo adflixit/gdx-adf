@@ -22,6 +22,8 @@ import static adflixit.shared.Util.*;
  * A sequence of random unique indices.
  * Has the current index in focus that has to manually navigated by moving to the next index.
  * When the rotation meets the end the first half of the existing sequence gets scrambled and appended.
+ * 
+ * FIXME: unfinished.
  */
 public class RandSeq {
 	private int	start, end, length, lengthPos, current;
