@@ -83,11 +83,11 @@ public abstract class BaseGame extends Logger implements ApplicationListener {
 	public static Class<? extends Actor>	actorClassDescendants;	// used as the Actor class signature for the tween engine
 	public static boolean			debug;
 	private static XApi			xApi;
-	public static final Console		console					= new Console();
+	public static final Console		console			= new Console();
 	private static Skin			skin;
-	private static MutableProperties	props					= new MutableProperties();
+	private static MutableProperties	props			= new MutableProperties();
 	private static Preferences		prefs;
-	protected BaseScreen<?>			screen;					// current screen
+	protected BaseScreen<?>			screen;			// current screen
 
 	public BaseGame() {
 		setXApi(noXApi);
