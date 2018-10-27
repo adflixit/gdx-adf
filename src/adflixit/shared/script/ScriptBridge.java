@@ -21,5 +21,5 @@ package adflixit.shared.script;
  * API of functions not accessible through scripts, unlike {@link ScriptApi}.
  */
 public interface ScriptBridge {
-	public void handleException(Exception e);
+    public void handleException(Exception e);
 }
