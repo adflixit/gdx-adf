@@ -23,51 +23,51 @@ import com.badlogic.gdx.Gdx;
  * An abstract class that holds the basic logging functionality, such as printing debug info with the current class signature.
  */
 public abstract class Logger {
-    public static final void glog(String msg) {
-        if (Gdx.app.getType()==ApplicationType.Android) {
-            Gdx.app.log("App", msg);
-        } else {
-            System.out.println(msg);
-        }
+  public static final void glog(String msg) {
+    if (Gdx.app.getType()==ApplicationType.Android) {
+      Gdx.app.log("App", msg);
+    } else {
+      System.out.println(msg);
     }
-    
-    public static final void glogSetup(String msg) {
-        if (Gdx.app.getType()==ApplicationType.Android) {
-            Gdx.app.log("App", msg);
-        } else {
-            System.out.print(msg);
-        }
-    }
+  }
 
-    public static final void glogDone() {
-        if (Gdx.app.getType()==ApplicationType.Android) {
-            Gdx.app.log("App", "Done");
-        } else {
-            System.out.print(" -> done\n");
-        }
+  public static final void glogSetup(String msg) {
+    if (Gdx.app.getType()==ApplicationType.Android) {
+      Gdx.app.log("App", msg);
+    } else {
+      System.out.print(msg);
     }
+  }
 
-    public final void log(String msg) {
-        if (Gdx.app.getType()==ApplicationType.Android) {
-            Gdx.app.log("App", getClass().getSimpleName()+": "+msg);
-        } else {
-            System.out.println(getClass().getSimpleName()+": "+msg);
-        }
+  public static final void glogDone() {
+    if (Gdx.app.getType()==ApplicationType.Android) {
+      Gdx.app.log("App", "Done");
+    } else {
+      System.out.print(" -> done\n");
     }
-    
-    public final void logSetup(String msg) {
-        if (Gdx.app.getType()==ApplicationType.Android) {
-            Gdx.app.log("App", getClass().getSimpleName()+": "+msg);
-        } else {
-            System.out.print(getClass().getSimpleName()+": "+msg);
-        }
-    }
+  }
 
-    public final void logDone() {
-        if (Gdx.app.getType()==ApplicationType.Android) {
-            Gdx.app.log("App", getClass().getSimpleName()+": Done");
-        } else {
-            System.out.print(" -> done\n");
-        }
+  public final void log(String msg) {
+    if (Gdx.app.getType()==ApplicationType.Android) {
+      Gdx.app.log("App", getClass().getSimpleName()+": "+msg);
+    } else {
+      System.out.println(getClass().getSimpleName()+": "+msg);
     }
+  }
+
+  public final void logSetup(String msg) {
+    if (Gdx.app.getType()==ApplicationType.Android) {
+      Gdx.app.log("App", getClass().getSimpleName()+": "+msg);
+    } else {
+      System.out.print(getClass().getSimpleName()+": "+msg);
+    }
+  }
+
+  public final void logDone() {
+    if (Gdx.app.getType()==ApplicationType.Android) {
+      Gdx.app.log("App", getClass().getSimpleName()+": Done");
+    } else {
+      System.out.print(" -> done\n");
+    }
+  }
 }

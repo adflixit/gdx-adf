@@ -17,5 +17,5 @@
 package adflixit.shared;
 
 public interface Updatable {
-    public void update();
+  public void update();
 }

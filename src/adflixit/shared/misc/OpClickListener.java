@@ -29,52 +29,52 @@ import adflixit.shared.ClickCallback;
  * {@link ClickListener} that operates the target actor's opacity.
  */
 public class OpClickListener extends ClickListener {
-    private Actor		actor;
-    private float		initOp, fadeOp;
-    private ClickCallback 	callback;
-    
-    public OpClickListener(Actor actor, float iop, float fop, ClickCallback cb) {
-        super();
-        this.actor = actor;
-        this.initOp = iop;
-        this.fadeOp = fop;
-        setCallback(cb);
-    }
+  private Actor		actor;
+  private float		initOp, fadeOp;
+  private ClickCallback callback;
 
-    public void setCallback(ClickCallback cb) {
-        callback = cb;
-    }
+  public OpClickListener(Actor actor, float iop, float fop, ClickCallback cb) {
+    super();
+    this.actor = actor;
+    this.initOp = iop;
+    this.fadeOp = fop;
+    setCallback(cb);
+  }
 
-    public void fadeIn() {
-        fadeActor(actor, fadeOp, C_HD);
-    }
+  public void setCallback(ClickCallback cb) {
+    callback = cb;
+  }
 
-    public void fadeOut() {
-        fadeActor(actor, initOp, C_HD);
-    }
+  public void fadeIn() {
+    fadeActor(actor, fadeOp, C_HD);
+  }
 
-    @Override public void clicked(InputEvent event, float x, float y) {
-        callback.clicked(event, x, y);
-    }
+  public void fadeOut() {
+    fadeActor(actor, initOp, C_HD);
+  }
 
-    @Override public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-        super.touchDown(event, x, y, pointer, button);
-        fadeIn();
-        return true;
-    }
+  @Override public void clicked(InputEvent event, float x, float y) {
+    callback.clicked(event, x, y);
+  }
 
-    @Override public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-        super.touchUp(event, x, y, pointer, button);
-        fadeOut();
-    }
+  @Override public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+  super.touchDown(event, x, y, pointer, button);
+    fadeIn();
+    return true;
+  }
 
-    @Override public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-        super.enter(event, x, y, pointer, fromActor);
-        fadeIn();
-    }
+  @Override public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+    super.touchUp(event, x, y, pointer, button);
+    fadeOut();
+  }
 
-    @Override public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
-        super.exit(event, x, y, pointer, toActor);
-        fadeOut();
-    }
+  @Override public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+    super.enter(event, x, y, pointer, fromActor);
+    fadeIn();
+  }
+
+  @Override public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+    super.exit(event, x, y, pointer, toActor);
+    fadeOut();
+  }
 }

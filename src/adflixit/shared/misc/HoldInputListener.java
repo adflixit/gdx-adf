@@ -28,40 +28,40 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
  * {@link InputListener} that fires after it is been held for a certain amount of time.
  */
 public class HoldInputListener extends InputListener implements Updatable {
-    private boolean		pressed, lock;
-    private long		startTime, treshold;
-    private Callback	callback;
-    
-    /** @param treshold time in milliseconds */
-    public HoldInputListener(long treshold, Callback cb) {
-        this.treshold = treshold;
-        setCallback(cb);
-        addUpdatable(this);
-    }
-    
-    public HoldInputListener(Callback cb) {
-        this(3000, cb);
-    }
+  private boolean	pressed, lock;
+  private long		startTime, treshold;
+  private Callback	callback;
 
-    public void setCallback(Callback cb) {
-        callback = cb;
-    }
+  /** @param treshold time in milliseconds */
+  public HoldInputListener(long treshold, Callback cb) {
+    this.treshold = treshold;
+    setCallback(cb);
+    addUpdatable(this);
+  }
 
-    @Override public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-        pressed = true;
-        startTime = currentTime();
-        return true;
-    }
+  public HoldInputListener(Callback cb) {
+    this(3000, cb);
+  }
 
-    @Override public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-        pressed = false;
-        lock = false;
-    }
+  public void setCallback(Callback cb) {
+    callback = cb;
+  }
 
-    @Override public void update() {
-        if (pressed && currentTime() - startTime >= treshold && !lock) {
-            lock = true;
-            callback.call();
-        }
+  @Override public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+    pressed = true;
+    startTime = currentTime();
+    return true;
+  }
+
+  @Override public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+    pressed = false;
+    lock = false;
+  }
+
+  @Override public void update() {
+    if (pressed && currentTime() - startTime >= treshold && !lock) {
+      lock = true;
+      callback.call();
     }
+  }
 }
