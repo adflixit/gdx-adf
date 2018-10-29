@@ -23,24 +23,24 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 
 public class TestApp extends BaseGame {
-	public TestApp() {
-		super();
-	}
+  public TestApp() {
+    super();
+  }
 
-	public TestApp(XApi xApi) {
-		super(xApi);
-	}
+  public TestApp(XApi xApi) {
+    super(xApi);
+  }
 
-	@Override public void create() {
-		super.create();
-		initSkin(internalFile("tests/data/uiskin.json"), new TextureAtlas("tests/data/textures.atlas"));
-		loadProps(localFile("tests/data/cfg.properties"));
-		loadPrefs("test");
-		//Gdx.input.setCatchMenuKey(true);
-		Gdx.input.setCatchBackKey(true);
-	}
+  @Override public void create() {
+    super.create();
+    initSkin(internalFile("tests/data/uiskin.json"), new TextureAtlas("tests/data/textures.atlas"));
+    loadProps(localFile("tests/data/cfg.properties"));
+    loadPrefs("test");
+    //Gdx.input.setCatchMenuKey(true);
+    Gdx.input.setCatchBackKey(true);
+  }
 
-	public static void launch(TestApp app) {
-		new LwjglApplication(app, "Test App", 360, 640);
-	}
+  public static void launch(TestApp app) {
+    new LwjglApplication(app, "Test App", 360, 640);
+  }
 }

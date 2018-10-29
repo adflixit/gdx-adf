@@ -21,13 +21,13 @@ import static adflixit.shared.BaseGame.internalFile;
 import adflixit.shared.BaseScreen;
 
 public class TestAppScreen extends BaseScreen<TestApp> {
-	public TestAppScreen(TestApp game) {
-		super(game);
-		String dir = "assets/data/";
-		blur.load(internalFile(dir+"hblur.vert"), internalFile(dir+"blur.frag"),
-				internalFile(dir+"vblur.vert"), internalFile(dir+"blur.frag"));
-	}
+    public TestAppScreen(TestApp game) {
+    super(game);
+    String dir = "assets/data/";
+    blur.load(internalFile(dir+"hblur.vert"), internalFile(dir+"blur.frag"),
+    internalFile(dir+"vblur.vert"), internalFile(dir+"blur.frag"));
+  }
 
-	@Override public void goBack() {
-	}
+  @Override public void goBack() {
+  }
 }
