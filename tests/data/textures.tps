@@ -194,16 +194,16 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">l-48.png</key>
+            <key type="filename">l-32.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
                 <key>scale9Enabled</key>
                 <false/>
                 <key>scale9Borders</key>
-                <rect>128,128,256,256</rect>
+                <rect>128,64,256,128</rect>
                 <key>scale9Paddings</key>
-                <rect>128,128,256,256</rect>
+                <rect>128,64,256,128</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
@@ -212,9 +212,9 @@
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
                 <key>scale9Enabled</key>
-                <false/>
+                <true/>
                 <key>scale9Borders</key>
-                <rect>4,2,8,4</rect>
+                <rect>4,0,8,8</rect>
                 <key>scale9Paddings</key>
                 <rect>4,2,8,4</rect>
                 <key>scale9FromFile</key>
@@ -225,9 +225,9 @@
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
                 <key>scale9Enabled</key>
-                <false/>
+                <true/>
                 <key>scale9Borders</key>
-                <rect>2,4,4,8</rect>
+                <rect>0,4,8,8</rect>
                 <key>scale9Paddings</key>
                 <rect>2,4,4,8</rect>
                 <key>scale9FromFile</key>
@@ -281,9 +281,9 @@
             <filename>slider-bg-v.png</filename>
             <filename>slider-knob.png</filename>
             <filename>arc_deg.png</filename>
-            <filename>l-48.png</filename>
             <filename>slider-bg-h.png</filename>
             <filename>vignette.png</filename>
+            <filename>l-32.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>
