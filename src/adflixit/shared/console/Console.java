@@ -109,10 +109,10 @@ public class Console {
     }
     // parsing the input into either whole words or text bounded by quotation marks
     parsed.clear();
-    Matcher m = Pattern.compile("([^\"]\\S*|\".+?\")\\s*").matcher(line);
+    Matcher m = Pattern.compile("([^\"']\\S*|[\"'].+?[\"'])\\s*").matcher(line);
     // removing quotation marks from grouped text
     while (m.find()) {
-      parsed.add(m.group(1).replace("\"", ""));
+      parsed.add(m.group(1).replaceAll("[\"']", ""));
     }
     // searching for a command or a variable matching the name
     ConCmd cmd = cmds.get(parsed.get(0));
