@@ -381,10 +381,10 @@ public class Overlay extends ScreenComponent<BaseScreen<?>> {
     tint.setPosition(-2, -2);
     dim.setPosition(-2, -2);
     vignette.setSize(-2, -2);
-    sheers.setSize(scr.screenWidth()+4, scr.screenHeight()+4);
-    blackouts.setSize(scr.screenWidth()+4, scr.screenHeight()+4);
-    tint.setSize(scr.screenWidth()+4, scr.screenHeight()+5);
-    dim.setSize(scr.screenWidth()+4, scr.screenHeight()+4);
-    vignette.setSize(scr.screenWidth()+4, scr.screenHeight()+4);
+    sheers.setSize(scr.screenWidth() + 4, scr.screenHeight() + 4);
+    blackouts.setSize(scr.screenWidth() + 4, scr.screenHeight() + 4);
+    tint.setSize(scr.screenWidth() + 4, scr.screenHeight() + 4);
+    dim.setSize(scr.screenWidth() + 4, scr.screenHeight() + 4);
+    vignette.setSize(scr.screenWidth() + 4, scr.screenHeight() + 4);
   }
 }
