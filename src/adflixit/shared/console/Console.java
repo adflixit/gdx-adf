@@ -59,7 +59,7 @@ public class Console {
 
   public synchronized void registerCommand(String name, ConCmd cmd) {
     if (cmds.get(name) != null) {
-      throw new RuntimeException("Command \""+name+"\" already exists.");
+      throw new RuntimeException("Command '"+name+"' already exists.");
     } else {
       cmds.put(name, cmd);
     }
@@ -67,7 +67,7 @@ public class Console {
 
   public synchronized void registerVariable(String name, ConVar var) {
     if (vars.get(name) != null) {
-      throw new RuntimeException("Variable \""+name+"\" already exists.");
+      throw new RuntimeException("Variable '"+name+"' already exists.");
     } else {
       vars.put(name, var);
     }
@@ -100,9 +100,12 @@ public class Console {
   }
 
   /** Interprets a given text as a command.
-   * It reads the first word (a sequence of characters between the beginning of the line and a whitespace) as a command or variable name.
-   * The rest of of the words or sentences (any text bounded between two quotation marks) are used as the arguments to the specified command.
-   * If no command found with the given name, if a variable with the given name exists it will be set to the first argument. */
+   * It reads the first word (a sequence of characters between the beginning of the line and a whitespace) 
+   * as a command or variable name.
+   * The rest of of the words or sentences (any text bounded between two quotation marks) 
+   * are used as the arguments to the specified command.
+   * If no command found with the given name, if a variable with the given name exists 
+   * it will be set to the first argument. */
   public synchronized void eval(String line) {
     if (line==null) {
       throw new IllegalArgumentException("An evaluated line cannot be null.");

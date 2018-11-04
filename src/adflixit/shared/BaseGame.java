@@ -194,7 +194,7 @@ public abstract class BaseGame extends Logger implements ApplicationListener {
 
   /** @see XApi#shareText(String) */
   public static void shareText(String txt) {
-    glogSetup("Sharing text \""+txt+"\"");
+    glogSetup("Sharing text '"+txt+"'");
     xApi.shareText(txt);
     glogDone();
   }
@@ -255,7 +255,7 @@ public abstract class BaseGame extends Logger implements ApplicationListener {
   }
 
   public static void initSkin(FileHandle skinFile, TextureAtlas atlas) {
-    glogSetup("Loading skin \""+skinFile+"\"");
+    glogSetup("Loading skin '"+skinFile+"'");
     skin = new Skin(skinFile, atlas);
     glogDone();
   }
@@ -319,14 +319,14 @@ public abstract class BaseGame extends Logger implements ApplicationListener {
    * @deprecated Not used anymore due to the introduced ability to change properties during runtime. */
   @Deprecated
   public static void loadProps(FileHandle... files) {
-    glogSetup("Loading properties "+arrayToString("\"%s\"", files));
+    glogSetup("Loading properties "+arrayToString("'%s'", files));
     props.loadProps(files);
     glogDone();
   }
 
   /** Loads the specified properties. */
   public static void loadProps(FileHandle file) {
-    glogSetup("Loading properties \""+file+"\"");
+    glogSetup("Loading properties '"+file+"'");
     props.load(file);
     glogDone();
   }
@@ -370,48 +370,48 @@ public abstract class BaseGame extends Logger implements ApplicationListener {
   /** Changes the existing property.
    * @return the previous value of the specified key. */
   public static Object setProp(String key, String value) {
-    glog("Changing property \""+key+"\" from \""+prop(key)+"\" to \""+value+"\"");
+    glog("Changing property '"+key+"' from '"+prop(key)+"' to '"+value+"'");
     return props.setProp(key, value);
   }
 
   /** Changes the existing property to an {@code int} value. */
   public static void setPropI(String key, int value) {
-    glog("Changing property \""+key+"\" from \""+prop(key)+"\" to \""+value+"\"");
+    glog("Changing property '"+key+"' from '"+prop(key)+"' to '"+value+"'");
     props.setPropI(key, value);
     glogDone();
   }
 
   /** Changes the existing property to an {@code long} value. */
   public static void setPropL(String key, long value) {
-    glog("Changing property \""+key+"\" from \""+prop(key)+"\" to \""+value+"\"");
+    glog("Changing property '"+key+"' from '"+prop(key)+"' to '"+value+"'");
     props.setPropL(key, value);
     glogDone();
   }
 
   /** Changes the existing property to an {@code float} value. */
   public static void setPropF(String key, float value) {
-    glog("Changing property \""+key+"\" from \""+prop(key)+"\" to \""+value+"\"");
+    glog("Changing property '"+key+"' from '"+prop(key)+"' to '"+value+"'");
     props.setPropF(key, value);
     glogDone();
   }
 
   /** Changes the existing property to an {@code double} value. */
   public static void setPropD(String key, double value) {
-    glog("Changing property \""+key+"\" from \""+prop(key)+"\" to \""+value+"\"");
+    glog("Changing property '"+key+"' from '"+prop(key)+"' to '"+value+"'");
     props.setPropD(key, value);
     glogDone();
   }
 
   /** Changes the existing property to an {@code boolean} value. */
   public static void setPropB(String key, boolean value) {
-    glog("Changing property \""+key+"\" from \""+prop(key)+"\" to \""+value+"\"");
+    glog("Changing property '"+key+"' from '"+prop(key)+"' to '"+value+"'");
     props.setPropB(key, value);
     glogDone();
   }
 
   /** Resets the property to the default value. */
   public static void resetProp(String key) {
-    glogSetup("Resetting property \""+key+"\"");
+    glogSetup("Resetting property '"+key+"'");
     props.resetProp(key);
     glogDone();
   }
@@ -425,7 +425,7 @@ public abstract class BaseGame extends Logger implements ApplicationListener {
 
   /** Saves the specified property to the file. */
   public static void flushProp(String key) {
-    glogSetup("Flushing property \""+key+"\"");
+    glogSetup("Flushing property '"+key+"'");
     props.flushProp(key);
     glogDone();
   }
@@ -442,7 +442,7 @@ public abstract class BaseGame extends Logger implements ApplicationListener {
   }
 
   public static void loadPrefs(String name) {
-    glogSetup("Loading preferences \""+name+"\"");
+    glogSetup("Loading preferences '"+name+"'");
     prefs = Gdx.app.getPreferences(name);
     glogDone();
   }

@@ -289,8 +289,8 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
 
   /** Switches debug mode. */
   public void toggleDebug() {
-    log("Debug mode enabled = "+(debug?"enabled":"disabled"));
-    debug = !debug;	
+    debug = !debug;
+    log("Debug mode "+(debug?"enabled":"disabled"));
   }
 
   /** @return x and y of the screen center. */

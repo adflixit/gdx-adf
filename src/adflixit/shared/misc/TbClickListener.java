@@ -44,7 +44,8 @@ public class TbClickListener extends ClickListener {
   private Color		fontClr;
   private ClickCallback	callback;
 
-  public TbClickListener(TextButton button, Color initBgClr, Color initFontClr, Color bgClr, Color fontClr, ClickCallback cb) {
+  public TbClickListener(TextButton button, Color initBgClr, Color initFontClr,
+      Color bgClr, Color fontClr, ClickCallback cb) {
     super();
     btn = button;
     label = button.getLabel();
@@ -69,7 +70,8 @@ public class TbClickListener extends ClickListener {
     this(button, clr, clr, cb);
   }
 
-  public TbClickListener(TextButton button, String initBgClr, String initFontClr, String bgClr, String fontClr, ClickCallback cb) {
+  public TbClickListener(TextButton button, String initBgClr, String initFontClr,
+      String bgClr, String fontClr, ClickCallback cb) {
     this(button, color(bgClr), color(initBgClr), color(fontClr), color(initFontClr), cb);
   }
 

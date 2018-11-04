@@ -35,6 +35,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.Button.ButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton.ImageButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
@@ -284,20 +285,23 @@ public final class Util {
     return disalignY(y, height, aln, bottomLeft);
   }
 
-  /** Reverses the alignment of {@code x} and {@code y} both in {@code width} and {@code height} respectively relative to the pivot.
+  /** Reverses the alignment of {@code x} and {@code y} both in {@code width} and {@code height} respectively 
+   * relative to the pivot.
    * @param aln alignment flags
    * @param piv initial pivot */
   public static Vector2 disalign(float x, float y, float width, float height, int aln, int piv) {
     return tmpv2.set(disalignX(x, width, aln, piv), disalignY(y, height, aln, piv));
   }
 
-  /** Reverses the alignment of {@code x} and {@code y} both in {@code width} and {@code height} respectively relative to the bottom left point.
+  /** Reverses the alignment of {@code x} and {@code y} both in {@code width} and {@code height} respectively 
+   * relative to the bottom left point.
    * @param aln alignment flags */
   public static Vector2 disalign(float x, float y, float width, float height, int aln) {
     return disalign(x, y, width, height, aln, bottomLeft);
   }
 
-  /** Reverses the alignment of {@code x} and {@code y} both in {@code width} and {@code height} respectively relative to the pivot.
+  /** Reverses the alignment of {@code x} and {@code y} both in {@code width} and {@code height} respectively 
+   * relative to the pivot.
    * @param v vector
    * @param aln alignment flags
    * @param piv initial pivot */
@@ -305,7 +309,8 @@ public final class Util {
     return disalign(v.x, v.y, width, height, aln, piv);
   }
 
-  /** Reverses the alignment of {@code x} and {@code y} both in {@code width} and {@code height} respectively relative to the bottom left point.
+  /** Reverses the alignment of {@code x} and {@code y} both in {@code width} and {@code height} respectively 
+   * relative to the bottom left point.
    * @param v vector
    * @param aln alignment flags */
   public static Vector2 disalign(Vector2 v, float width, float height, int aln) {
@@ -456,7 +461,8 @@ public final class Util {
 
   /** Draws a rectangle tiled with {@link TextureRegion} with an offset.
    * FIXME: unfinished. */
-  public static void drawTiledRect(Batch batch, TextureRegion region, float x, float y, float ofsX, float ofsY, float width, float height) {
+  public static void drawTiledRect(Batch batch, TextureRegion region, float x, float y,
+      float ofsX, float ofsY, float width, float height) {
     float regionWidth = region.getRegionWidth(), regionHeight = region.getRegionHeight();
     if (ofsX > 0) {
       ofsX %= regionWidth;
@@ -645,18 +651,63 @@ public final class Util {
     btn.getStyle().imageUp = image;
   }
 
-  /** Because there is no other workaround in libgdx to do this, this function converts an existing {@link TextButtonStyle} 
-   * to a rounded one by turning its background into a {@link RoundedDrawable}.<br><br>
-   * Warning: this function permanently mutates the specified {@link TextButtonStyle}.
-   * @return a {@link TextButton} with a {@link RoundedDrawable} background.
-   * FIXME: still not working properly. */
+  /** Converts an existing {@link ButtonStyle} to a rounded one 
+   * by turning its drawables into {@link RoundedDrawable}.<br><br>
+   * Warning: this function permanently mutates the specified {@link ButtonStyle}.
+   * @return converted {@link ButtonStyle}. */
+  public static ButtonStyle convertToRounded(ButtonStyle style) {
+    Drawable up = style.up, down = style.down, over = style.over, checked = style.checked,
+        checkedOver = style.checkedOver, disabled = style.disabled;
+    if (up != null && up instanceof NinePatchDrawable) {
+      style.up = new RoundedDrawable((NinePatchDrawable)up);
+    } else if (up != null && up instanceof RoundedDrawable) {
+      style.up = (RoundedDrawable)up;
+    }
+    if (down != null && down instanceof NinePatchDrawable) {
+      style.up = new RoundedDrawable((NinePatchDrawable)down);
+    } else if (down != null && down instanceof RoundedDrawable) {
+      style.up = (RoundedDrawable)down;
+    }
+    if (over != null && over instanceof NinePatchDrawable) {
+      style.up = new RoundedDrawable((NinePatchDrawable)over);
+    } else if (over != null && over instanceof RoundedDrawable) {
+      style.up = (RoundedDrawable)over;
+    }
+    if (checked != null && checked instanceof NinePatchDrawable) {
+      style.up = new RoundedDrawable((NinePatchDrawable)checked);
+    } else if (checked != null && checked instanceof RoundedDrawable) {
+      style.up = (RoundedDrawable)checked;
+    }
+    if (checkedOver != null && checkedOver instanceof NinePatchDrawable) {
+      style.up = new RoundedDrawable((NinePatchDrawable)checkedOver);
+    } else if (checkedOver != null && checkedOver instanceof RoundedDrawable) {
+      style.up = (RoundedDrawable)checkedOver;
+    }
+    if (disabled != null && disabled instanceof NinePatchDrawable) {
+      style.up = new RoundedDrawable((NinePatchDrawable)disabled);
+    } else if (disabled != null && disabled instanceof RoundedDrawable) {
+      style.up = (RoundedDrawable)disabled;
+    }
+    return style;
+  }
+
   public static TextButton roundedTextButton(String text, Skin skin, String styleName) {
     TextButton btn = new TextButton(text, skin, styleName);
-    Drawable up = btn.getStyle().up;
-    if (up instanceof NinePatchDrawable) {
-      btn.getStyle().up = new RoundedDrawable((NinePatchDrawable)up);
-    }
+    convertToRounded(btn.getStyle());
+    btn.setHeight(btn.getStyle().up.getMinHeight());
+    btn.pad(0);
     return btn;
+  }
+
+  public static ImageButton roundedImageButton(ImageButton btn) {
+    convertToRounded(btn.getStyle());
+    btn.setHeight(btn.getStyle().up.getMinHeight());
+    btn.pad(0);
+    return btn;
+  }
+
+  public static ImageButton roundedImageButton(String text, Skin skin, String styleName) {
+    return roundedImageButton(new ImageButton(skin, styleName));
   }
 
   /** @return {@code null} if nothing found. */
@@ -783,7 +834,8 @@ public final class Util {
 
   /** Sets HSL saturation. */
   public static Color setSat(Color clr, float s) {
-    float r = clr.r, g = clr.g, b = clr.b, min = tmin(clr.r, clr.g, clr.b), max = tmax(clr.r, clr.g, clr.b), amin = (1-s)*max;
+    float r = clr.r, g = clr.g, b = clr.b,
+        min = tmin(clr.r, clr.g, clr.b), max = tmax(clr.r, clr.g, clr.b), amin = (1-s)*max;
     return clr.set(r==max ? r : r==min ? amin : amin + (max-amin) * ((r-min)/(max-min)),
         g==max ? g : g==min ? amin : amin + (max-amin) * ((g-min)/(max-min)),
         b==max ? b : b==min ? amin : amin + (max-amin) * ((b-min)/(max-min)),

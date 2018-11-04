@@ -44,7 +44,8 @@ public class IbClickListener extends ClickListener {
   private Color		imageClr;
   private ClickCallback	callback;
 
-  public IbClickListener(ImageButton button, Color initBgClr, Color initImageClr, Color bgClr, Color imageClr, ClickCallback cb) {
+  public IbClickListener(ImageButton button, Color initBgClr, Color initImageClr,
+      Color bgClr, Color imageClr, ClickCallback cb) {
     super();
     btn = button;
     image = button.getImage();
@@ -69,7 +70,8 @@ public class IbClickListener extends ClickListener {
     this(button, clr, clr, cb);
   }
 
-  public IbClickListener(ImageButton button, String initBgClr, String initImageClr, String bgClr, String imageClr, ClickCallback cb) {
+  public IbClickListener(ImageButton button, String initBgClr, String initImageClr,
+      String bgClr, String imageClr, ClickCallback cb) {
     this(button, color(bgClr), color(initBgClr), color(imageClr), color(initImageClr), cb);
   }
 

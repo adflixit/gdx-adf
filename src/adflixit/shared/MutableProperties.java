@@ -78,7 +78,7 @@ public class MutableProperties extends Properties {
   public String prop(String key) throws IllegalArgumentException {
   String value = getProperty(key);
     if (value==null) {
-      throw new IllegalArgumentException("No \""+key+"\" property found.");
+      throw new IllegalArgumentException("No '"+key+"' property found.");
     }
     return value;
   }
@@ -98,7 +98,7 @@ public class MutableProperties extends Properties {
   public float propF(String key) throws IllegalArgumentException {
     Float value = floats.get(key);
     if (value==null) {
-      throw new IllegalArgumentException("No \""+key+"\" property found.");
+      throw new IllegalArgumentException("No '"+key+"' property found.");
     }
     return value.floatValue();
   }
@@ -123,7 +123,7 @@ public class MutableProperties extends Properties {
       throw new NullPointerException("Value can't be null or empty.");
     }
     if (!containsKey(key)) {
-      throw new IllegalArgumentException("No \""+key+"\" property found.");
+      throw new IllegalArgumentException("No '"+key+"' property found.");
     }
     flushed.remove(key);
     return setProperty(key, value);
@@ -196,7 +196,7 @@ public class MutableProperties extends Properties {
       }
       file.writeString(output, false);
     } else {
-      throw new IllegalArgumentException("No \""+key+"\" property found.");
+      throw new IllegalArgumentException("No '"+key+"' property found.");
     }
   }
 

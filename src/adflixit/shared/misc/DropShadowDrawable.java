@@ -85,7 +85,8 @@ public class DropShadowDrawable extends BaseDrawable implements TransformDrawabl
     this((Drawable)null, (Drawable)null);
   }
 
-  @Override public void draw(Batch batch, float x, float y, float originX, float originY, float width, float height, float scaleX, float scaleY, float rotation) {
+  @Override public void draw(Batch batch, float x, float y, float originX, float originY,
+      float width, float height, float scaleX, float scaleY, float rotation) {
     if (isTransformable()) {
       transShadow.draw(batch, x - radius/2, y - radius/2 - offset, originX + radius/2, originY + radius/2,
       width + radius, height + radius, scaleX, scaleY, rotation);
