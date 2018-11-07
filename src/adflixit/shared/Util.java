@@ -695,7 +695,7 @@ public final class Util {
   public static TextButton roundedTextButton(String text, Skin skin, String styleName) {
     TextButton btn = new TextButton(text, skin, styleName);
     convertToRounded(btn.getStyle());
-    // adding 2 is needed to bypass the linear filter clipping
+    // adding 2 to bypass the linear filter clipping
     btn.setHeight(btn.getStyle().up.getMinHeight() + 2);
     btn.pad(0);
     return btn;
@@ -703,7 +703,7 @@ public final class Util {
 
   public static ImageButton roundedImageButton(ImageButton btn) {
     convertToRounded(btn.getStyle());
-    // adding 2 is needed to bypass the linear filter clipping
+    // adding 2 to bypass the linear filter clipping
     btn.setHeight(btn.getStyle().up.getMinHeight() + 2);
     btn.pad(0);
     return btn;
