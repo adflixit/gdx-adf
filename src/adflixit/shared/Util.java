@@ -658,6 +658,7 @@ public final class Util {
   public static ButtonStyle convertToRounded(ButtonStyle style) {
     Drawable up = style.up, down = style.down, over = style.over, checked = style.checked,
         checkedOver = style.checkedOver, disabled = style.disabled;
+    // turning each drawable rounded
     if (up != null && up instanceof NinePatchDrawable) {
       style.up = new RoundedDrawable((NinePatchDrawable)up);
     } else if (up != null && up instanceof RoundedDrawable) {
@@ -694,14 +695,16 @@ public final class Util {
   public static TextButton roundedTextButton(String text, Skin skin, String styleName) {
     TextButton btn = new TextButton(text, skin, styleName);
     convertToRounded(btn.getStyle());
-    btn.setHeight(btn.getStyle().up.getMinHeight());
+    // adding 2 is needed to bypass the linear filter clipping
+    btn.setHeight(btn.getStyle().up.getMinHeight() + 2);
     btn.pad(0);
     return btn;
   }
 
   public static ImageButton roundedImageButton(ImageButton btn) {
     convertToRounded(btn.getStyle());
-    btn.setHeight(btn.getStyle().up.getMinHeight());
+    // adding 2 is needed to bypass the linear filter clipping
+    btn.setHeight(btn.getStyle().up.getMinHeight() + 2);
     btn.pad(0);
     return btn;
   }
