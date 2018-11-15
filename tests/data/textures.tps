@@ -194,7 +194,7 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">l-32.png</key>
+            <key type="filename">r-32.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -283,7 +283,7 @@
             <filename>arc_deg.png</filename>
             <filename>slider-bg-h.png</filename>
             <filename>vignette.png</filename>
-            <filename>l-32.png</filename>
+            <filename>r-32.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

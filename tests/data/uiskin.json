@@ -1,6 +1,6 @@
 {
   com.badlogic.gdx.graphics.g2d.BitmapFont: {
-    l-small:		{file: l-32.fnt}
+    r-small:		{file: r-32.fnt}
   },
   com.badlogic.gdx.graphics.Color: {
     white:		{hex: ffffffff},
@@ -15,14 +15,14 @@
     white-o:		{patch: white-o,  topHeight: 16,  bottomHeight: 16,  leftWidth: 32,  rightWidth: 32}
   },
   com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
-    default:		{font: l-small,  up: white},
-    o:			{font: l-small,  up: white-o},
-    b:			{font: l-small}
+    default:		{font: r-small,  up: white},
+    o:			{font: r-small,  up: white-o},
+    b:			{font: r-small}
   },
   com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
-    default:		{font: l-small},
-    white:		{font: l-small,  background: white},
-    o:			{font: l-small,  background: white-o}
+    default:		{font: r-small},
+    white:		{font: r-small,  background: white},
+    o:			{font: r-small,  background: white-o}
   },
   com.badlogic.gdx.scenes.scene2d.ui.Slider$SliderStyle: {
     default-horizontal:	{background: slider-bg-h,  knob: slider-knob},
