@@ -112,27 +112,32 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
   					UIL_ALL			= sumFlags(UIL_MENUS_F),
   					UIL_GENERAL		= UIL_GAME_F | UIL_MENUS_F;
 
-  /** Benchmarking events. */
-  public static interface BenchmarkCallback {
-    public void start();
-    public void finish();
-  }
-
   // Benchmark is used to determine whether the device is capable of using the advanced performance features such as postprocessing.
   public static final String		benchmarkKey		= "benchmark";
   public static final float		benchmarkDuration	= 3;	// duration of benchmarking in seconds
   private static boolean		benchmarked;		// assigned whether when the benchmark info is loaded or when benchmarking is done
-  private static BenchmarkCallback	benchmarkCallback;	// called whether benchmarking started of finished
   private static boolean		benchmarkTesting;	// whether it is running or not
-  private static float			benchmarkTime;		// relative time spent on benchmarking
+  private static float			benchmarkTime;		// time spent on benchmarking
   private static int			benchmarkFrames;	// number of frames rendered during benchmarking
   private static float			benchmarkFps;		// FPS during the benchmarking
 
   public static void loadBenchmarkInfo() {
     if (prefsContain(benchmarkKey)) {
       benchmarked = true;
-      setAdvancedPerformance(prefB(benchmarkKey));
+      setAdvancedPerformance(prefb(benchmarkKey));
     }
+  }
+
+  protected static boolean isBenchmarked() {
+    return benchmarked;
+  }
+
+  protected static boolean isBenchmarkDone() {
+    return !benchmarkTesting;
+  }
+
+  public static float benchmarkTime() {
+    return benchmarkTime;
   }
 
   // Indicates whether the app has to run without any advanced graphical features, such as both postprocessing and texture filtering other than nearest.
@@ -206,15 +211,16 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
     oddLastScreenSize.set(screenWidth(), screenHeight());
   }
 
-  protected boolean isBenchmarked() {
-    return benchmarked;
-  }
-
-  /** Prepares and starts a benchmark. */
-  protected void initBenchmark(BenchmarkCallback callback) {
-    benchmarkCallback = callback;
+  /** Performs a benchmark. */
+  protected final void doBenchmark() {
     startBenchmark();
   }
+
+  /** Runs after benchmark has started. */
+  protected void startBenchmarkOverride() {}
+
+  /** Runs after benchmark is finished. */
+  protected void finishBenchmarkOverride() {}
 
   private void startBenchmark() {
     log("Benchmarking");
@@ -222,24 +228,24 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
     benchmarkTime = 0;
     benchmarkFrames = 0;
     benchmarkFps = 0;
-    benchmarkCallback.start();
+    startBenchmarkOverride();
   }
 
   private void finishBenchmark() {
-    log("Benchmark finished, fps = "+benchmarkFps);
+    log("Benchmark finished, fps = "+benchmarkFps/benchmarkFrames);
     benchmarkTesting = false;
     boolean result = benchmarkFps/benchmarkFrames > 50;
     setAdvancedPerformance(result);
     // saving info
-    putPrefB(benchmarkKey, result);
+    putPrefBool(benchmarkKey, result);
     flushPrefs();
-    benchmarkCallback.finish();
+    finishBenchmarkOverride();
   }
 
   private void updateBenchmark() {
     if (benchmarkTesting) {
       benchmarkFrames++;
-      benchmarkFps += getFps();
+      benchmarkFps += fps();
       benchmarkTime += dt();
       if (benchmarkTime >= benchmarkDuration) {
         finishBenchmark();
@@ -431,14 +437,18 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
   protected void hideAd() {
     hideAd(C_D);
   }
-
+  
   /** A contextual action, such as getting back to the main menu, opening the in-game menu, returning to the parent section, etc. */
-  public abstract void goBack();
+  public abstract void goBackAction();
+
+  public void goBack() {
+    Gdx.app.postRunnable(() -> goBackAction());
+  }
 
   /** Prints the debug info. */
   public void printDebug() {
     log("screen size = "+screenWidth()+" "+screenHeight()+
-        ", fps = "+getFps()+
+        ", fps = "+fps()+
         ", cam = "+cameraPos().x+" "+cameraPos().y+
         ", cam at zero = "+cameraXAtZero()+" "+cameraYAtZero()+
         ", blur = "+blur.amount()+

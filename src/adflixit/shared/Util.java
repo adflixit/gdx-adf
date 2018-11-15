@@ -440,6 +440,17 @@ public final class Util {
     return s.substring(0, s.length()-(pattern.length()-(pattern.indexOf("%s")+2)));
   }
 
+  public static String repeat(String s, int t) {
+    if (t<0) {
+      throw new IllegalArgumentException("A number of repetitions can't be negative: "+t+".");
+    }
+    String r = "";
+    for (int i=0; i<=t; i++) {
+      r+=s;
+    }
+    return r;
+  }
+
   public static String getStackTrace() {
     return arrayToStringF("%s\n", Thread.currentThread().getStackTrace());
   }
@@ -808,7 +819,7 @@ public final class Util {
 
   /** @return HSL hue of a color. */
   public static float getHue(Color clr) {
-    return fatan2((float)(SQRT3 * (clr.g-clr.b)), 2*clr.r - clr.g - clr.b);
+    return atan2f((float)(SQRT3 * (clr.g-clr.b)), 2*clr.r - clr.g - clr.b);
   }
 
   /** @return HSL hue of a color. */
@@ -874,46 +885,46 @@ public final class Util {
 
   /************** Math utilities ************/
 
-  public static float fsin(float a)			{return (float)sin(a);}
-  public static float fsin(double a)			{return (float)sin(a);}
-  public static float fcos(float a)			{return (float)cos(a);}
-  public static float fcos(double a)			{return (float)cos(a);}
-  public static float ftan(float a)			{return (float)tan(a);}
-  public static float ftan(double a)			{return (float)tan(a);}
-  public static float fasin(float a)			{return (float)asin(a);}
-  public static float fasin(double a)			{return (float)asin(a);}
-  public static float facos(float a)			{return (float)acos(a);}
-  public static float facos(double a)			{return (float)acos(a);}
-  public static float fatan(float a)			{return (float)atan(a);}
-  public static float fatan(double a)			{return (float)atan(a);}
-  public static float fexp(float a)			{return (float)exp(a);}
-  public static float fexp(double a)			{return (float)exp(a);}
-  public static float flog(float a)			{return (float)log(a);}
-  public static float flog(double a)			{return (float)log(a);}
-  public static float flog10(float a)			{return (float)log10(a);}
-  public static float flog10(double a)			{return (float)log10(a);}
-  public static float fsqrt(float a)			{return (float)sqrt(a);}
-  public static float fsqrt(double a)			{return (float)sqrt(a);}
-  public static float fcbrt(float a)			{return (float)cbrt(a);}
-  public static float fcbrt(double a)			{return (float)cbrt(a);}
-  public static float fceil(float a)			{return (float)ceil(a);}
-  public static float fceil(double a)			{return (float)ceil(a);}
-  public static float ffloor(float a)			{return (float)floor(a);}
-  public static float ffloor(double a)			{return (float)floor(a);}
-  public static float frint(float a)			{return (float)rint(a);}
-  public static float frint(double a)			{return (float)rint(a);}
-  public static float fatan2(float y, float x)		{return (float)atan2(y,x);}
-  public static float fatan2(double y, double x)	{return (float)atan2(y,x);}
-  public static float fpow(float a, float b)		{return (float)pow(a,b);}
-  public static float fpow(double a, double b)		{return (float)pow(a,b);}
-  public static float fsinh(float x)			{return (float)sinh(x);}
-  public static float fsinh(double x)			{return (float)sinh(x);}
-  public static float fcosh(float x)			{return (float)cosh(x);}
-  public static float fcosh(double x)			{return (float)cosh(x);}
-  public static float ftanh(float x)			{return (float)tanh(x);}
-  public static float ftanh(double x)			{return (float)tanh(x);}
-  public static float fhypot(float x, float y)		{return (float)hypot(x,y);}
-  public static float fhypot(double x, double y)	{return (float)hypot(x,y);}
+  public static float sinf(float a)			{return (float)sin(a);}
+  public static float sinf(double a)			{return (float)sin(a);}
+  public static float cosf(float a)			{return (float)cos(a);}
+  public static float cosf(double a)			{return (float)cos(a);}
+  public static float tanf(float a)			{return (float)tan(a);}
+  public static float tanf(double a)			{return (float)tan(a);}
+  public static float asinf(float a)			{return (float)asin(a);}
+  public static float asinf(double a)			{return (float)asin(a);}
+  public static float acosf(float a)			{return (float)acos(a);}
+  public static float acosf(double a)			{return (float)acos(a);}
+  public static float atanf(float a)			{return (float)atan(a);}
+  public static float atanf(double a)			{return (float)atan(a);}
+  public static float expf(float a)			{return (float)exp(a);}
+  public static float expf(double a)			{return (float)exp(a);}
+  public static float logf(float a)			{return (float)log(a);}
+  public static float logf(double a)			{return (float)log(a);}
+  public static float log10f(float a)			{return (float)log10(a);}
+  public static float log10f(double a)			{return (float)log10(a);}
+  public static float sqrtf(float a)			{return (float)sqrt(a);}
+  public static float sqrtf(double a)			{return (float)sqrt(a);}
+  public static float cbrtf(float a)			{return (float)cbrt(a);}
+  public static float cbrtf(double a)			{return (float)cbrt(a);}
+  public static float ceilf(float a)			{return (float)ceil(a);}
+  public static float ceilf(double a)			{return (float)ceil(a);}
+  public static float floorf(float a)			{return (float)floor(a);}
+  public static float floorf(double a)			{return (float)floor(a);}
+  public static float rintf(float a)			{return (float)rint(a);}
+  public static float rintf(double a)			{return (float)rint(a);}
+  public static float atan2f(float y, float x)		{return (float)atan2(y,x);}
+  public static float atan2f(double y, double x)	{return (float)atan2(y,x);}
+  public static float powf(float a, float b)		{return (float)pow(a,b);}
+  public static float powf(double a, double b)		{return (float)pow(a,b);}
+  public static float sinhf(float x)			{return (float)sinh(x);}
+  public static float sinhf(double x)			{return (float)sinh(x);}
+  public static float coshf(float x)			{return (float)cosh(x);}
+  public static float coshf(double x)			{return (float)cosh(x);}
+  public static float tanhf(float x)			{return (float)tanh(x);}
+  public static float tanhf(double x)			{return (float)tanh(x);}
+  public static float hypotf(float x, float y)		{return (float)hypot(x,y);}
+  public static float hypotf(double x, double y)	{return (float)hypot(x,y);}
 
   /** @return if {@code flag} intersects {@code flags}. {@code flag} has to be one single bit. */
   public static boolean hasFlag(int flags, int flag) {
@@ -947,7 +958,7 @@ public final class Util {
     return (long)(log(a)/LOG2);
   }
 
-  /** @return random double in a range from 0 to 1. */
+  /** @return random double in range from 0 to 1. */
   public static double rand() {
     return random();
   }
@@ -962,7 +973,7 @@ public final class Util {
     return a+(b-a)*rand();
   }
 
-  /** @return random float in a range from 0 to 1. */
+  /** @return random float in range from 0 to 1. */
   public static float randFloat() {
     return (float)random();
   }
@@ -1056,12 +1067,12 @@ public final class Util {
 
   /** @return float floor of a vector. */
   public static Vector2 ffloor(Vector2 v2) {
-    return tmpv2.set(ffloor(v2.x), ffloor(v2.y));
+    return tmpv2.set(floorf(v2.x), floorf(v2.y));
   }
 
   /** @return float floor of a vector. */
   public static Vector3 ffloor(Vector3 v3) {
-    return tmpv3.set(ffloor(v3.x), ffloor(v3.y), ffloor(v3.z));
+    return tmpv3.set(floorf(v3.x), floorf(v3.y), floorf(v3.z));
   }
 
   /** @return {@code a} bounded between {@code min} and {@code max}. */
@@ -1201,7 +1212,7 @@ public final class Util {
 
   /** @return distance between two given points. */
   public static float dist(float x1, float y1, float x2, float y2) {
-    return fhypot(x2-x1, y2-y1);
+    return hypotf(x2-x1, y2-y1);
   }
 
   /** @return distance between two given points. */
@@ -1219,7 +1230,7 @@ public final class Util {
    * @param a 0 to 1 value
    * @return exponential interpolation of {@code a} based on {@code p}. */
   public static float easeIn(float p, float a) {
-    return fpow(a,p);
+    return powf(a,p);
   }
 
   /** @param a 0 to 1 value
@@ -1232,9 +1243,9 @@ public final class Util {
    * @param a 0 to 1 value
    * @return exponential interpolation of {@code a} based on {@code p}. */
   public static float easeOut(float p, float a) {
-    float m = fpow(-1,ffloor(p)-1);
+    float m = powf(-1,floorf(p)-1);
     boolean c = p > 2;
-    return m * ((a-=(c?1:0)) * (c?fpow(a,p-1):(a-2)) + (c?m:0));
+    return m * ((a-=(c?1:0)) * (c?powf(a,p-1):(a-2)) + (c?m:0));
   }
 
   /** @param a 0 to 1 value
@@ -1247,11 +1258,11 @@ public final class Util {
    * @param a 0 to 1 value
    * @return exponential interpolation of {@code a} based on {@code p}. */
   public static float easeInOut(float p, float a) {
-    float m = fpow(-1,ffloor(p)-1), b = p>2?2:1;
+    float m = powf(-1,floorf(p)-1), b = p>2?2:1;
     if ((a*=2) < 1) {
-      return .5f*fpow(a,p);
+      return .5f*powf(a,p);
     }
-    return m*.5f * ((a-=b) * (p>2?fpow(a,p-1):a-2) + m*b);
+    return m*.5f * ((a-=b) * (p>2?powf(a,p-1):a-2) + m*b);
   }
 
   /** @param a 0 to 1 value

@@ -254,7 +254,7 @@ public abstract class BaseGame extends Logger implements ApplicationListener {
     glogDone();
   }
 
-  public static void initSkin(FileHandle skinFile, TextureAtlas atlas) {
+  public static void loadSkin(FileHandle skinFile, TextureAtlas atlas) {
     glogSetup("Loading skin '"+skinFile+"'");
     skin = new Skin(skinFile, atlas);
     glogDone();
@@ -320,7 +320,7 @@ public abstract class BaseGame extends Logger implements ApplicationListener {
   @Deprecated
   public static void loadProps(FileHandle... files) {
     glogSetup("Loading properties "+arrayToString("'%s'", files));
-    props.loadProps(files);
+    props.loadAll(files);
     glogDone();
   }
 
@@ -331,109 +331,104 @@ public abstract class BaseGame extends Logger implements ApplicationListener {
     glogDone();
   }
 
-  /** Interprets all properties entries as {@code float} and stores the digest to the quick access array. */
-  public static void initPropsF() {
-    props.initF();
-  }
-
   /** @return property. */
   public static String prop(String key) {
-    return props.prop(key);
+    return props.get(key);
   }
 
   /** @return property interpreted as {@code int}. */
-  public static int propI(String key) {
-    return props.propI(key);
+  public static int propi(String key) {
+    return props.getInt(key);
   }
 
   /** @return property interpreted as {@code long}. */
-  public static long propL(String key) {
-    return props.propL(key);
+  public static long propl(String key) {
+    return props.getLong(key);
   }
 
   /** @return property interpreted as {@code float}.
    * @throws IllegalArgumentException if no entry is found. */
-  public static float propF(String key) {
-    return props.propF(key);
+  public static float propf(String key) {
+    return props.getFloat(key);
   }
 
   /** @return property interpreted as {@code double}. */
-  public static double propD(String key) {
-    return props.propD(key);
+  public static double propd(String key) {
+    return props.getDouble(key);
   }
 
   /** @return property interpreted as {@code boolean}. */
-  public static boolean propB(String key) {
-    return props.propB(key);
+  public static boolean propb(String key) {
+    return props.getBool(key);
   }
 
   /** Changes the existing property.
    * @return the previous value of the specified key. */
   public static Object setProp(String key, String value) {
     glog("Changing property '"+key+"' from '"+prop(key)+"' to '"+value+"'");
-    return props.setProp(key, value);
+    return props.set(key, value);
   }
 
   /** Changes the existing property to an {@code int} value. */
-  public static void setPropI(String key, int value) {
+  public static void setPropInt(String key, int value) {
     glog("Changing property '"+key+"' from '"+prop(key)+"' to '"+value+"'");
-    props.setPropI(key, value);
+    props.setInt(key, value);
     glogDone();
   }
 
   /** Changes the existing property to an {@code long} value. */
-  public static void setPropL(String key, long value) {
+  public static void setPropLong(String key, long value) {
     glog("Changing property '"+key+"' from '"+prop(key)+"' to '"+value+"'");
-    props.setPropL(key, value);
+    props.setLong(key, value);
     glogDone();
   }
 
   /** Changes the existing property to an {@code float} value. */
-  public static void setPropF(String key, float value) {
+  public static void setPropFloat(String key, float value) {
     glog("Changing property '"+key+"' from '"+prop(key)+"' to '"+value+"'");
-    props.setPropF(key, value);
+    props.setFloat(key, value);
     glogDone();
   }
 
   /** Changes the existing property to an {@code double} value. */
-  public static void setPropD(String key, double value) {
+  public static void setPropDouble(String key, double value) {
     glog("Changing property '"+key+"' from '"+prop(key)+"' to '"+value+"'");
-    props.setPropD(key, value);
+    props.setDouble(key, value);
     glogDone();
   }
 
   /** Changes the existing property to an {@code boolean} value. */
-  public static void setPropB(String key, boolean value) {
+  public static void setPropBool(String key, boolean value) {
     glog("Changing property '"+key+"' from '"+prop(key)+"' to '"+value+"'");
-    props.setPropB(key, value);
+    props.setBool(key, value);
     glogDone();
   }
 
   /** Resets the property to the default value. */
   public static void resetProp(String key) {
     glogSetup("Resetting property '"+key+"'");
-    props.resetProp(key);
+    props.reset(key);
     glogDone();
   }
 
   /** Resets all property to the default values. */
   public static void resetProps() {
     glogSetup("Resetting properties");
-    props.resetProps();
+    props.resetAll();
     glogDone();
   }
 
   /** Saves the specified property to the file. */
   public static void flushProp(String key) {
     glogSetup("Flushing property '"+key+"'");
-    props.flushProp(key);
+    props.flush(key);
     glogDone();
   }
 
   /** Saves properties to the file. */
   public static void flushProps() {
     glogSetup("Flushing properties");
-    props.flushProps();
+    props.flushAll();
     glogDone();
   }
 
@@ -453,79 +448,84 @@ public abstract class BaseGame extends Logger implements ApplicationListener {
   }
 
   /** @return preferences entry interpreted as string. */
-  public static String prefS(String key) {
+  public static String pref(String key) {
     return prefs.getString(key);
   }
 
   /** @return preferences entry interpreted as int. */
-  public static int prefI(String key) {
+  public static int prefi(String key) {
     return prefs.getInteger(key);
   }
 
   /** @return preferences entry interpreted as long. */
-  public static long prefL(String key) {
+  public static long prefl(String key) {
     return prefs.getLong(key);
   }
 
   /** @return preferences entry interpreted as float. */
-  public static float prefF(String key) {
+  public static float preff(String key) {
     return prefs.getFloat(key);
   }
 
   /** @return preferences entry interpreted as boolean. */
-  public static boolean prefB(String key) {
+  public static boolean prefb(String key) {
     return prefs.getBoolean(key);
   }
 
   /** Adds a string entry to the preferences. */
-  public static void putPrefS(String key, String value) {
+  public static void putPref(String key, String value) {
     glogSetup("Setting preference "+key+" to "+value);
     prefs.putString(key, value);
     glogDone();
   }
 
   /** Adds an int entry to the preferences. */
-  public static void putPrefI(String key, int value) {
+  public static void putPrefInt(String key, int value) {
     glogSetup("Setting preference "+key+" to "+value);
     prefs.putInteger(key, value);
     glogDone();
   }
 
   /** Adds a long entry to the preferences. */
-  public static void putPrefL(String key, long value) {
+  public static void putPrefLong(String key, long value) {
     glogSetup("Setting preference "+key+" to "+value);
     prefs.putLong(key, value);
     glogDone();
   }
 
   /** Adds a float entry to the preferences. */
-  public static void putPrefF(String key, float value) {
+  public static void putPrefFloat(String key, float value) {
     glogSetup("Setting preference "+key+" to "+value);
     prefs.putFloat(key, value);
     glogDone();
   }
 
   /** Adds a boolean entry to the preferences. */
-  public static void putPrefB(String key, boolean value) {
+  public static void putPrefBool(String key, boolean value) {
     glogSetup("Setting preference "+key+" to "+value);
     prefs.putBoolean(key, value);
     glogDone();
   }
 
-  /** Has to be called after every set of preference changes to save them. */
+  /** Has to be called after every set of preferences is changed. */
   public static void flushPrefs() {
     glogSetup("Flushing preferences");
     prefs.flush();
     glogDone();
   }
 
-  public static int getFps() {
+  public static int fps() {
     return Gdx.graphics.getFramesPerSecond();
   }
-
+  
   /** @return rendering time delta. */
   public static float dt() {
     return Gdx.graphics.getDeltaTime();
+  }
+
+  /** @return {@code a} multiplied by rendering time delta. */
+  public static float dt(float a) {
+    return a * dt();
   }
 
   public static FileHandle internalFile(String path) {

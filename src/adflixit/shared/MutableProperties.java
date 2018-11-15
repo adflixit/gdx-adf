@@ -35,7 +35,7 @@ public class MutableProperties extends Properties {
   /** Loads the specified properties.
    * @deprecated Not used anymore due to the introduced ability to change properties during runtime. */
   @Deprecated
-  public void loadProps(FileHandle... files) {
+  public void loadAll(FileHandle... files) {
     Properties tmp = new Properties();
     try {
       for (FileHandle file : files) {
@@ -46,7 +46,7 @@ public class MutableProperties extends Properties {
     } catch (IOException e) {
       e.printStackTrace();
     }
-    initF();
+    initFloats();
   }
 
   /** Loads the specified properties. */
@@ -59,23 +59,23 @@ public class MutableProperties extends Properties {
     }
     raw.addAll(Arrays.asList(file.readString().split("\\r?\\n")));
     original.putAll(this);
-    initF();
+    initFloats();
   }
 
-  /** Interprets the properties as {@code float} and stores them in {@link #floats}. */
-  public void initF() {
+  /** Interprets properties as {@code float} and stores them in {@link #floats}. */
+  private void initFloats() {
     String key;
     for (Map.Entry<Object, Object> entry : entrySet()) {
       try {
         key = (String)entry.getKey();
-        floats.put(key, Float.parseFloat(prop(key)));
+        floats.put(key, Float.parseFloat(get(key)));
       } catch (NumberFormatException e) {}
     }
   }
 
   /** @return properties entry.
    * @throws IllegalArgumentException if no entry is found. */
-  public String prop(String key) throws IllegalArgumentException {
+  public String get(String key) throws IllegalArgumentException {
   String value = getProperty(key);
     if (value==null) {
       throw new IllegalArgumentException("No '"+key+"' property found.");
@@ -83,19 +83,19 @@ public class MutableProperties extends Properties {
     return value;
   }
 
-  /** @return properties entry interpreted as {@code int}. */
-  public int propI(String key) {
-    return Integer.parseInt(prop(key));
+  /** @return entry interpreted as {@code int}. */
+  public int getInt(String key) {
+    return Integer.parseInt(get(key));
   }
 
-  /** @return properties entry interpreted as {@code long}. */
-  public long propL(String key) {
-    return Long.parseLong(prop(key));
+  /** @return entry interpreted as {@code long}. */
+  public long getLong(String key) {
+    return Long.parseLong(get(key));
   }
 
-  /** @return properties entry interpreted as {@code float}.
+  /** @return entry interpreted as {@code float}.
    * @throws IllegalArgumentException if no entry is found. */
-  public float propF(String key) throws IllegalArgumentException {
+  public float getFloat(String key) throws IllegalArgumentException {
     Float value = floats.get(key);
     if (value==null) {
       throw new IllegalArgumentException("No '"+key+"' property found.");
@@ -103,19 +103,19 @@ public class MutableProperties extends Properties {
     return value.floatValue();
   }
 
-  /** @return properties entry interpreted as {@code double}. */
-  public double propD(String key) {
-    return Double.parseDouble(prop(key));
+  /** @return entry interpreted as {@code double}. */
+  public double getDouble(String key) {
+    return Double.parseDouble(get(key));
   }
 
-  /** @return properties entry interpreted as {@code boolean}. */
-  public boolean propB(String key) {
-    return Boolean.parseBoolean(prop(key));
+  /** @return entry interpreted as {@code boolean}. */
+  public boolean getBool(String key) {
+    return Boolean.parseBoolean(get(key));
   }
 
-  /** Changes the existing property.
+  /** Changes an existing property.
    * @return the previous value of the specified key. */
-  public Object setProp(String key, String value) throws NullPointerException, IllegalArgumentException {
+  public Object set(String key, String value) throws NullPointerException, IllegalArgumentException {
     if (key==null) {
       throw new NullPointerException("Key can't be null.");
     }
@@ -129,47 +129,47 @@ public class MutableProperties extends Properties {
     return setProperty(key, value);
   }
 
-  /** Changes the existing property to an {@code int} value. */
-  public void setPropI(String key, int value) {
-    setProp(key, Integer.toString(value));
+  /** Changes an existing property to an {@code int} value. */
+  public void setInt(String key, int value) {
+    set(key, Integer.toString(value));
   }
 
-  /** Changes the existing property to an {@code long} value. */
-  public void setPropL(String key, long value) {
-    setProp(key, Long.toString(value));
+  /** Changes an existing property to a {@code long} value. */
+  public void setLong(String key, long value) {
+    set(key, Long.toString(value));
   }
 
-  /** Changes the existing property to an {@code float} value. */
-  public void setPropF(String key, float value) {
-    if (setProp(key, Float.toString(value)) != null) {
+  /** Changes an existing property to a {@code float} value. */
+  public void setFloat(String key, float value) {
+    if (set(key, Float.toString(value)) != null) {
       floats.put(key, value);
     }
   }
 
-  /** Changes the existing property to an {@code double} value. */
-  public void setPropD(String key, double value) {
-    setProp(key, Double.toString(value));
+  /** Changes an existing property to a {@code double} value. */
+  public void setDouble(String key, double value) {
+    set(key, Double.toString(value));
   }
 
-  /** Changes the existing property to an {@code boolean} value. */
-  public void setPropB(String key, boolean value) {
-    setProp(key, Boolean.toString(value));
+  /** Changes an existing property to a {@code boolean} value. */
+  public void setBool(String key, boolean value) {
+    set(key, Boolean.toString(value));
   }
 
-  /** Resets the property to the default value. */
-  public void resetProp(String key) {
-    setProp(key, original.getProperty(key));
+  /** Resets a property to the default value. */
+  public void reset(String key) {
+    set(key, original.getProperty(key));
   }
 
   /** Resets all property to the default values. */
-  public void resetProps() {
+  public void resetAll() {
     clear();
     putAll(original);
     flushed.clear();
   }
 
   /** Saves the specified property to the file. */
-  public void flushProp(String key) throws IllegalArgumentException, RuntimeException {
+  public void flush(String key) throws IllegalArgumentException, RuntimeException {
     if (containsKey(key)) {
       key.trim();
       flushed.add(key);
@@ -183,7 +183,7 @@ public class MutableProperties extends Properties {
           if (i.startsWith(j) && !i.startsWith("#") && !i.equals("")) {
             // if a match found, assemble the key and the new value
             String split = i.split("=")[0];
-            output += split+"="+prop(split);
+            output += split+"="+get(split);
             altered = true;
             break;
           }
@@ -201,7 +201,7 @@ public class MutableProperties extends Properties {
   }
 
   /** Saves properties to the file. */
-  public void flushProps() throws IllegalArgumentException, RuntimeException {
+  public void flushAll() throws IllegalArgumentException, RuntimeException {
     flushed.clear();
     String output = "";
     // going through the lines of the file
@@ -209,7 +209,7 @@ public class MutableProperties extends Properties {
       if (!i.startsWith("#") && !i.equals("")) {
         // if a match is found, assembling the key and the new value
         String split = i.split("=")[0];
-        output += split+"="+prop(split);
+        output += split+"="+get(split);
       } else {
          output += i;
       }

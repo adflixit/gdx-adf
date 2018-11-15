@@ -25,7 +25,7 @@ import com.badlogic.gdx.utils.Array;
  * {@link Animation} that is being played fully once in a certain point when called.
  */
 public class SplashAnim extends Animation<TextureRegion> {
-  private final Timestamp	time			= new Timestamp();	// playtime mark
+  private final Timestamp	time			= new Timestamp();
   private float			x, y;
   private float			baseScale, scale;
 

@@ -375,7 +375,7 @@ public class Overlay extends ScreenComponent<BaseScreen<?>> {
   }
 
   public void resize() {
-    // texture filtering workaround
+    // linear filter workaround
     sheers.setPosition(-2, -2);
     blackouts.setPosition(-2, -2);
     tint.setPosition(-2, -2);
