@@ -112,7 +112,7 @@ public final class TweenUtils {
   /** Tweens the label's opacity.
    * @param a alpha */
   public static void fadeLabel(Label target, float a) {
-  $fadeLabel(target, a).start(tweenMgr);
+    $fadeLabel(target, a).start(tweenMgr);
   }
 
   /** Tweens the label's opacity to 1.
@@ -255,7 +255,7 @@ public final class TweenUtils {
    * @return handle to tween the actor's color. */
   public static Tween $tweenActorColor(Actor target, Color clr, float d) {
     killTweenTarget(target, ActorAccessor.RGB);
-        return Tween.to(target, ActorAccessor.RGB, d).target(clr.r, clr.g, clr.b).ease(Quart.OUT);
+    return Tween.to(target, ActorAccessor.RGB, d).target(clr.r, clr.g, clr.b).ease(Quart.OUT);
   }
 
   /** @param clr color
