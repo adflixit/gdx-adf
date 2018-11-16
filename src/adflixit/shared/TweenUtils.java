@@ -38,7 +38,9 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 
-/** {@link Tween} {@link TweenAccessor accessors} and utilities. */
+/**
+ * {@link Tween} {@link TweenAccessor accessors} and utilities.
+ */
 public final class TweenUtils {
   private TweenUtils() {}
 
@@ -349,7 +351,8 @@ public final class TweenUtils {
     };
   }
 
-  /** {@link #POS_C}: centered position, 
+  /**
+   * {@link #POS_C}: centered position, 
    * {@link #X_C}: centered x, 
    * {@link #X_Y}: centered y, 
    * {@link #ORG_X}: origin x, 
@@ -363,7 +366,8 @@ public final class TweenUtils {
    * {@link #A}: alpha, 
    * {@link #H}: hue, 
    * {@link #S}: saturation, 
-   * {@link #L}: lightness. */
+   * {@link #L}: lightness.
+   */
   public static class ActorAccessor implements TweenAccessor<Actor> {
     public static final int	POS = 0, X = 1, Y = 2, POS_C = 3, X_C = 4, Y_C = 5,
     				ORIGIN = 6, ORG_X = 7, ORG_Y = 8,
@@ -515,7 +519,8 @@ public final class TweenUtils {
     }
   }
 
-  /** {@link #POS_C}: centered position, 
+  /**
+   * {@link #POS_C}: centered position, 
    * {@link #X_C}: centered x, 
    * {@link #X_Y}: centered y, 
    * {@link #ORG_X}: origin x, 
@@ -529,7 +534,8 @@ public final class TweenUtils {
    * {@link #A}: alpha, 
    * {@link #H}: hue, 
    * {@link #S}: saturation, 
-   * {@link #L}: lightness. */
+   * {@link #L}: lightness.
+   */
   public static class LabelAccessor implements TweenAccessor<Label> {
     public static final int	POS = 0, X = 1, Y = 2, POS_C = 3, X_C = 4, Y_C = 5,
     				ORIGIN = 6, ORG_X = 7, ORG_Y = 8,
@@ -681,7 +687,8 @@ public final class TweenUtils {
     }
   }
 
-  /** {@link #POS_C}: centered position, 
+  /**
+   * {@link #POS_C}: centered position, 
    * {@link #X_C}: centered x, 
    * {@link #X_Y}: centered y, 
    * {@link #SCL_X}: scale x, 
@@ -693,7 +700,8 @@ public final class TweenUtils {
    * {@link #A}: alpha, 
    * {@link #H}: hue, 
    * {@link #S}: saturation, 
-   * {@link #L}: lightness. */
+   * {@link #L}: lightness.
+   */
   public static class SpriteAccessor implements TweenAccessor<Sprite> {
     public static final int	POS = 0, X = 1, Y = 2, POS_C = 3, X_C = 4, Y_C = 5,
     				SCALE = 6, SCL_X = 7, SCL_Y = 8, ROT = 9,
@@ -823,7 +831,9 @@ public final class TweenUtils {
     }
   }
 
-  /** {@link #VOL}: volume. */
+  /**
+   * {@link #VOL}: volume.
+   */
   public static class MusicAccessor implements TweenAccessor<Music> {
     public static final int	VOL = 0;
 
