@@ -296,7 +296,7 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
   /** Switches debug mode. */
   public void toggleDebug() {
     debug = !debug;
-    log("Debug mode "+(debug?"enabled":"disabled"));
+    glog("Debug mode "+(debug?"enabled":"disabled"));
   }
 
   /** @return x and y of the screen center. */
@@ -3272,7 +3272,7 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
    * @param d duration
    * @return tween handle */
   public Tween $dimIn(float d) {
-    return overlay.$dimIn(C_OP_DIM, d);
+    return overlay.$dimIn(C_OP_S, d);
   }
 
   /** Creates a handle to darken the menu background.
@@ -3310,7 +3310,7 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
    * @param d duration
    * @return tween handle */
   public Tween $dimInL(float d) {
-    return overlay.$dimIn(C_OP_DIM_L, d);
+    return overlay.$dimIn(C_OP_T, d);
   }
 
   /** Creates a handle to lightly darken the menu background.

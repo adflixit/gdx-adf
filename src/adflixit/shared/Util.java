@@ -20,7 +20,6 @@ import static adflixit.shared.BaseGame.*;
 import static com.badlogic.gdx.utils.Align.*;
 import static java.lang.Math.*;
 
-import adflixit.shared.misc.RoundedDrawable;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -35,15 +34,10 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.Button.ButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton.ImageButtonStyle;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.utils.Json;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -78,7 +72,7 @@ public final class Util {
   					C_BDT			= 250,		// big distance
   					C_GDT			= 500,		// giant distance
   					C_WDT			= 720,		// width
-  					C_HGT			= 445,		// height
+  					C_HGT			= 444,		// height
   					C_MRG			= 18,		// margin
   					C_PAD			= 20,		// padding
   					C_PAD_S			= 10,		// small padding
@@ -88,9 +82,10 @@ public final class Util {
   					C_SHD_OP		= .2f,		// shadow opacity
   					C_POPUP_IN_SC		= 1.2f,		// popup intro scale
   					C_POPUP_OUT_SC		= .8f,		// popup outro scale
-  					C_OP			= .3f,		// opacity
-  					C_OP_DIM		= .8f,		// dim opacity
-  					C_OP_DIM_L		= .6f,		// dim light opacity
+  					C_OP_S			= .8f,		// solid opacity
+  					C_OP_D			= .6f,		// dimmed opacity
+  					C_OP_T			= .3f,		// transparent opacity
+  					C_OP_G			= .15f,		// ghost opacity
   					C_IDLEACTION_D		= 30,		// idle action delay
   					C_REPACTION_D		= 10,		// repetitive action delay
 
@@ -102,10 +97,7 @@ public final class Util {
   					// Button sizes
   					BTN_BG			= 150,
   					BTN_MD			= 100,
-  					BTN_SM			= 80,
-
-  					SPARKS_FPS		= 60,		// sparks frame rate
-  					CIRCOUT_FPS		= 60;		// circout animation framerate
+  					BTN_SM			= 80;
 
   // Common use temporary variables
   public static final Vector2		tmpv2			= new Vector2();
@@ -440,6 +432,9 @@ public final class Util {
     return s.substring(0, s.length()-(pattern.length()-(pattern.indexOf("%s")+2)));
   }
 
+  /** @param s text to be repeated.
+   * @param t repetition times.
+   * @return {@code s} repeated {@code t} times. */
   public static String repeat(String s, int t) {
     if (t<0) {
       throw new IllegalArgumentException("A number of repetitions can't be negative: "+t+".");
@@ -660,68 +655,6 @@ public final class Util {
   /** Sets the {@link ImageButton} {@link ImageButtonStyle#imageUp}. */
   public static void setImageButtonImage(ImageButton btn, Drawable image) {
     btn.getStyle().imageUp = image;
-  }
-
-  /** Converts an existing {@link ButtonStyle} to a rounded one 
-   * by turning its drawables into {@link RoundedDrawable}.<br><br>
-   * Warning: this function permanently mutates the specified {@link ButtonStyle}.
-   * @return converted {@link ButtonStyle}. */
-  public static ButtonStyle convertToRounded(ButtonStyle style) {
-    Drawable up = style.up, down = style.down, over = style.over, checked = style.checked,
-        checkedOver = style.checkedOver, disabled = style.disabled;
-    // turning each drawable rounded
-    if (up != null && up instanceof NinePatchDrawable) {
-      style.up = new RoundedDrawable((NinePatchDrawable)up);
-    } else if (up != null && up instanceof RoundedDrawable) {
-      style.up = (RoundedDrawable)up;
-    }
-    if (down != null && down instanceof NinePatchDrawable) {
-      style.up = new RoundedDrawable((NinePatchDrawable)down);
-    } else if (down != null && down instanceof RoundedDrawable) {
-      style.up = (RoundedDrawable)down;
-    }
-    if (over != null && over instanceof NinePatchDrawable) {
-      style.up = new RoundedDrawable((NinePatchDrawable)over);
-    } else if (over != null && over instanceof RoundedDrawable) {
-      style.up = (RoundedDrawable)over;
-    }
-    if (checked != null && checked instanceof NinePatchDrawable) {
-      style.up = new RoundedDrawable((NinePatchDrawable)checked);
-    } else if (checked != null && checked instanceof RoundedDrawable) {
-      style.up = (RoundedDrawable)checked;
-    }
-    if (checkedOver != null && checkedOver instanceof NinePatchDrawable) {
-      style.up = new RoundedDrawable((NinePatchDrawable)checkedOver);
-    } else if (checkedOver != null && checkedOver instanceof RoundedDrawable) {
-      style.up = (RoundedDrawable)checkedOver;
-    }
-    if (disabled != null && disabled instanceof NinePatchDrawable) {
-      style.up = new RoundedDrawable((NinePatchDrawable)disabled);
-    } else if (disabled != null && disabled instanceof RoundedDrawable) {
-      style.up = (RoundedDrawable)disabled;
-    }
-    return style;
-  }
-
-  public static TextButton roundedTextButton(String text, Skin skin, String styleName) {
-    TextButton btn = new TextButton(text, skin, styleName);
-    convertToRounded(btn.getStyle());
-    // adding 2 to bypass the linear filter clipping
-    btn.setHeight(btn.getStyle().up.getMinHeight() + 2);
-    btn.pad(0);
-    return btn;
-  }
-
-  public static ImageButton roundedImageButton(ImageButton btn) {
-    convertToRounded(btn.getStyle());
-    // adding 2 to bypass the linear filter clipping
-    btn.setHeight(btn.getStyle().up.getMinHeight() + 2);
-    btn.pad(0);
-    return btn;
-  }
-
-  public static ImageButton roundedImageButton(String text, Skin skin, String styleName) {
-    return roundedImageButton(new ImageButton(skin, styleName));
   }
 
   /** @return {@code null} if nothing found. */
@@ -974,33 +907,33 @@ public final class Util {
   }
 
   /** @return random float in range from 0 to 1. */
-  public static float randFloat() {
+  public static float randf() {
     return (float)random();
   }
 
   /** @return random float in a range from 0 to {@code a}. */
-  public static float randFloat(float a) {
-    return a*randFloat();
+  public static float randf(float a) {
+    return a*randf();
   }
 
   /** @return random float in a range from {@code a} to {@code b}. */
-  public static float randFloat(float a, float b) {
-    return a+(b-a)*randFloat();
+  public static float randf(float a, float b) {
+    return a+(b-a)*randf();
   }
 
   /** @return random int in a range from 0 to {@code a}. */
-  public static int randInt(int a) {
-    return round(randFloat(a));
+  public static int randi(int a) {
+    return round(randf(a));
   }
 
   /** @return random int in a range from {@code a} to {@code b}. */
-  public static int randInt(int a, int b) {
-    return round(randFloat(a,b));
+  public static int randi(int a, int b) {
+    return round(randf(a,b));
   }
 
   /** @return random bool, either true or false. */
-  public static boolean randBool() {
-    return randInt(1) > 0;
+  public static boolean randb() {
+    return randi(1) > 0;
   }
 
   /** @return is {@code a} even.
