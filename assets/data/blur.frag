@@ -25,7 +25,7 @@ void main() {
   color += v_color * texture2D(u_texture, v_blurTexCoords[ 4]) * .0776744219933;
   color += v_color * texture2D(u_texture, v_blurTexCoords[ 5]) * .115876621105;
   color += v_color * texture2D(u_texture, v_blurTexCoords[ 6]) * .147308056121;
-  color += v_color * texture2D(u_texture, v_texCoords       ) * .159576912161;
+  color += v_color * texture2D(u_texture, v_texCoords        ) * .159576912161;
   color += v_color * texture2D(u_texture, v_blurTexCoords[ 7]) * .147308056121;
   color += v_color * texture2D(u_texture, v_blurTexCoords[ 8]) * .115876621105;
   color += v_color * texture2D(u_texture, v_blurTexCoords[ 9]) * .0776744219933;
