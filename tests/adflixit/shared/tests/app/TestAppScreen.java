@@ -24,8 +24,8 @@ public class TestAppScreen extends BaseScreen<TestApp> {
     public TestAppScreen(TestApp game) {
     super(game);
     String dir = "assets/data/";
-    blur.load(internalFile(dir+"hblur.vert"), internalFile(dir+"blur.frag"),
-    internalFile(dir+"vblur.vert"), internalFile(dir+"blur.frag"));
+    postprocessor.load(internalFile(dir+"pph.vert"), internalFile(dir+"pph.frag"),
+        internalFile(dir+"ppv.vert"), internalFile(dir+"ppv.frag"));
   }
 
   @Override public void goBack() {
