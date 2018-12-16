@@ -517,7 +517,7 @@ public abstract class BaseGame extends Logger implements ApplicationListener {
   public static int fps() {
     return Gdx.graphics.getFramesPerSecond();
   }
-  
+
   /** @return rendering time delta. */
   public static float dt() {
     return Gdx.graphics.getDeltaTime();

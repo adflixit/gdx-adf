@@ -30,53 +30,37 @@ import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 
 /**
- * Performs a two-pass Gaussian blur.
+ * Performs two-pass Gaussian blur.
  */
-public class Blur extends ScreenComponent<BaseScreen<?>> {
+@Deprecated public class Blur extends ScreenComponent<BaseScreen<?>> {
   private final String		uniName			= "u_blur";
   private ShaderProgram		firstPass;
   private ShaderProgram		lastPass;
   private FrameBuffer		firstFrameBuffer;
   private FrameBuffer		lastFrameBuffer;
-  private int			passes;			// number of the blurring cycles
+  private int			passes			= 1;	// number of blurring cycles
   private final MutableFloat	amount			= new MutableFloat(0);
   /** Pass is used to access the route to update the shader info.
-   * Schedule is used to update the info one time after which it's being reset. */
+   * Schedule is used to update the info one time after which it resets. */
   private boolean		pass, scheduled;
-  private final TweenCallback	passCallback		= (type, source) -> {
-    if (type==BEGIN) {
-      unlock();
-    } else {
-      lock();
-    }
-  };
-  private final TweenCallback	scheduleCallback	= (type, source) -> schedule();
+
+  public Blur(BaseScreen<?> screen) {
+    super(screen);
+  }
 
   public Blur(BaseScreen<?> screen, int passes) {
     super(screen);
     setPasses(passes);
   }
 
-  public Blur(BaseScreen<?> screen) {
-    this(screen, 1);
-  }
-
-  public Blur(BaseScreen<?> screen, int passes, FileHandle hvert, FileHandle hfrag, FileHandle vvert, FileHandle vfrag) {
-    this(screen, passes);
-    load(hvert, hfrag, vvert, vfrag);
-  }
-
   public Blur(BaseScreen<?> screen, FileHandle hvert, FileHandle hfrag, FileHandle vvert, FileHandle vfrag) {
-    this(screen, 1, hvert, hfrag, vvert, vfrag);
-  }
-
-  public Blur(BaseScreen<?> screen, int passes, String hvert, String hfrag, String vvert, String vfrag) {
-    this(screen, passes);
+    super(screen);
     load(hvert, hfrag, vvert, vfrag);
   }
 
   public Blur(BaseScreen<?> screen, String hvert, String hfrag, String vvert, String vfrag) {
-    this(screen, 1, hvert, hfrag, vvert, vfrag);
+    super(screen);
+    load(hvert, hfrag, vvert, vfrag);
   }
 
   public void load(FileHandle hvert, FileHandle hfrag, FileHandle vvert, FileHandle vfrag) {
@@ -89,8 +73,9 @@ public class Blur extends ScreenComponent<BaseScreen<?>> {
     lastPass = new ShaderProgram(vvert, vfrag);
   }
 
-  public void setPasses(int i) {
+  public Blur setPasses(int i) {
     passes = i;
+    return this;
   }
 
   public void reset() {
@@ -101,7 +86,7 @@ public class Blur extends ScreenComponent<BaseScreen<?>> {
 
   public void draw() {
     Texture tex;
-    float x = scr.cameraXAtZero(), y = scr.cameraYAtZero();
+    float x = scr.cameraX0(), y = scr.cameraY0();
     for (int i=0; i < passes; i++) {
       pass(i, x, y);
     }
@@ -116,7 +101,7 @@ public class Blur extends ScreenComponent<BaseScreen<?>> {
   }
 
   public Texture inputTex() {
-    return scr.screenTex();
+    return scr.fbTex();
   }
 
   /** Performs the blurring routine.
@@ -178,9 +163,9 @@ public class Blur extends ScreenComponent<BaseScreen<?>> {
   }
 
   public void setAmount(float v) {
-    schedule();
     killTweenTarget(amount);
     amount.setValue(v);
+    schedule();
   }
 
   public void resetAmount() {
@@ -192,7 +177,13 @@ public class Blur extends ScreenComponent<BaseScreen<?>> {
   public Tween $tween(float v, float d) {
     killTweenTarget(amount);
     return Tween.to(amount, 0, d).target(v).ease(Quart.OUT)
-           .setCallback(passCallback)
+           .setCallback((type, source) -> {
+             if (type==BEGIN) {
+               unlock();
+             } else {
+               lock();
+             }
+           })
            .setCallbackTriggers(BEGIN|COMPLETE);
   }
 
@@ -205,7 +196,7 @@ public class Blur extends ScreenComponent<BaseScreen<?>> {
   /** @param v value */
   public Tween $setAmount(float v) {
     killTweenTarget(amount);
-    return Tween.set(amount, 0).target(v).setCallback(scheduleCallback);
+    return Tween.set(amount, 0).target(v).setCallback((type, source) -> schedule());
   }
 
   public Tween $resetAmount() {

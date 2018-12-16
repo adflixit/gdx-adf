@@ -30,12 +30,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
  * Set of full-screen overlay rectangles which create effects such as screen fading, tinting, flashing, etc.
  */
 public class Overlay extends ScreenComponent<BaseScreen<?>> {
-  private final Group		root		= new Group();
-  private final Image		sheers		= new Image(drawable("white"));		// used for light color effects
-  private final Image		blackouts	= new Image(drawable("white"));		// used for fading the screen in and out
-  private final Image		tint		= new Image(drawable("white"));		// used for long-term screen tinting
-  private final Image		dim		= new Image(drawable("white"));		// used to add contrast to focus out the menus
-  private final Image		vignette	= new Image(drawable("vignette"));
+  private final Group	root		= new Group();
+  private final Image	sheers		= new Image(drawable("white"));		// used for light color effects
+  private final Image	blackouts	= new Image(drawable("white"));		// used for fading the screen in and out
+  private final Image	tint		= new Image(drawable("white"));		// used for long-term screen tinting
+  private final Image	dim		= new Image(drawable("white"));		// used to add contrast to focus out the menus
+  private final Image	vignette	= new Image(drawable("vignette"));
 
   public Overlay(BaseScreen<?> screen) {
     super(screen);
@@ -45,12 +45,8 @@ public class Overlay extends ScreenComponent<BaseScreen<?>> {
   }
 
   public void init() {
-    setAlpha(sheers, 0);
-    setAlpha(blackouts, 0);
-    setAlpha(tint, 0);
-    setAlpha(dim, 0);
+    resetAlpha(sheers, blackouts, tint, dim, vignette);
     setRgb(dim, color("black"));
-    setAlpha(vignette, 0);
   }
 
   public void update() {
@@ -343,7 +339,7 @@ public class Overlay extends ScreenComponent<BaseScreen<?>> {
   public Tween $tweenVignetteColor(Color clr, float d) {
     return $tweenActorColor(vignette, clr, d);
   }
-
+  
   /** Creates a handle to tween the {@link #vignette} color and opacity.
    * @param clr color
    * @param v value
@@ -353,12 +349,19 @@ public class Overlay extends ScreenComponent<BaseScreen<?>> {
     return $fadeActor(vignette, v, d);
   }
 
+  /** Creates a handle to tween the {@link #vignette} opacity.
+   * @param v value
+   * @param d duration */
+  public Tween $fadeVignette(float v, float d) {
+    return $fadeActor(vignette, v, d);
+  }
+
   /** Creates a handle to tween the {@link #vignette} opacity to 0.
    * @param d duration */
   public Tween $fadeVignetteOut(float d) {
     return $fadeActor(vignette, 0, d);
   }
-
+  
   /** Creates a handle to set the {@link #vignette} color and opacity.
    * @param clr color
    * @param v value */
@@ -366,12 +369,15 @@ public class Overlay extends ScreenComponent<BaseScreen<?>> {
     return $fadeVignette(clr, v, 0);
   }
 
+  /** Creates a handle to set the {@link #vignette} opacity.
+   * @param v value */
+  public Tween $setVignette(float v) {
+    return $fadeVignette(v, 0);
+  }
+
   /** Creates a handle to set the {@link #vignette} opacity to 0. */
   public Tween $resetVignette() {
     return $fadeVignetteOut(0);
-  }
-
-  public void dispose() {
   }
 
   public void resize() {

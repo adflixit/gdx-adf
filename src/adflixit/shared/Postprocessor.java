@@ -37,127 +37,120 @@ import java.util.List;
  * Draws the specified texture (usually the frame buffer output) with a shader filter.
  */
 public class Postprocessor extends ScreenComponent<BaseScreen<?>> {
-  private TweenCallback createLockCallback(final int i) {
-    return (type, source) -> {
-      if (type==BEGIN) {
-        unlock(i);
-      } else {
-        lock(i);
-      }
-    };
-  }
-
-  private TweenCallback createScheduleCallback(final int i) {
-    return (type, source) -> schedule(i);
-  }
-
-  public static final int		uniBlur			= 0,
-  					uniTiltshiftY		= 1,
-  					uniTiltshiftX		= 2;
+  public static final int		BLUR			= 0,
+					TSY			= 1,
+					TSX			= 2,
+  					TSYP			= 3;
   private static final String[]		uniNames		= {
     "u_blur",
     "u_tiltshiftY",
-    "u_tiltshiftX"
+    "u_tiltshiftX",
+    "u_tiltshiftYPos"
   };
   private static final int		uniLength		= uniNames.length;
-  private static final String		uniResName		= "u_res";
 
-  private ShaderProgram			shader;
-  private FrameBuffer			frameBuffer;
+  private ShaderProgram			firstPass;
+  private ShaderProgram			lastPass;
+  private FrameBuffer			firstFrameBuffer;
+  private FrameBuffer			lastFrameBuffer;
   private final List<MutableFloat>	values			= new ArrayList<>();
   private int				locks;			// update route permits
-  private int				schedules;		// one-time access tickets
-  private final TweenCallback[]		locksCallbacks		= new TweenCallback[uniLength];
-  private final TweenCallback[]		schedulesCallbacks	= new TweenCallback[uniLength];
+  private int				schedules;		// one-time update route permits
 
   public Postprocessor(BaseScreen<?> screen) {
     super(screen);
     for (int i=0; i < uniLength; i++) {
       values.add(new MutableFloat(0));
-      locksCallbacks[i] = createLockCallback(i);
-      schedulesCallbacks[i] = createScheduleCallback(i);
     }
   }
 
-  public Postprocessor(BaseScreen<?> screen, FileHandle vert, FileHandle frag) {
+  public Postprocessor(BaseScreen<?> screen, FileHandle hvert, FileHandle hfrag, FileHandle vvert, FileHandle vfrag) {
     this(screen);
-    load(vert, frag);
+    load(hvert, hfrag, vvert, vfrag);
   }
 
-  public Postprocessor(BaseScreen<?> screen, String vert, String frag) {
+  public Postprocessor(BaseScreen<?> screen, String hvert, String hfrag, String vvert, String vfrag) {
     this(screen);
-    load(vert, frag);
+    load(hvert, hfrag, vvert, vfrag);
   }
 
-  public void load(FileHandle vert, FileHandle frag) {
-    shader = new ShaderProgram(vert, frag);
+  public void load(FileHandle hvert, FileHandle hfrag, FileHandle vvert, FileHandle vfrag) {
+    firstPass = new ShaderProgram(hvert, hfrag);
+    lastPass = new ShaderProgram(vvert, vfrag);
   }
 
-  public void load(String vert, String frag) {
-    shader = new ShaderProgram(vert, frag);
+  public void load(String hvert, String hfrag, String vvert, String vfrag) {
+    firstPass = new ShaderProgram(hvert, hfrag);
+    lastPass = new ShaderProgram(vvert, vfrag);
   }
 
   public void reset() {
     for (int i=0; i < uniLength; i++) {
-      resetValue(i);
+      reset(i);
     }
     locks = 0;
     schedules = 0;
   }
 
   public Texture inputTex() {
-    return scr.screenTex();
+    return scr.fbTex();
   }
 
   public void draw() {
     Texture tex = inputTex();
-    // first drawn with mipmap filter, next with linear
-    TextureFilter ff = TextureFilter.MipMap, lf = TextureFilter.Linear;
-    float x = scr.cameraXAtZero(), y = scr.cameraYAtZero();
-    // if the filtering area is not full, the original texture has to be drawn first
+    float x = scr.cameraX0(), y = scr.cameraY0();
+    // if the processed area is not full, the original texture has to be drawn first
     if (!isFull()) {
       bat.begin();
-        bat.draw(tex, x, y, tex.getWidth(), tex.getHeight(), 0,0,1,1);
+        bat.draw(tex, x, y, scr.screenWidth(), scr.screenHeight(), 0,0,1,1);
       bat.end();
     }
-    bat.setShader(shader);
-    frameBuffer.begin();
+    // horizontal pass
+    bat.setShader(firstPass);
+    firstFrameBuffer.begin();
     bat.begin();
-      shader.setUniformf(uniResName, scr.frameBufferWidth(), scr.frameBufferHeight());
+      for (int i=0; i < uniLength; i++) {
+        int m = 1<<i;
+        if (hasFlag(locks, m) || hasFlag(schedules, m)) {
+          firstPass.setUniformf(uniNames[i], value(i));
+        }
+      }
+      bat.draw(tex, x, y, scr.screenWidth(), scr.screenHeight(), 0,0,1,1);
+    bat.end();
+    firstFrameBuffer.end();
+    // vertical pass
+    bat.setShader(lastPass);
+    lastFrameBuffer.begin();
+    bat.begin();
       for (int i=0; i < uniLength; i++) {
         int m = 1<<i;
         boolean scheduled = hasFlag(schedules, m);
         if (hasFlag(locks, m) || scheduled) {
-          shader.setUniformf(uniNames[i], value(i).floatValue());
+          lastPass.setUniformf(uniNames[i], value(i));
           if (scheduled) {
-          unschedule(i);
+            glog("nog");
+            unschedule(i);
           }
         }
       }
-      TextureFilter mgf = tex.getMagFilter(), mnf = tex.getMinFilter();
-      // switching to mipmap
-      tex.setFilter(ff, ff);
-      bat.draw(tex, x, y, tex.getWidth(), tex.getHeight(), 0,0,1,1);
-      // switching back
-      tex.setFilter(mgf, mnf);
+      tex = firstFrameBuffer.getColorBufferTexture();
+      bat.draw(tex, x, y, scr.screenWidth(), scr.screenHeight(), 0,0,1,1);
     bat.end();
-    frameBuffer.end();
-    bat.begin();
-      tex = frameBuffer.getColorBufferTexture();
-      // setting to linear
-      tex.setFilter(lf, lf);
-      bat.draw(frameBuffer.getColorBufferTexture(), x, y, scr.screenWidth(), scr.screenHeight(), 0,0,1,1);
-    bat.end();
+    lastFrameBuffer.end();
     bat.setShader(null);
+    bat.begin();
+      tex = lastFrameBuffer.getColorBufferTexture();
+      bat.draw(tex, x, y, scr.screenWidth(), scr.screenHeight(), 0,0,1,1);
+    bat.end();
   }
 
   public boolean isActive() {
-    return (locks|schedules) != 0;
+    return value(BLUR)+value(TSY)+value(TSX) > 0;
   }
 
   /** @return does the filter occupy the whole screen.  */
   public boolean isFull() {
-    return values.get(uniBlur).floatValue() > 0;
+    return value(BLUR) > 0;
   }
 
   /** Grants access to the update route for a filter specified by the index. */
@@ -176,7 +169,7 @@ public class Postprocessor extends ScreenComponent<BaseScreen<?>> {
     }
   }
 
-  /** Requests a one-time access to the update route. */
+  /** Requests one-time access to the update route. */
   private void schedule(int i) {
     int m = 1<<i;
     if (!hasFlag(schedules, m)) {
@@ -184,35 +177,45 @@ public class Postprocessor extends ScreenComponent<BaseScreen<?>> {
     }
   }
 
-  /** Resets the one-time access to the update route. */
+  /** Resets one-time access to the update route. */
   private void unschedule(int i) {
     int m = 1<<i;
     if (hasFlag(schedules, m)) {
       schedules ^= m;
     }
   }
-
-  private MutableFloat value(int i) {
+  
+  private MutableFloat field(int i) {
     return values.get(i);
   }
 
-  public void setValue(int i, float v) {
-    killTweenTarget(value(i));
-    value(i).setValue(v);
+  public float value(int i) {
+    return field(i).floatValue();
+  }
+
+  public void set(int i, float v) {
+    killTweenTarget(field(i));
+    field(i).setValue(v);
     schedule(i);
   }
 
-  public void resetValue(int i) {
-    setValue(i, 0);
+  public void reset(int i) {
+    set(i, 0);
   }
 
   /** @param i index
    * @param v value
    * @param d duration */
   public Tween $tween(int i, float v, float d) {
-    killTweenTarget(value(i));
-    return Tween.to(value(i), 0, d).target(v).ease(Quart.OUT)
-           .setCallback(locksCallbacks[i])
+    killTweenTarget(field(i));
+    return Tween.to(field(i), 0, d).target(v).ease(Quart.OUT)
+           .setCallback((type, source) -> {
+             if (type==BEGIN) {
+               unlock(i);
+             } else {
+               lock(i);
+             }
+           })
            .setCallbackTriggers(BEGIN|COMPLETE);
   }
 
@@ -224,27 +227,31 @@ public class Postprocessor extends ScreenComponent<BaseScreen<?>> {
 
   /** @param i index
    * @param v value */
-  public Tween $setValue(int i, float v) {
-    killTweenTarget(value(i));
-    return Tween.set(value(i), 0).target(v).setCallback(schedulesCallbacks[i]);
+  public Tween $set(int i, float v) {
+    killTweenTarget(field(i));
+    return Tween.set(field(i), 0).target(v).setCallback((type, source) -> schedule(i));
   }
 
   /** @param i index */
-  public Tween $resetValue(int i) {
-    return $setValue(i, 0);
+  public Tween $reset(int i) {
+    return $set(i, 0);
   }
 
   public void dispose() {
-    shader.dispose();
-    frameBuffer.dispose();
+    firstPass.dispose();
+    lastPass.dispose();
+    firstFrameBuffer.dispose();
+    lastFrameBuffer.dispose();
   }
 
   public void resize() {
     if (firstResize) {
       firstResize = false;
     } else {
-      frameBuffer.dispose();
+      firstFrameBuffer.dispose();
+      lastFrameBuffer.dispose();
     }
-    frameBuffer = new FrameBuffer(Format.RGBA8888, scr.frameBufferWidth(), scr.frameBufferHeight(), false);
+    firstFrameBuffer = new FrameBuffer(Format.RGBA8888, scr.frameBufferWidth(), scr.frameBufferHeight(), false);
+    lastFrameBuffer = new FrameBuffer(Format.RGBA8888, scr.frameBufferWidth(), scr.frameBufferHeight(), false);
   }
 }

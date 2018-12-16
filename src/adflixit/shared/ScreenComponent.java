@@ -23,7 +23,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
-public abstract class ScreenComponent<S extends BaseScreen<?>> {
+public abstract class ScreenComponent<S extends BaseScreen<?>> extends Logger {
   protected final S		scr;		// screen
   protected final SpriteBatch	bat;		// screen batch
   protected final Camera	cam;

@@ -88,10 +88,7 @@ public final class Util {
   					C_OP_G			= .15f,		// ghost opacity
   					C_IDLEACTION_D		= 30,		// idle action delay
   					C_REPACTION_D		= 10,		// repetitive action delay
-
-  					OL_VIG_OP		= .2f,		// overlay vignette opacity
   					OL_FLASH_OP		= .4f,		// overlay flash opacity
-
   					PLXBG_FC		= .8f,		// parallax background scrolling factor
 
   					// Button sizes
@@ -546,19 +543,21 @@ public final class Util {
 
   /************* Scene utilities ************/
 
-  public static void addActors(Group g, Actor... a) {
-    for (Actor actor : a) {
-      g.addActor(actor);
+  public static Group addActors(Group group, Actor... actors) {
+    for (Actor actor : actors) {
+      group.addActor(actor);
     }
+    return group;
   }
 
-  public static boolean hasChild(Group g, Actor a) {
-    return g.getChildren().contains(a, true);
+  public static boolean hasChild(Group group, Actor actor) {
+    return group.getChildren().contains(actor, true);
   }
 
   /** Turns actor visible. */
-  public static void showActor(Actor actor) {
+  public static Actor showActor(Actor actor) {
     actor.setVisible(true);
+    return actor;
   }
 
   /** Turns actors visible. */
@@ -569,8 +568,9 @@ public final class Util {
   }
 
   /** Turns actor invisible. */
-  public static void hideActor(Actor actor) {
+  public static Actor hideActor(Actor actor) {
     actor.setVisible(false);
+    return actor;
   }
 
   /** Turns actors invisible. */
@@ -587,19 +587,34 @@ public final class Util {
   public static float getAlpha(Sprite sprite) {
     return sprite.getColor().a;
   }
-
-  public static void setAlpha(Actor actor, float a) {
+  
+  public static Actor setAlpha(Actor actor, float a) {
     actor.getColor().a = a;
+    return actor;
+  }
+  
+  public static void setAlpha(float a, Actor... actors) {
+    for (Actor actor : actors) {
+      setAlpha(actor, a);
+    }
+  }
+
+  public static void setAlpha(float a, Sprite... sprites) {
+    for (Sprite sprite : sprites) {
+      sprite.setAlpha(a);
+    }
   }
 
   /** Sets alpha to 0. */
-  public static void resetAlpha(Actor actor) {
+  public static Actor resetAlpha(Actor actor) {
     actor.getColor().a = 0;
+    return actor;
   }
 
   /** Sets alpha to 0. */
-  public static void resetAlpha(Sprite sprite) {
+  public static Sprite resetAlpha(Sprite sprite) {
     sprite.setAlpha(0);
+    return sprite;
   }
 
   /** Sets alpha to 0. */
@@ -616,20 +631,24 @@ public final class Util {
     }
   }
 
-  public static void setRgb(Actor actor, float r, float g, float b) {
+  public static Actor setRgb(Actor actor, float r, float g, float b) {
     actor.setColor(r, g, b, getAlpha(actor));
+    return actor;
   }
 
-  public static void setRgb(Actor actor, Color clr) {
+  public static Actor setRgb(Actor actor, Color clr) {
     setRgb(actor, clr.r, clr.g, clr.b);
+    return actor;
   }
 
-  public static void setRgb(Sprite spr, float r, float g, float b) {
-    spr.setColor(r, g, b, getAlpha(spr));
+  public static Sprite setRgb(Sprite sprite, float r, float g, float b) {
+    sprite.setColor(r, g, b, getAlpha(sprite));
+    return sprite;
   }
 
-  public static void setRgb(Sprite spr, Color clr) {
-    setRgb(spr, clr.r, clr.g, clr.b);
+  public static Sprite setRgb(Sprite sprite, Color clr) {
+    setRgb(sprite, clr.r, clr.g, clr.b);
+    return sprite;
   }
 
   /** @return a {@link ImageButton} with the specified image and background. */
