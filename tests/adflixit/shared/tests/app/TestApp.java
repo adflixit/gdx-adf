@@ -33,7 +33,7 @@ public class TestApp extends BaseGame {
 
   @Override public void create() {
     super.create();
-    initSkin(internalFile("tests/data/uiskin.json"), new TextureAtlas("tests/data/textures.atlas"));
+    loadSkin(internalFile("tests/data/uiskin.json"), new TextureAtlas("tests/data/textures.atlas"));
     loadProps(localFile("tests/data/cfg.properties"));
     loadPrefs("test");
     //Gdx.input.setCatchMenuKey(true);

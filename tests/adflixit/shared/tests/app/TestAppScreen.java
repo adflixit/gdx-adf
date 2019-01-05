@@ -21,13 +21,22 @@ import static adflixit.shared.BaseGame.internalFile;
 import adflixit.shared.BaseScreen;
 
 public class TestAppScreen extends BaseScreen<TestApp> {
-    public TestAppScreen(TestApp game) {
-    super(game);
-    String dir = "assets/data/";
-    postprocessor.load(internalFile(dir+"pph.vert"), internalFile(dir+"pph.frag"),
-        internalFile(dir+"ppv.vert"), internalFile(dir+"ppv.frag"));
+  private class Screen extends TestAppScreen {
+    public Screen(TestApp game) {
+      super(game);
+    }
+
+    @Override public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+      super.touchDown(screenX, screenY, pointer, button);
+      glog(touch.x+" "+touch.y);
+      return true;
+    }
   }
 
-  @Override public void goBack() {
+  public TestAppScreen(TestApp game) {
+    super(game);
+  }
+
+  @Override public void goBackAction() {
   }
 }
