@@ -40,7 +40,7 @@ void main() {
   vec2 uv = v_texCoords;
   if (u_blur + u_tiltshiftY + u_tiltshiftX != 0.) {
     blur(u_tiltshiftY + u_tiltshiftX > 0. ? u_blur + 
-	    (clamp(u_tiltshiftY - u_blur, 0., 1.)*tsyp) + 
-	    (clamp(u_tiltshiftX - u_blur, 0., 1.)*tsxp) : u_blur);
+        (clamp(u_tiltshiftY - u_blur, 0., 1.)*tsyp) + 
+        (clamp(u_tiltshiftX - u_blur, 0., 1.)*tsxp) : u_blur);
   }
 }

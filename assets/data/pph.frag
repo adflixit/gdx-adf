@@ -26,7 +26,7 @@ vec4 blur(vec4 color) {
   color += v_color * texture2D(u_texture, v_blurTexCoords[ 4]) * .0776744219933;
   color += v_color * texture2D(u_texture, v_blurTexCoords[ 5]) * .115876621105;
   color += v_color * texture2D(u_texture, v_blurTexCoords[ 6]) * .147308056121;
-  color += v_color * texture2D(u_texture, v_texCoords       )  * .159576912161;
+  color += v_color * texture2D(u_texture, v_texCoords        ) * .159576912161;
   color += v_color * texture2D(u_texture, v_blurTexCoords[ 7]) * .147308056121;
   color += v_color * texture2D(u_texture, v_blurTexCoords[ 8]) * .115876621105;
   color += v_color * texture2D(u_texture, v_blurTexCoords[ 9]) * .0776744219933;
@@ -42,8 +42,8 @@ void main() {
   vec4 color = vec4(0.);
   if (u_blur + u_tiltshiftY + u_tiltshiftX > 0.) {
     float a = u_tiltshiftX + u_tiltshiftY > 0. ? u_blur + 
-	    (clamp(u_tiltshiftY - u_blur, 0., 1.)*tsyp) + 
-	    (clamp(u_tiltshiftX - u_blur, 0., 1.)*tsxp) : u_blur;
+        (clamp(u_tiltshiftY - u_blur, 0., 1.)*tsyp) + 
+        (clamp(u_tiltshiftX - u_blur, 0., 1.)*tsxp) : u_blur;
     color = vec4(blur(color).rgb, 1. - (a-u_blur));
   }
   gl_FragColor = color;
