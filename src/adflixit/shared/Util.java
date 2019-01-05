@@ -45,61 +45,61 @@ import org.json.simple.JSONObject;
 public final class Util {
   private Util() {}
 
-  public static final double		SQRT2			= sqrt(2),
-  					SQRT3			= sqrt(3),
-  					LOG2			= log(2),
-  					CIRCLE			= PI*2,
-  					SEMICIRCLE		= PI,
-  					QTRCIRCLE		= PI/2,
-  					DEGREE			= PI/180,
-  					GOLDENRATIO		= (1+sqrt(5))/2,
-  					INVGOLDENRATIO		= 1/GOLDENRATIO;
+  public static final double    SQRT2             = sqrt(2),
+                                SQRT3             = sqrt(3),
+                                LOG2              = log(2),
+                                CIRCLE            = PI*2,
+                                SEMICIRCLE        = PI,
+                                QTRCIRCLE         = PI/2,
+                                DEGREE            = PI/180,
+                                GOLDENRATIO       = (1+sqrt(5))/2,
+                                INVGOLDENRATIO    = 1/GOLDENRATIO;
 
-  public static final float		C_D			= .4f,		// duration
-  					C_TD			= .025f,	// tiny duration
-  					C_SD			= .1f,		// small duration
-  					C_HD			= .2f,		// half duration
-  					C_OD			= .6f,		// one and a half duration
-  					C_DD			= .8f,		// double duration
-  					C_MD			= 1f,		// moderate duration
-  					C_ID			= 1.5f,		// intermediate duration
-  					C_FD			= 2f,		// fair duration
-  					C_BD			= 2.5f,		// big duration
-  					C_GD			= 4,		// giant duration
-  					C_DT			= 100,		// distance
-  					C_SDT			= 20,		// small distance
-  					C_MDT			= 150,		// moderate distance
-  					C_BDT			= 250,		// big distance
-  					C_GDT			= 500,		// giant distance
-  					C_WDT			= 720,		// width
-  					C_HGT			= 444,		// height
-  					C_MRG			= 18,		// margin
-  					C_PAD			= 20,		// padding
-  					C_PAD_S			= 10,		// small padding
-  					C_INV			= 10,		// interval
-  					C_SHD_RAD		= 8,		// shadow radius
-  					C_SHD_OFS		= 4,		// shadow offset
-  					C_SHD_OP		= .2f,		// shadow opacity
-  					C_POPUP_IN_SC		= 1.2f,		// popup intro scale
-  					C_POPUP_OUT_SC		= .8f,		// popup outro scale
-  					C_OP_S			= .8f,		// solid opacity
-  					C_OP_D			= .6f,		// dimmed opacity
-  					C_OP_T			= .3f,		// transparent opacity
-  					C_OP_G			= .15f,		// ghost opacity
-  					C_IDLEACTION_D		= 30,		// idle action delay
-  					C_REPACTION_D		= 10,		// repetitive action delay
-  					OL_FLASH_OP		= .4f,		// overlay flash opacity
-  					PLXBG_FC		= .8f,		// parallax background scrolling factor
+  public static final float     C_D               = .4f,    // duration
+                                C_TD              = .025f,  // tiny duration
+                                C_SD              = .1f,    // small duration
+                                C_HD              = .2f,    // half duration
+                                C_OD              = .6f,    // one and a half duration
+                                C_DD              = .8f,    // double duration
+                                C_MD              = 1f,     // moderate duration
+                                C_ID              = 1.5f,   // intermediate duration
+                                C_FD              = 2f,     // fair duration
+                                C_BD              = 2.5f,   // big duration
+                                C_GD              = 4,      // giant duration
+                                C_DT              = 100,    // distance
+                                C_SDT             = 20,     // small distance
+                                C_MDT             = 150,    // moderate distance
+                                C_BDT             = 250,    // big distance
+                                C_GDT             = 500,    // giant distance
+                                C_WDT             = 720,    // width
+                                C_HGT             = 444,    // height
+                                C_MRG             = 18,     // margin
+                                C_PAD             = 20,     // padding
+                                C_PAD_S           = 10,     // small padding
+                                C_INV             = 10,     // interval
+                                C_SHD_RAD         = 8,      // shadow radius
+                                C_SHD_OFS         = 4,      // shadow offset
+                                C_SHD_OP          = .2f,    // shadow opacity
+                                C_POPUP_IN_SC     = 1.2f,   // popup intro scale
+                                C_POPUP_OUT_SC    = .8f,    // popup outro scale
+                                C_OP_S            = .8f,    // solid opacity
+                                C_OP_D            = .6f,    // dimmed opacity
+                                C_OP_T            = .3f,    // transparent opacity
+                                C_OP_G            = .15f,   // ghost opacity
+                                C_IDLEACTION_D    = 30,     // idle action delay
+                                C_REPACTION_D     = 10,     // repetitive action delay
+                                OL_FLASH_OP       = .4f,    // overlay flash opacity
+                                PLXBG_FC          = .8f,    // parallax background scrolling factor
 
-  					// Button sizes
-  					BTN_BG			= 150,
-  					BTN_MD			= 100,
-  					BTN_SM			= 80;
+                                // Button sizes
+                                BTN_BG            = 150,
+                                BTN_MD            = 100,
+                                BTN_SM            = 80;
 
   // Common use temporary variables
-  public static final Vector2		tmpv2			= new Vector2();
-  public static final Vector3		tmpv3			= new Vector3();
-  public static final Color		tmpclr			= new Color();
+  public static final Vector2   tmpv2             = new Vector2();
+  public static final Vector3   tmpv3             = new Vector3();
+  public static final Color     tmpclr            = new Color();
 
   /** @return current time in milliseconds. */
   public static long currentTime() {
@@ -837,46 +837,46 @@ public final class Util {
 
   /************** Math utilities ************/
 
-  public static float sinf(float a)			{return (float)sin(a);}
-  public static float sinf(double a)			{return (float)sin(a);}
-  public static float cosf(float a)			{return (float)cos(a);}
-  public static float cosf(double a)			{return (float)cos(a);}
-  public static float tanf(float a)			{return (float)tan(a);}
-  public static float tanf(double a)			{return (float)tan(a);}
-  public static float asinf(float a)			{return (float)asin(a);}
-  public static float asinf(double a)			{return (float)asin(a);}
-  public static float acosf(float a)			{return (float)acos(a);}
-  public static float acosf(double a)			{return (float)acos(a);}
-  public static float atanf(float a)			{return (float)atan(a);}
-  public static float atanf(double a)			{return (float)atan(a);}
-  public static float expf(float a)			{return (float)exp(a);}
-  public static float expf(double a)			{return (float)exp(a);}
-  public static float logf(float a)			{return (float)log(a);}
-  public static float logf(double a)			{return (float)log(a);}
-  public static float log10f(float a)			{return (float)log10(a);}
-  public static float log10f(double a)			{return (float)log10(a);}
-  public static float sqrtf(float a)			{return (float)sqrt(a);}
-  public static float sqrtf(double a)			{return (float)sqrt(a);}
-  public static float cbrtf(float a)			{return (float)cbrt(a);}
-  public static float cbrtf(double a)			{return (float)cbrt(a);}
-  public static float ceilf(float a)			{return (float)ceil(a);}
-  public static float ceilf(double a)			{return (float)ceil(a);}
-  public static float floorf(float a)			{return (float)floor(a);}
-  public static float floorf(double a)			{return (float)floor(a);}
-  public static float rintf(float a)			{return (float)rint(a);}
-  public static float rintf(double a)			{return (float)rint(a);}
-  public static float atan2f(float y, float x)		{return (float)atan2(y,x);}
-  public static float atan2f(double y, double x)	{return (float)atan2(y,x);}
-  public static float powf(float a, float b)		{return (float)pow(a,b);}
-  public static float powf(double a, double b)		{return (float)pow(a,b);}
-  public static float sinhf(float x)			{return (float)sinh(x);}
-  public static float sinhf(double x)			{return (float)sinh(x);}
-  public static float coshf(float x)			{return (float)cosh(x);}
-  public static float coshf(double x)			{return (float)cosh(x);}
-  public static float tanhf(float x)			{return (float)tanh(x);}
-  public static float tanhf(double x)			{return (float)tanh(x);}
-  public static float hypotf(float x, float y)		{return (float)hypot(x,y);}
-  public static float hypotf(double x, double y)	{return (float)hypot(x,y);}
+  public static float sinf(float a)               {return (float)sin(a);}
+  public static float sinf(double a)              {return (float)sin(a);}
+  public static float cosf(float a)               {return (float)cos(a);}
+  public static float cosf(double a)              {return (float)cos(a);}
+  public static float tanf(float a)               {return (float)tan(a);}
+  public static float tanf(double a)              {return (float)tan(a);}
+  public static float asinf(float a)              {return (float)asin(a);}
+  public static float asinf(double a)             {return (float)asin(a);}
+  public static float acosf(float a)              {return (float)acos(a);}
+  public static float acosf(double a)             {return (float)acos(a);}
+  public static float atanf(float a)              {return (float)atan(a);}
+  public static float atanf(double a)             {return (float)atan(a);}
+  public static float expf(float a)               {return (float)exp(a);}
+  public static float expf(double a)              {return (float)exp(a);}
+  public static float logf(float a)               {return (float)log(a);}
+  public static float logf(double a)              {return (float)log(a);}
+  public static float log10f(float a)             {return (float)log10(a);}
+  public static float log10f(double a)            {return (float)log10(a);}
+  public static float sqrtf(float a)              {return (float)sqrt(a);}
+  public static float sqrtf(double a)             {return (float)sqrt(a);}
+  public static float cbrtf(float a)              {return (float)cbrt(a);}
+  public static float cbrtf(double a)             {return (float)cbrt(a);}
+  public static float ceilf(float a)              {return (float)ceil(a);}
+  public static float ceilf(double a)             {return (float)ceil(a);}
+  public static float floorf(float a)             {return (float)floor(a);}
+  public static float floorf(double a)            {return (float)floor(a);}
+  public static float rintf(float a)              {return (float)rint(a);}
+  public static float rintf(double a)             {return (float)rint(a);}
+  public static float atan2f(float y, float x)    {return (float)atan2(y,x);}
+  public static float atan2f(double y, double x)  {return (float)atan2(y,x);}
+  public static float powf(float a, float b)      {return (float)pow(a,b);}
+  public static float powf(double a, double b)    {return (float)pow(a,b);}
+  public static float sinhf(float x)              {return (float)sinh(x);}
+  public static float sinhf(double x)             {return (float)sinh(x);}
+  public static float coshf(float x)              {return (float)cosh(x);}
+  public static float coshf(double x)             {return (float)cosh(x);}
+  public static float tanhf(float x)              {return (float)tanh(x);}
+  public static float tanhf(double x)             {return (float)tanh(x);}
+  public static float hypotf(float x, float y)    {return (float)hypot(x,y);}
+  public static float hypotf(double x, double y)  {return (float)hypot(x,y);}
 
   /** @return if {@code flag} intersects {@code flags}. {@code flag} has to be one single bit. */
   public static boolean hasFlag(int flags, int flag) {
@@ -1270,23 +1270,23 @@ public final class Util {
 
   /************** Type utilities ************/
 
-  public static Integer	wrap(int a)	{return new Integer(a);}
-  public static Long	wrap(long a)	{return new Long(a);}
-  public static Float	wrap(float a)	{return new Float(a);}
-  public static Double	wrap(double a)	{return new Double(a);}
-  public static Boolean	wrap(boolean a)	{return new Boolean(a);}
+  public static Integer  wrap(int a)      {return new Integer(a);}
+  public static Long     wrap(long a)     {return new Long(a);}
+  public static Float    wrap(float a)    {return new Float(a);}
+  public static Double   wrap(double a)   {return new Double(a);}
+  public static Boolean  wrap(boolean a)  {return new Boolean(a);}
 
   /************** JSON utilities ************/
 
-  public static String			toJson(Object obj)			{return (new Json()).toJson(obj);}
-  public static <T extends Object> T	readJson(Class<T> type, String data)	{return (new Json()).fromJson(type, data);}
-  public static int			JsonInt(JSONObject obj, String key)	{return ((Long)obj.get(key)).intValue();}
-  public static short			JsonShort(JSONObject obj, String key)	{return ((Long)obj.get(key)).shortValue();}
-  public static long			JsonLong(JSONObject obj, String key)	{return ((Long)obj.get(key)).longValue();}
-  public static float			JsonFloat(JSONObject obj, String key)	{return ((Double)obj.get(key)).floatValue();}
-  public static double			JsonDouble(JSONObject obj, String key)	{return ((Double)obj.get(key)).doubleValue();}
-  public static boolean			JsonBool(JSONObject obj, String key)	{return ((Boolean)obj.get(key)).booleanValue();}
-  public static String			JsonString(JSONObject obj, String key)	{return (String)obj.get(key);}
-  public static JSONObject		JsonObject(JSONObject obj, String key)	{return (JSONObject)obj.get(key);}
-  public static JSONArray		JsonArray(JSONObject obj, String key)	{return (JSONArray)obj.get(key);}
+  public static String toJson(Object obj) {return (new Json()).toJson(obj);}
+  public static <T extends Object> T readJson(Class<T> type, String data) {return (new Json()).fromJson(type, data);}
+  public static int JsonInt(JSONObject obj, String key)  {return ((Long)obj.get(key)).intValue();}
+  public static short JsonShort(JSONObject obj, String key) {return ((Long)obj.get(key)).shortValue();}
+  public static long JsonLong(JSONObject obj, String key) {return ((Long)obj.get(key)).longValue();}
+  public static float JsonFloat(JSONObject obj, String key) {return ((Double)obj.get(key)).floatValue();}
+  public static double JsonDouble(JSONObject obj, String key) {return ((Double)obj.get(key)).doubleValue();}
+  public static boolean JsonBool(JSONObject obj, String key) {return ((Boolean)obj.get(key)).booleanValue();}
+  public static String JsonString(JSONObject obj, String key) {return (String)obj.get(key);}
+  public static JSONObject JsonObject(JSONObject obj, String key) {return (JSONObject)obj.get(key);}
+  public static JSONArray JsonArray(JSONObject obj, String key) {return (JSONArray)obj.get(key);}
 }

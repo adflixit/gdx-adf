@@ -27,10 +27,10 @@ import org.json.simple.parser.ParseException;
  * Used to pack data into a readable and editable format, such as JSON.
  */
 public class DataPacker {
-  public static final JSONParser	parser		= new JSONParser();
-  private JSONObject			read		= new JSONObject();
-  private JSONObject			write		= new JSONObject();
-  private boolean			isValid		= true;
+  public static final JSONParser  parser   = new JSONParser();
+  private JSONObject              read     = new JSONObject();
+  private JSONObject              write    = new JSONObject();
+  private boolean                 isValid  = true;
 
   public void read(String data) {
     read.clear();

@@ -29,9 +29,9 @@ import adflixit.shared.ClickCallback;
  * {@link ClickListener} that operates the target actor's opacity.
  */
 public class OpClickListener extends ClickListener {
-  private Actor		actor;
-  private float		initOp, fadeOp;
-  private ClickCallback callback;
+  private Actor          actor;
+  private float          initOp, fadeOp;
+  private ClickCallback  callback;
 
   public OpClickListener(Actor actor, float iop, float fop, ClickCallback cb) {
     super();

@@ -18,7 +18,6 @@ package adflixit.shared;
 
 import static adflixit.shared.BaseGame.*;
 import static adflixit.shared.TweenUtils.*;
-import static adflixit.shared.Postprocessor.*;
 import static adflixit.shared.Util.*;
 import static aurelienribon.tweenengine.TweenCallback.*;
 import static com.badlogic.gdx.graphics.Color.WHITE;
@@ -61,17 +60,17 @@ import java.util.List;
  * <li>UI layers:<ul><li>Overlay</li><li>Game</li><li>Menus</li></ul></li>
  * <li>Benchmark.</li>
  * <li>Graphics and postprocessing adjustments.</li>
- * <li>Postprocessor.</li>
- * <li>Tween handlers:<ul><li>Timescale</li><li>Sound volume</li><li>Camera</li><li>UI layers</li><li>Overlay</li><li>Postprocessor</li></ul></li>
+ * <li>Blur.</li>
+ * <li>Tween handlers:<ul><li>Timescale</li><li>Sound volume</li><li>Camera</li><li>UI layers</li><li>Overlay</li><li>Blur</li></ul></li>
  * </ul>
  * @param <G> a {@link BaseGame} instance.
  */
 public abstract class BaseScreen<G extends BaseGame> extends Logger implements InputProcessor, GestureListener {
-  public static final TweenManager	tweenMgr		= new TweenManager();	// general tween manager
-  public static final TweenManager	tscTweenMgr		= new TweenManager();	// timescaled tween manager
-  public static final TweenManager	uiTweenMgr		= new TweenManager();	// UI tween manager
+  public static final TweenManager    tweenMgr            = new TweenManager();  // general tween manager
+  public static final TweenManager    tscTweenMgr         = new TweenManager();  // timescaled tween manager
+  public static final TweenManager    uiTweenMgr          = new TweenManager();  // UI tween manager
 
-  public static final Updater		updater			= new Updater();
+  public static final Updater         updater             = new Updater();
 
   public static void addUpdatable(Updatable a) {
     updater.add(a);
@@ -83,14 +82,14 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
 
   // The screen lesser dimension which determines the larger dimension by scaling it by the aspect ratio.
   // It can only be changed once during lifetime of the app, preferably at the very start.
-  private static float			ldm			= 720;
-  private static boolean		ldmDeadlock;
+  private static float                ldm                 = 720;
+  private static boolean              ldmDeadlock;
 
   /** Changes the screen lesser dimension once during the runtime. */
   public static void setLdm(float v) {
     if (!ldmDeadlock) {
       glog("Setting the screen lesser dimension to "+v);
-      ldmDeadlock = true;		
+      ldmDeadlock = true;    
       ldm = v;
     }
   }
@@ -101,26 +100,26 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
   }
 
   // UI layers
-  public static final int		// indices
-  					UIL_OVERLAY		= 0,
-  					UIL_GAME		= 1,
-  					UIL_MENUS		= 2,
-  					UIL_LENGTH		= 3,
-  					// flags
-  					UIL_OVERLAY_F		= 1<<0,
-  					UIL_GAME_F		= 1<<1,
-  					UIL_MENUS_F		= 1<<2,
-  					UIL_ALL			= sumFlags(UIL_MENUS_F),
-  					UIL_GENERAL		= UIL_GAME_F | UIL_MENUS_F;
+  public static final int             // indices
+                                      UIL_OVERLAY         = 0,
+                                      UIL_GAME            = 1,
+                                      UIL_MENUS           = 2,
+                                      UIL_LENGTH          = 3,
+                                      // flags
+                                      UIL_OVERLAY_F       = 1<<0,
+                                      UIL_GAME_F          = 1<<1,
+                                      UIL_MENUS_F         = 1<<2,
+                                      UIL_ALL             = sumFlags(UIL_MENUS_F),
+                                      UIL_GENERAL         = UIL_GAME_F | UIL_MENUS_F;
 
   // Benchmark is used to determine whether the device is capable of using the advanced performance features such as postprocessing.
-  public static final String		benchmarkKey		= "benchmark";
-  public static final float		benchmarkDuration	= 3;	// duration of benchmark in seconds
-  private static boolean		benchmarked;		// assigned whether when the benchmark info is loaded or when benchmark is done
-  private static boolean		benchmarkTesting;	// whether it is running or not
-  private static float			benchmarkTime;		// time spent on benchmark
-  private static int			benchmarkFrames;	// number of frames rendered during benchmark
-  private static float			benchmarkFps;		// FPS during the benchmark
+  public static final String          benchmarkKey        = "benchmark";
+  public static final float           benchmarkDuration   = 3;  // duration of benchmark in seconds
+  private static boolean              benchmarked;       // assigned whether when the benchmark info is loaded or when benchmark is done
+  private static boolean              benchmarkTesting;  // whether it is running or not
+  private static float                benchmarkTime;     // time spent on benchmark
+  private static int                  benchmarkFrames;   // number of frames rendered during benchmark
+  private static float                benchmarkFps;      // FPS during the benchmark
 
   public static void loadBenchmarkInfo() {
     if (prefsContain(benchmarkKey)) {
@@ -142,56 +141,58 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
   }
 
   // Indicates whether the app has to run without any advanced graphical features, such as both postprocessing and texture filtering other than nearest.
-  private static boolean		simpleGraphics;
-  private static boolean		advancedPerformance;	// indicates whether the app may use advanced performance features, such as a GPU
-  public static final int		resDenom		= 4;	// resolution denominator used by the postprocessing resource economy
-  public static final TextureFilter	textureFilterHq		= TextureFilter.Linear,
-  					textureFilterLq		= TextureFilter.Nearest;
+  private static boolean              simpleGraphics;
+  private static boolean              advancedPerformance;  // indicates whether the app may use advanced performance features, such as a GPU
+  public static final int             resDenom            = 4;  // resolution denominator used by the postprocessing economy
+  public static final TextureFilter   textureFilterHq     = TextureFilter.Linear,
+                                      textureFilterLq     = TextureFilter.Nearest;
 
   private static void setAdvancedPerformance(boolean v) {
     glog("Advanced performance "+(v?"enabled":"disabled"));
     advancedPerformance = v;
   }
 
-  protected final G			game;
-  protected final SpriteBatch		batch			= new SpriteBatch();
-  protected final OrthographicCamera	camera			= new OrthographicCamera();
-  protected final Vector3		camBasePos		= new Vector3();
-  protected final AdaptiveViewport	viewport		= new AdaptiveViewport(camera);
-  protected final ShapeRenderer		shapeRenderer		= new ShapeRenderer();
-  protected final AdaptiveViewport	uiViewport		= new AdaptiveViewport();
-  protected final Stage			ui			= new Stage(uiViewport);
-  protected final Group[]		uiLayers		= {new Group(), new Group(), new Group()};
-  protected final Overlay		overlay			= new Overlay(this);
-  protected final Postprocessor		postprocessor		= new Postprocessor(this);
-  protected final Tapper		tapper			= new Tapper(this);
-  protected final Timestamp		timestamp		= new Timestamp();
-  protected final InputMultiplexer	inputMultiplexer	= new InputMultiplexer();
-  protected final Vector2		touch			= new Vector2();
-  protected FrameBuffer			frameBuffer;
+  protected final G                   game;
+  protected final SpriteBatch         batch               = new SpriteBatch();
+  protected final OrthographicCamera  camera              = new OrthographicCamera();
+  protected final Vector3             camBasePos          = new Vector3();
+  protected final AdaptiveViewport    viewport            = new AdaptiveViewport(camera);
+  protected final ShapeRenderer       shapeRenderer       = new ShapeRenderer();
+  protected final AdaptiveViewport    uiViewport          = new AdaptiveViewport();
+  protected final Stage               ui                  = new Stage(uiViewport);
+  protected final Group[]             uiLayers            = {new Group(), new Group(), new Group()};
+  protected final Overlay             overlay             = new Overlay(this);
+  protected final Blur                blur                = new Blur(this);
+  protected final Tapper              tapper              = new Tapper(this);
+  protected final Timestamp           timestamp           = new Timestamp();
+  protected final InputMultiplexer    inputMultiplexer    = new InputMultiplexer();
+  protected final Vector2             touch               = new Vector2();
+  protected FrameBuffer               frameBuffer;
+  protected boolean                   useFrameBuffer;
 
-  private final MutableFloat		camShake		= new MutableFloat(0);	// current camera shake amplitude
-  private final MutableFloat		timescale		= new MutableFloat(1);	// time multiplier
-  private final MutableFloat		uiTimescale		= new MutableFloat(1);
-  private final MutableFloat		masterVolume		= new MutableFloat(1);	// sound volume
-  private final MutableFloat		sfxVolume		= new MutableFloat(1);	// sound effects volume
-  private final MutableFloat		musicVolume		= new MutableFloat(1);
-  private final List<Music>		musicList		= new ArrayList<>();	// music volume has to be manually update on a transition
-  private boolean			updatingVolume;
-  private final TweenCallback		masterVolumeCallback	= (type, source) -> updatingVolume = type==BEGIN;
+  private final MutableFloat          camShake            = new MutableFloat(0);  // current camera shake amplitude
+  private final MutableFloat          timescale           = new MutableFloat(1);  // time multiplier
+  private final MutableFloat          uiTimescale         = new MutableFloat(1);
+  private final MutableFloat          masterVolume        = new MutableFloat(1);  // sound volume
+  private final MutableFloat          sfxVolume           = new MutableFloat(1);  // sound effects volume
+  private final MutableFloat          musicVolume         = new MutableFloat(1);
+  private final List<Music>           musicList           = new ArrayList<>();  // music volume has to be manually update on a transition
+  private boolean                     updatingVolume;
+  private final TweenCallback         masterVolumeCallback  = (type, source) -> updatingVolume = type==BEGIN;
 
   // Temporal values
-  protected final Vector2		tmpv2			= new Vector2();
-  protected final Vector3		tmpv3			= new Vector3();
-  protected final Color			tmpclr			= new Color();
+  protected final Vector2             tmpv2               = new Vector2();
+  protected final Vector3             tmpv3               = new Vector3();
+  protected final Color               tmpclr              = new Color();
 
   // Last screen size info is stored in two different fields switching after every other resize
-  private boolean			lastScreenSizeJunc;
-  private final Vector2			evenLastScreenSize	= new Vector2();
-  private final Vector2			oddLastScreenSize	= new Vector2();
-  private boolean			firstResize		= true;
+  private boolean                     lastScreenSizeJunc;
+  private final Vector2               evenLastScreenSize  = new Vector2();
+  private final Vector2               oddLastScreenSize   = new Vector2();
+  private boolean                     firstResize         = true;
+  protected boolean                   doPostprocess;
 
-  private final Color			black			= new Color(0x0f1114ff);
+  private final Color                 black               = new Color(0x0f1114ff);
 
   public BaseScreen(G game) {
     this.game = game;
@@ -324,12 +325,20 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
     return (int)screenHeight();
   }
 
-  public int frameBufferWidth() {
+  public int fbWidth() {
     return screenWidthI() / resDenom;
   }
 
-  public int frameBufferHeight() {
+  public int fbHeight() {
     return screenHeightI() / resDenom;
+  }
+
+  public int primaryFbWidth() {
+    return screenWidthI();
+  }
+
+  public int primaryFbHeight() {
+    return screenHeightI();
   }
 
   /** @return physical screen width. */
@@ -1416,7 +1425,6 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
   }
 
   /** Creates a handle to tween to slide the camera position.
-   * @param v value
    * @param d duration
    * @return tween handle */
   public Tween $moveCamera(float x, float y, float d) {
@@ -1441,7 +1449,6 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
 
   /** Creates a handle to tween the camera zoom.
    * @param z zoom
-   * @param d duration
    * @return tween handle */
   public Tween $zoomCamera(float z) {
     return $zoomCamera(z, C_D);
@@ -1496,14 +1503,12 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
   }
 
   /** Creates a handle to set  to 1.
-   * @param d duration
    * @return tween handle */
   public Tween $setUiAlpha() {
     return $fadeUi(1, 0);
   }
 
   /** Creates a handle to set  to 0.
-   * @param d duration
    * @return tween handle */
   public Tween $resetUiAlpha() {
     return $fadeUiOut(0);
@@ -1671,7 +1676,7 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
    * @param v value */
   public void setBlur(float v) {
     if (advancedPerformance) {
-      postprocessor.set(BLUR, v);
+      blur.setAmount(v);
     }
   }
 
@@ -1683,156 +1688,205 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
   /** Sets the blur to 0 if advanced performance is on. */
   public void resetBlur() {
     if (advancedPerformance) {
-      postprocessor.reset(BLUR);
+      blur.resetAmount();
     }
   }
+
+  /** Tweens the blur.
+   * @param v value
+   * @param d duration */
+  /*public void tweenBlur(float v, float d) {
+    $tweenBlur(v, d).start(tweenMgr);
+  }*/
+
+  /** Tweens the blur to 1.
+   * @param d duration */
+  /*public void blurIn(float d) {
+    tweenBlur(1, d);
+  }*/
+
+  /** Tweens the blur to 1. */
+  /*public void blurIn() {
+    blurIn(C_D);
+  }*/
+
+  /** Tweens the blur to 0.
+   * @param d duration */
+  /*public void blurOut(float d) {
+    $blurOut(d).start(tweenMgr);
+  }*/
+
+  /** Tweens the blur to 0. */
+  /*public void blurOut() {
+    blurOut(C_D);
+  }*/
+
+  /** Sets the blur if advanced performance is on.
+   * @param v value */
+  /*public void setBlur(float v) {
+    if (advancedPerformance) {
+      postprocessor.set(BLUR, v);
+    }
+  }*/
+
+  /** Sets the blur to 1 if advanced performance is on. */
+  /*public void setBlur() {
+    setBlur(1);
+  }*/
+
+  /** Sets the blur to 0 if advanced performance is on. */
+  /*public void resetBlur() {
+    if (advancedPerformance) {
+      postprocessor.reset(BLUR);
+    }
+  }*/
 
   /** Tweens the y tilt shift.
    * @param v value
    * @param d duration */
-  public void tweenTiltshiftY(float v, float d) {
+  /*public void tweenTiltshiftY(float v, float d) {
     $tweenTiltshiftY(v, d).start(tweenMgr);
-  }
+  }*/
 
   /** Tweens the y tilt shift to 1.
    * @param d duration */
-  public void tweenTiltshiftY(float v) {
+  /*public void tweenTiltshiftY(float v) {
     tweenTiltshiftY(v, C_D);
-  }
+  }*/
 
   /** Tweens the y tilt shift to 1. */
-  public void tweenTiltshiftYIn(float d) {
+  /*public void tweenTiltshiftYIn(float d) {
     tweenTiltshiftY(1, d);
-  }
+  }*/
 
   /** Tweens the y tilt shift to 1. */
-  public void tweenTiltshiftYIn() {
+  /*public void tweenTiltshiftYIn() {
     tweenTiltshiftYIn(C_D);
-  }
+  }*/
 
   /** Tweens the y tilt shift to 0.
    * @param d duration */
-  public void tweenTiltshiftYOut(float d) {
+  /*public void tweenTiltshiftYOut(float d) {
     $tweenTiltshiftYOut(d).start(tweenMgr);
-  }
+  }*/
 
   /** Tweens the y tilt shift to 0. */
-  public void tweenTiltshiftYOut() {
+  /*public void tweenTiltshiftYOut() {
     tweenTiltshiftYOut(C_D);
-  }
+  }*/
 
   /** Sets the y tilt shift if advanced performance is on.
    * @param v value */
-  public void setTiltshiftY(float v) {
+  /*public void setTiltshiftY(float v) {
     if (advancedPerformance) {
       postprocessor.set(TSY, v);
     }
-  }
+  }*/
 
   /** Sets the y tilt shift to 1 if advanced performance is on. */
-  public void setTiltshiftY() {
+  /*public void setTiltshiftY() {
     setTiltshiftY(1);
-  }
+  }*/
 
   /** Sets the y tilt shift to 0 if advanced performance is on. */
-  public void resetTiltshiftY() {
+  /*public void resetTiltshiftY() {
     if (advancedPerformance) {
       postprocessor.reset(TSY);
     }
-  }
+  }*/
 
   /** Tweens the x tilt shift.
    * @param v value
    * @param d duration */
-  public void tweenTiltshiftX(float v, float d) {
+  /*public void tweenTiltshiftX(float v, float d) {
     $tweenTiltshiftX(v, d).start(tweenMgr);
-  }
+  }*/
 
   /** Tweens the x tilt shift to 1.
    * @param d duration */
-  public void tweenTiltshiftX(float v) {
+  /*public void tweenTiltshiftX(float v) {
     tweenTiltshiftX(v, C_D);
-  }
+  }*/
 
   /** Tweens the x tilt shift to 1. */
-  public void tweenTiltshiftXIn(float d) {
+  /*public void tweenTiltshiftXIn(float d) {
     tweenTiltshiftX(1, d);
-  }
+  }*/
 
   /** Tweens the x tilt shift to 1. */
-  public void tweenTiltshiftXIn() {
+  /*public void tweenTiltshiftXIn() {
     tweenTiltshiftXIn(C_D);
-  }
+  }*/
 
   /** Tweens the x tilt shift to 0.
    * @param d duration */
-  public void tweenTiltshiftXOut(float d) {
+  /*public void tweenTiltshiftXOut(float d) {
     $tweenTiltshiftXOut(d).start(tweenMgr);
-  }
+  }*/
 
   /** Tweens the x tilt shift to 0. */
-  public void tweenTiltshiftXOut() {
+  /*public void tweenTiltshiftXOut() {
     tweenTiltshiftXOut(C_D);
-  }
+  }*/
 
   /** Sets the x tilt shift if advanced performance is on.
    * @param v value */
-  public void setTiltshiftX(float v) {
+  /*public void setTiltshiftX(float v) {
     if (advancedPerformance) {
       postprocessor.set(TSX, v);
     }
-  }
+  }*/
 
   /** Sets the x tilt shift to 1 if advanced performance is on. */
-  public void setTiltshiftX() {
+  /*public void setTiltshiftX() {
     setTiltshiftX(1);
-  }
+  }*/
 
   /** Sets the x tilt shift to 0 if advanced performance is on. */
-  public void resetTiltshiftX() {
+  /*public void resetTiltshiftX() {
     if (advancedPerformance) {
       postprocessor.reset(TSX);
     }
-  }
+  }*/
 
   /** Tweens the y tilt shift position.
    * @param v value
    * @param d duration */
-  public void tweenTiltshiftYPos(float v, float d) {
+  /*public void tweenTiltshiftYPos(float v, float d) {
     $tweenTiltshiftX(v, d).start(tweenMgr);
-  }
+  }*/
 
   /** Tweens the y tilt shift position.
    * @param d duration */
-  public void tweenTiltshiftYPos(float v) {
+  /*public void tweenTiltshiftYPos(float v) {
     tweenTiltshiftX(v, C_D);
-  }
+  }*/
 
   /** Tweens the y tilt shift position to 0.
    * @param d duration */
-  public void tweenTiltshiftYPosOut(float d) {
+  /*public void tweenTiltshiftYPosOut(float d) {
     $tweenTiltshiftXOut(d).start(tweenMgr);
-  }
+  }*/
 
   /** Tweens the y tilt shift position to 0. */
-  public void tweenTiltshiftYPosOut() {
+  /*public void tweenTiltshiftYPosOut() {
     tweenTiltshiftXOut(C_D);
-  }
+  }*/
 
   /** Sets the y tilt shift position if advanced performance is on.
    * @param v value */
-  public void setTiltshiftYPos(float v) {
+  /*public void setTiltshiftYPos(float v) {
     if (advancedPerformance) {
       postprocessor.set(TSX, v);
     }
-  }
+  }*/
 
   /** Sets the y tilt shift position to 0 if advanced performance is on. */
-  public void resetTiltshiftYPos() {
+  /*public void resetTiltshiftYPos() {
     if (advancedPerformance) {
       postprocessor.reset(TSX);
     }
-  }
+  }*/
 
   /** Tweens the {@link Overlay} sheers layer color.
    * @param clr color
@@ -1848,8 +1902,7 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
   }
 
   /** Tweens the {@link Overlay} sheers layer.
-   * @param clr color
-   * @param d duration */
+   * @param clr color */
   public void setSheersColor(Color clr) {
     overlay.setSheersColor(clr);
   }
@@ -1983,7 +2036,6 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
 
   /** Tweens the {@link Overlay} tint layer.
    * @param clr color
-   * @param d duration */
   public void setTintColor(Color clr) {
     overlay.setTintColor(clr);
   }
@@ -2238,13 +2290,13 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
 
   /** Fades the screen and UI layers in after it first sets it black and invisible respectively.
    * @param fl flags
-   * @param duration */
+   * @param d duration */
   public void fadeIn(int fl, float d) {
     $fadeIn(fl, d).start(tweenMgr);
   }
 
   /** Fades the screen and the general UI layers (game and menus) in after it first sets it black and invisible respectively.
-   * @param duration */
+   * @param d duration */
   public void fadeIn(float d) {
     $fadeIn(d).start(tweenMgr);
   }
@@ -2395,7 +2447,7 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
    * @param d duration
    * @return tween if advanced features are available, otherwise returns blank. */
   public Tween $tweenBlur(float v, float d) {
-    return advancedPerformance ? postprocessor.$tween(BLUR, v, d) : emptyTween();
+    return advancedPerformance ? blur.$tween(v, d) : emptyTween();
   }
 
   /** Creates a handle to tween the blur to 1.
@@ -2415,7 +2467,7 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
    * @param d duration
    * @return tween if advanced features are available, otherwise returns blank. */
   public Tween $blurOut(float d) {
-    return advancedPerformance ? postprocessor.$tweenOut(BLUR, d) : emptyTween();
+    return advancedPerformance ? blur.$tweenOut(d) : emptyTween();
   }
 
   /** Creates a handle to tween the blur to 0.
@@ -2428,7 +2480,7 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
    * @param v value
    * @return tween if advanced features are available, otherwise returns blank. */
   public Tween $setBlur(float v) {
-    return advancedPerformance ? postprocessor.$set(BLUR, v) : emptyTween();
+    return advancedPerformance ? blur.$setAmount(v) : emptyTween();
   }
 
   /** Creates a handle to set the blur to 1.
@@ -2440,148 +2492,201 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
   /** Creates a handle to set the blur to 0.
    * @return tween if advanced features are available, otherwise returns blank. */
   public Tween $resetBlur() {
-    return advancedPerformance ? postprocessor.$reset(BLUR) : emptyTween();
+    return advancedPerformance ? blur.$resetAmount() : emptyTween();
   }
+
+  /** Creates a handle to tween the blur.
+   * @param v value
+   * @param d duration
+   * @return tween if advanced features are available, otherwise returns blank. */
+  /*public Tween $tweenBlur(float v, float d) {
+    return advancedPerformance ? postprocessor.$tween(BLUR, v, d) : emptyTween();
+  }*/
+
+  /** Creates a handle to tween the blur to 1.
+   * @param d duration
+   * @return tween if advanced features are available, otherwise returns blank. */
+  /*public Tween $blurIn(float d) {
+    return $tweenBlur(1, d);
+  }*/
+
+  /** Creates a handle to tween the blur to 1.
+   * @return tween if advanced features are available, otherwise returns blank. */
+  /*public Tween $blurIn() {
+    return $blurIn(C_D);
+  }*/
+
+  /** Creates a handle to tween the blur to 0.
+   * @param d duration
+   * @return tween if advanced features are available, otherwise returns blank. */
+  /*public Tween $blurOut(float d) {
+    return advancedPerformance ? postprocessor.$tweenOut(BLUR, d) : emptyTween();
+  }*/
+
+  /** Creates a handle to tween the blur to 0.
+   * @return tween if advanced features are available, otherwise returns blank. */
+  /*public Tween $blurOut() {
+    return $blurIn(C_D);
+  }*/
+
+  /** Creates a handle to set the blur.
+   * @param v value
+   * @return tween if advanced features are available, otherwise returns blank. */
+  /*public Tween $setBlur(float v) {
+    return advancedPerformance ? postprocessor.$set(BLUR, v) : emptyTween();
+  }*/
+
+  /** Creates a handle to set the blur to 1.
+   * @return tween if advanced features are available, otherwise returns blank. */
+  /*public Tween $setBlur() {
+    return $setBlur(1);
+  }*/
+
+  /** Creates a handle to set the blur to 0.
+   * @return tween if advanced features are available, otherwise returns blank. */
+  /*public Tween $resetBlur() {
+    return advancedPerformance ? postprocessor.$reset(BLUR) : emptyTween();
+  }*/
 
   /** Creates a handle to tween the y tilt shift.
    * @param v value
    * @param d duration
    * @return tween if advanced features are available, otherwise returns blank. */
-  public Tween $tweenTiltshiftY(float v, float d) {
+  /*public Tween $tweenTiltshiftY(float v, float d) {
     return advancedPerformance ? postprocessor.$tween(TSY, v, d) : emptyTween();
-  }
+  }*/
 
   /** Creates a handle to tween the y tilt shift to 1.
    * @param d duration
    * @return tween if advanced features are available, otherwise returns blank. */
-  public Tween $tweenTiltshiftYIn(float d) {
+  /*public Tween $tweenTiltshiftYIn(float d) {
     return $tweenTiltshiftY(1, d);
-  }
+  }*/
 
   /** Creates a handle to tween the y tilt shift to 1.
    * @return tween if advanced features are available, otherwise returns blank. */
-  public Tween $tweenTiltshiftYIn() {
+  /*public Tween $tweenTiltshiftYIn() {
     return $tweenTiltshiftYIn(C_D);
-  }
+  }*/
 
   /** Creates a handle to tween the y tilt shift to 0.
    * @param d duration
    * @return tween if advanced features are available, otherwise returns blank. */
-  public Tween $tweenTiltshiftYOut(float d) {
+  /*public Tween $tweenTiltshiftYOut(float d) {
     return advancedPerformance ? postprocessor.$tweenOut(TSY, d) : emptyTween();
-  }
+  }*/
 
   /** Creates a handle to tween the y tilt shift to 0.
    * @return tween if advanced features are available, otherwise returns blank. */
-  public Tween $tweenTiltshiftYOut() {
+  /*public Tween $tweenTiltshiftYOut() {
     return $tweenTiltshiftYIn(C_D);
-  }
+  }*/
 
   /** Creates a handle to set the y tilt shift.
    * @param v value
    * @return tween if advanced features are available, otherwise returns blank. */
-  public Tween $setTiltshiftY(float v) {
+  /*public Tween $setTiltshiftY(float v) {
     return advancedPerformance ? postprocessor.$set(TSY, v) : emptyTween();
-  }
+  }*/
 
   /** Creates a handle to set the y tilt shift to 1.
    * @return tween if advanced features are available, otherwise returns blank. */
-  public Tween $setTiltshiftY() {
+  /*public Tween $setTiltshiftY() {
     return $setTiltshiftY(1);
-  }
+  }*/
 
   /** Creates a handle to set the y tilt shift to 0.
    * @return tween if advanced features are available, otherwise returns blank. */
-  public Tween $resetTiltshiftY() {
+  /*public Tween $resetTiltshiftY() {
     return advancedPerformance ? postprocessor.$reset(TSY) : emptyTween();
-  }
+  }*/
 
   /** Creates a handle to tween the x tilt shift.
    * @param v value
    * @param d duration
    * @return tween if advanced features are available, otherwise returns blank. */
-  public Tween $tweenTiltshiftX(float v, float d) {
+  /*public Tween $tweenTiltshiftX(float v, float d) {
     return advancedPerformance ? postprocessor.$tween(TSX, v, d) : emptyTween();
-  }
+  }*/
 
   /** Creates a handle to tween the x tilt shift to 1.
    * @param d duration
    * @return tween if advanced features are available, otherwise returns blank. */
-  public Tween $tweenTiltshiftXIn(float d) {
+  /*public Tween $tweenTiltshiftXIn(float d) {
     return $tweenTiltshiftX(1, d);
-  }
+  }*/
 
   /** Creates a handle to tween the x tilt shift to 1.
    * @return tween if advanced features are available, otherwise returns blank. */
-  public Tween $tweenTiltshiftXIn() {
+  /*public Tween $tweenTiltshiftXIn() {
     return $tweenTiltshiftXIn(C_D);
-  }
+  }*/
 
   /** Creates a handle to tween the x tilt shift to 0.
    * @param d duration
    * @return tween if advanced features are available, otherwise returns blank. */
-  public Tween $tweenTiltshiftXOut(float d) {
+  /*public Tween $tweenTiltshiftXOut(float d) {
     return advancedPerformance ? postprocessor.$tweenOut(TSX, d) : emptyTween();
-  }
+  }*/
 
   /** Creates a handle to tween the x tilt shift to 0.
    * @return tween if advanced features are available, otherwise returns blank. */
-  public Tween $tweenTiltshiftXOut() {
+  /*public Tween $tweenTiltshiftXOut() {
     return $tweenTiltshiftXIn(C_D);
-  }
+  }*/
 
   /** Creates a handle to set the x tilt shift.
    * @param v value
    * @return tween if advanced features are available, otherwise returns blank. */
-  public Tween $setTiltshiftX(float v) {
+  /*public Tween $setTiltshiftX(float v) {
     return advancedPerformance ? postprocessor.$set(TSX, v) : emptyTween();
-  }
+  }*/
 
   /** Creates a handle to set the x tilt shift to 1.
    * @return tween if advanced features are available, otherwise returns blank. */
-  public Tween $setTiltshiftX() {
+  /*public Tween $setTiltshiftX() {
     return $setTiltshiftX(1);
-  }
+  }*/
 
   /** Creates a handle to set the x tilt shift to 0.
    * @return tween if advanced features are available, otherwise returns blank. */
-  public Tween $resetTiltshiftX() {
+  /*public Tween $resetTiltshiftX() {
     return advancedPerformance ? postprocessor.$reset(TSX) : emptyTween();
-  }
+  }*/
 
   /** Creates a handle to tween the y tilt shift position.
    * @param v value
    * @param d duration
    * @return tween if advanced features are available, otherwise returns blank. */
-  public Tween $tweenTiltshiftYPos(float v, float d) {
+  /*public Tween $tweenTiltshiftYPos(float v, float d) {
     return advancedPerformance ? postprocessor.$tween(TSYP, v, d) : emptyTween();
-  }
+  }*/
 
   /** Creates a handle to tween the y tilt shift position to the default value.
    * @param d duration
    * @return tween if advanced features are available, otherwise returns blank. */
-  public Tween $tweenTiltshiftYPosOut(float d) {
+  /*public Tween $tweenTiltshiftYPosOut(float d) {
     return advancedPerformance ? postprocessor.$tweenOut(TSYP, d) : emptyTween();
-  }
+  }*/
 
   /** Creates a handle to tween the y tilt shift position to the default value.
    * @return tween if advanced features are available, otherwise returns blank. */
-  public Tween $tweenTiltshiftYPosOut() {
+  /*public Tween $tweenTiltshiftYPosOut() {
     return $tweenTiltshiftYIn(C_D);
-  }
+  }*/
 
   /** Creates a handle to set the y tilt shift position.
    * @param v value
    * @return tween if advanced features are available, otherwise returns blank. */
-  public Tween $setTiltshiftYPos(float v) {
+  /*public Tween $setTiltshiftYPos(float v) {
     return advancedPerformance ? postprocessor.$set(TSYP, v) : emptyTween();
-  }
+  }*/
 
   /** Creates a handle to set the y tilt shift position to the default value.
    * @return tween if advanced features are available, otherwise returns blank. */
-  public Tween $resetTiltshiftYPos() {
+  /*public Tween $resetTiltshiftYPos() {
     return advancedPerformance ? postprocessor.$reset(TSYP) : emptyTween();
-  }
+  }*/
 
   /** Creates a tween to fade the {@link Overlay} sheers layer color.
    * @param clr color
@@ -3091,7 +3196,7 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
 
   /** Creates a handle to fade the screen and UI layers in after it first sets it black and invisible respectively.
    * @param fl flags
-   * @param duration
+   * @param d duration
    * @return tween handle */
   public Timeline $fadeIn(int fl, float d) {
     return Timeline.createSequence()
@@ -3104,7 +3209,7 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
   }
 
   /** Creates a handle to fade the screen and the general UI layers (game and menus) in after it first sets it black and invisible respectively.
-   * @param duration
+   * @param d duration
    * @return tween handle */
   public Timeline $fadeIn(float d) {
     return $fadeIn(UIL_GENERAL, d);
@@ -3276,7 +3381,6 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
   }
 
   /** Creates a tween that flashes the {@link Overlay} sheers layer with white.
-   * @param clr color
    * @return tween handle */
   public Timeline $flashFx() {
     return $flashFx(WHITE);
@@ -3341,7 +3445,6 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
   }
 
   /** Creates a handle to lightly darken the menu background.
-   * @param d duration
    * @return tween handle */
   public Tween $dimInL() {
     return $dimInL(C_D);
@@ -3366,7 +3469,6 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
    * @param parent container
    * @param z z-index
    * @param cb callback
-   * @param down should it fire on touch down
    * @see {@link Tapper#set(Group, int, Callback, boolean)} */
   public void setTapper(Group parent, int z, Callback cb) {
     tapper.set(parent, z, cb, true);
@@ -3385,7 +3487,6 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
    * @param parent container
    * @param z z-index
    * @param cb callback
-   * @param down should it fire on touch down
    * @see {@link Tapper#setOnce(Group, int, Callback, boolean)} */
   public void setTapperOnce(Group parent, int z, Callback cb) {
     tapper.setOnce(parent, z, cb, true);
@@ -3469,11 +3570,27 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
     overlay.update();
     ui.act();
     updateInput();
-    // music has to be manually updated when changed through transitions
+    // music has to be manually updated when is changed through transitions
     if (updatingVolume) {
       for (Music music : musicList) {
         music.setVolume(musicVolume());
       }
+    }
+  }
+
+  protected boolean doPostprocess() {
+    return benchmarkTesting || (blur.isActive() && advancedPerformance && !simpleGraphics);
+  }
+
+  protected void prepareDraw() {
+    if (doPostprocess) {
+      blur.begin();
+    }
+  }
+
+  protected void finalizeDraw() {
+    if (doPostprocess) {
+      blur.end();
     }
   }
 
@@ -3495,7 +3612,7 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
     ui.draw();
   }
 
-  private void clearScreen() {
+  protected void clearScreen() {
     Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
   }
 
@@ -3516,11 +3633,8 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
     viewport.apply();
     shakeCamera();
     batch.setProjectionMatrix(camera.combined);
-    // when postprocessed, the whole scene is drawn to the buffer and is processed later
-    boolean doPostprocess = benchmarkTesting || (postprocessor.isActive() && advancedPerformance && !simpleGraphics);
-    if (doPostprocess) {
-      frameBuffer.begin();
-    }
+    doPostprocess = doPostprocess();
+    prepareDraw();
     clearScreen();
     batch.begin();
       drawPre();
@@ -3530,10 +3644,7 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
         drawDebug();
       }
     batch.end();
-    if (doPostprocess) {
-      frameBuffer.end();
-      postprocessor.draw();
-    }
+    finalizeDraw();
     drawUi();
     resetCameraPos();
     updateBenchmark();
@@ -3544,6 +3655,7 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
     shapeRenderer.dispose();
     ui.dispose();
     frameBuffer.dispose();
+    blur.dispose();
   }
 
   public void resize() {
@@ -3559,14 +3671,14 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
     uiViewport.update(screenWidth(), screenHeight(), outputWidth(), outputHeight(), true);
     overlay.resize();
     tapper.resize();
-    postprocessor.resize();
+    blur.resize();
     // frame buffer has to be created here to avoid creating it twice every time
     if (firstResize) {
       firstResize = false;
     } else {
       frameBuffer.dispose();
     }
-    frameBuffer = new FrameBuffer(Format.RGB888, screenWidthI(), screenHeightI(), false);
+    frameBuffer = new FrameBuffer(Format.RGB888, primaryFbWidth(), primaryFbHeight(), false);
     logDone();
   }
 

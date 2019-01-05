@@ -16,6 +16,10 @@
 
 package adflixit.shared;
 
+import static adflixit.shared.BaseGame.*;
+
+import com.badlogic.gdx.Application.ApplicationType;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -26,16 +30,15 @@ import java.util.Map;
 import java.util.Properties;
 
 public class MutableProperties extends Properties {
-  private final Properties		original	= new Properties();	// the original properties unchanged during runtime
-  private final List<String>		flushed		= new ArrayList<>();	// a list of the flushed properties
-  private final List<String>		raw		= new ArrayList<>();	// raw properties file text
-  private final Map<String, Float>	floats		= new HashMap<>();	// the entries pre-interpreted as float
-  private FileHandle			file;
+  private final Properties          original  = new Properties();   // the original properties unchanged during runtime
+  private final List<String>        flushed   = new ArrayList<>();  // a list of the flushed properties
+  private final List<String>        raw       = new ArrayList<>();  // raw properties file text
+  private final Map<String, Float>  floats    = new HashMap<>();    // the entries pre-interpreted as float
+  private FileHandle                file;
 
   /** Loads the specified properties.
    * @deprecated Not used anymore due to the introduced ability to change properties during runtime. */
-  @Deprecated
-  public void loadAll(FileHandle... files) {
+  @Deprecated public void loadAll(FileHandle... files) {
     Properties tmp = new Properties();
     try {
       for (FileHandle file : files) {
@@ -49,9 +52,9 @@ public class MutableProperties extends Properties {
     initFloats();
   }
 
-  /** Loads the specified properties. */
-  public void load(FileHandle file) {
-    this.file = file;
+  /** Loads the specified properties. The file type depends on the platform. */
+  public void load(String path) {
+    file = Gdx.app.getType()==ApplicationType.Desktop ? localFile(path) : internalFile(path);
     try {
       load(file.read());
     } catch (IOException e) {

@@ -20,7 +20,6 @@ import static adflixit.shared.TweenUtils.*;
 import static aurelienribon.tweenengine.TweenCallback.*;
 
 import aurelienribon.tweenengine.Tween;
-import aurelienribon.tweenengine.TweenCallback;
 import aurelienribon.tweenengine.equations.Quart;
 import aurelienribon.tweenengine.primitives.MutableFloat;
 import com.badlogic.gdx.files.FileHandle;
@@ -32,17 +31,17 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 /**
  * Performs two-pass Gaussian blur.
  */
-@Deprecated public class Blur extends ScreenComponent<BaseScreen<?>> {
-  private final String		uniName			= "u_blur";
-  private ShaderProgram		firstPass;
-  private ShaderProgram		lastPass;
-  private FrameBuffer		firstFrameBuffer;
-  private FrameBuffer		lastFrameBuffer;
-  private int			passes			= 1;	// number of blurring cycles
-  private final MutableFloat	amount			= new MutableFloat(0);
-  /** Pass is used to access the route to update the shader info.
-   * Schedule is used to update the info one time after which it resets. */
-  private boolean		pass, scheduled;
+public class Blur extends ScreenComponent<BaseScreen<?>> {
+  private final String        uniName  = "u_blur";
+  private ShaderProgram       hpass;
+  private ShaderProgram       vpass;
+  private FrameBuffer         fb;
+  private FrameBuffer         hfb;
+  private FrameBuffer         vfb;
+  private int                 passes   = 1;  // number of blurring cycles
+  private final MutableFloat  amount   = new MutableFloat(0);
+  private boolean             pass;       // update route permit
+  private boolean             scheduled;  // one-time update route permit
 
   public Blur(BaseScreen<?> screen) {
     super(screen);
@@ -64,13 +63,13 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
   }
 
   public void load(FileHandle hvert, FileHandle hfrag, FileHandle vvert, FileHandle vfrag) {
-    firstPass = new ShaderProgram(hvert, hfrag);
-    lastPass = new ShaderProgram(vvert, vfrag);
+    hpass = new ShaderProgram(hvert, hfrag);
+    vpass = new ShaderProgram(vvert, vfrag);
   }
 
   public void load(String hvert, String hfrag, String vvert, String vfrag) {
-    firstPass = new ShaderProgram(hvert, hfrag);
-    lastPass = new ShaderProgram(vvert, vfrag);
+    hpass = new ShaderProgram(hvert, hfrag);
+    vpass = new ShaderProgram(vvert, vfrag);
   }
 
   public Blur setPasses(int i) {
@@ -92,7 +91,7 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
     }
     bat.setShader(null);
     bat.begin();
-      tex = lastFrameBuffer.getColorBufferTexture();
+      tex = vfb.getColorBufferTexture();
       bat.draw(tex, x, y, scr.screenWidth(), scr.screenHeight(), 0,0,1,1);
     bat.end();
     if (scheduled) {
@@ -100,8 +99,17 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
     }
   }
 
+  public void begin() {
+    fb.begin();
+  }
+
+  public void end() {
+    fb.end();
+    draw();
+  }
+
   public Texture inputTex() {
-    return scr.fbTex();
+    return fb.getColorBufferTexture();
   }
 
   /** Performs the blurring routine.
@@ -111,27 +119,27 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
   private void pass(int i, float x, float y) {
     Texture tex;
     // horizontal pass
-    bat.setShader(firstPass);
-    firstFrameBuffer.begin();
+    bat.setShader(hpass);
+    hfb.begin();
     bat.begin();
       if (pass || scheduled) {
-        firstPass.setUniformf(uniName, amount());
+        hpass.setUniformf(uniName, amount());
       }
-      tex = i > 0 ? lastFrameBuffer.getColorBufferTexture() : inputTex();
+      tex = i > 0 ? vfb.getColorBufferTexture() : inputTex();
       bat.draw(tex, x, y, scr.screenWidth(), scr.screenHeight());
     bat.end();
-    firstFrameBuffer.end();
+    hfb.end();
     // vertical pass
-    bat.setShader(lastPass);
-    lastFrameBuffer.begin();
+    bat.setShader(vpass);
+    vfb.begin();
     bat.begin();
       if (pass || scheduled) {
-        lastPass.setUniformf(uniName, amount());
+        vpass.setUniformf(uniName, amount());
       }
-      tex = firstFrameBuffer.getColorBufferTexture();
+      tex = hfb.getColorBufferTexture();
       bat.draw(tex, x, y, scr.screenWidth(), scr.screenHeight());
     bat.end();
-    lastFrameBuffer.end();
+    vfb.end();
   }
 
   /** Locks the shader update route. */
@@ -155,7 +163,7 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
   }
 
   public boolean isActive() {
-    return amount() > 0;	
+    return amount() > 0;  
   }
 
   public float amount() {
@@ -187,8 +195,7 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
            .setCallbackTriggers(BEGIN|COMPLETE);
   }
 
-  /** @param v value
-   * @param d duration */
+  /** @param d duration */
   public Tween $tweenOut(float d) {
     return $tween(0, d);
   }
@@ -204,20 +211,22 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
   }
 
   public void dispose() {
-    firstPass.dispose();
-    lastPass.dispose();
-    firstFrameBuffer.dispose();
-    lastFrameBuffer.dispose();
+    hpass.dispose();
+    vpass.dispose();
+    hfb.dispose();
+    vfb.dispose();
   }
 
   public void resize() {
     if (firstResize) {
       firstResize = false;
     } else {
-      firstFrameBuffer.dispose();
-      lastFrameBuffer.dispose();
+      fb.dispose();
+      hfb.dispose();
+      vfb.dispose();
     }
-    firstFrameBuffer = new FrameBuffer(Format.RGB888, scr.frameBufferWidth(), scr.frameBufferHeight(), false);
-    lastFrameBuffer = new FrameBuffer(Format.RGB888, scr.frameBufferWidth(), scr.frameBufferHeight(), false);
+    fb = new FrameBuffer(Format.RGB888, scr.fbWidth(), scr.fbHeight(), false);
+    hfb = new FrameBuffer(Format.RGB888, scr.fbWidth(), scr.fbHeight(), false);
+    vfb = new FrameBuffer(Format.RGB888, scr.fbWidth(), scr.fbHeight(), false);
   }
 }

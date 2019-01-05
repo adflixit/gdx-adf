@@ -25,9 +25,9 @@ import com.badlogic.gdx.utils.Array;
  * {@link Animation} that is being played fully once in a certain point when called.
  */
 public class SplashAnim extends Animation<TextureRegion> {
-  private final Timestamp	time			= new Timestamp();
-  private float			x, y;
-  private float			baseScale, scale;
+  private final Timestamp  time  = new Timestamp();
+  private float            x, y;
+  private float            baseScale, scale;
 
   public SplashAnim(float frameDuration, Array<? extends TextureRegion> keyFrames, float baseScale) {
     super(frameDuration, keyFrames);

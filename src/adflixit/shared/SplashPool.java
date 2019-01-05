@@ -25,9 +25,9 @@ import com.badlogic.gdx.utils.Array;
  * Array of reusable {@link SplashAnim} items.
  */
 public class SplashPool extends Pool<SplashAnim> {
-  private float					frameDuration;
-  private Array<? extends TextureRegion>	keyFrames;
-  private float					scale;
+  private float                           frameDuration;
+  private Array<? extends TextureRegion>  keyFrames;
+  private float                           scale;
 
   public SplashPool(int cap, float frameDuration, Array<? extends TextureRegion> keyFrames, float scale) {
     super(cap);

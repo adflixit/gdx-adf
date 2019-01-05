@@ -31,10 +31,10 @@ import adflixit.shared.ClickCallback;
 import aurelienribon.tweenengine.Timeline;
 
 public class TintClickListener extends ClickListener {
-  private Actor		actor;
-  private Color		initClr;
-  private Color		clr;
-  private ClickCallback	callback;
+  private Actor          actor;
+  private Color          initClr;
+  private Color          clr;
+  private ClickCallback  callback;
 
   public TintClickListener(Actor actor, Color initClr, Color clr, ClickCallback cb) {
     super();

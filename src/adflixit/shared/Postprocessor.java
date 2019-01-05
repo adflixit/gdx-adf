@@ -35,27 +35,28 @@ import java.util.List;
 
 /**
  * Draws the specified texture (usually the frame buffer output) with a shader filter.
+ * TODO: shader tilt shift doesn't work correctly.
  */
 public class Postprocessor extends ScreenComponent<BaseScreen<?>> {
-  public static final int		BLUR			= 0,
-					TSY			= 1,
-					TSX			= 2,
-  					TSYP			= 3;
-  private static final String[]		uniNames		= {
+  public static final int           BLUR       = 0,
+                                    TSY        = 1,
+                                    TSX        = 2,
+                                    TSYP       = 3;
+  private static final String[]     uniNames   = {
     "u_blur",
     "u_tiltshiftY",
     "u_tiltshiftX",
     "u_tiltshiftYPos"
   };
-  private static final int		uniLength		= uniNames.length;
+  private static final int          uniLength  = uniNames.length;
 
-  private ShaderProgram			firstPass;
-  private ShaderProgram			lastPass;
-  private FrameBuffer			firstFrameBuffer;
-  private FrameBuffer			lastFrameBuffer;
-  private final List<MutableFloat>	values			= new ArrayList<>();
-  private int				locks;			// update route permits
-  private int				schedules;		// one-time update route permits
+  private ShaderProgram             firstPass;
+  private ShaderProgram             lastPass;
+  private FrameBuffer               firstFrameBuffer;
+  private FrameBuffer               lastFrameBuffer;
+  private final List<MutableFloat>  values     = new ArrayList<>();
+  private int                       locks;      // update route permits
+  private int                       schedules;  // one-time update route permits
 
   public Postprocessor(BaseScreen<?> screen) {
     super(screen);
@@ -128,7 +129,6 @@ public class Postprocessor extends ScreenComponent<BaseScreen<?>> {
         if (hasFlag(locks, m) || scheduled) {
           lastPass.setUniformf(uniNames[i], value(i));
           if (scheduled) {
-            glog("nog");
             unschedule(i);
           }
         }
@@ -251,7 +251,7 @@ public class Postprocessor extends ScreenComponent<BaseScreen<?>> {
       firstFrameBuffer.dispose();
       lastFrameBuffer.dispose();
     }
-    firstFrameBuffer = new FrameBuffer(Format.RGBA8888, scr.frameBufferWidth(), scr.frameBufferHeight(), false);
-    lastFrameBuffer = new FrameBuffer(Format.RGBA8888, scr.frameBufferWidth(), scr.frameBufferHeight(), false);
+    firstFrameBuffer = new FrameBuffer(Format.RGBA8888, scr.fbWidth(), scr.fbHeight(), false);
+    lastFrameBuffer = new FrameBuffer(Format.RGBA8888, scr.fbWidth(), scr.fbHeight(), false);
   }
 }

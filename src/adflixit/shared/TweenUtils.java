@@ -44,9 +44,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 public final class TweenUtils {
   private TweenUtils() {}
 
-  public static Tween		emptyTween()		{return Tween.mark();}
-  public static Tween		delayTween(float d)	{return Tween.to(null, -1, d);}
-  public static Timeline	emptyTimeline()		{return Timeline.createSequence();}
+  public static Tween     emptyTween()         {return Tween.mark();}
+  public static Tween     delayTween(float d)  {return Tween.to(null, -1, d);}
+  public static Timeline  emptyTimeline()      {return Timeline.createSequence();}
 
   /** Removes {@code target} from all trackers. */
   public static void killTweenTarget(Object target) {
@@ -160,8 +160,7 @@ public final class TweenUtils {
   }
 
   /** Tweens the label's color.
-   * @param clr color
-   * @param d duration */
+   * @param clr color */
   public static void tweenLabelColor(Label target, Color clr) {
     $tweenLabelColor(target, clr).start(tweenMgr);
   }
@@ -354,7 +353,7 @@ public final class TweenUtils {
   /**
    * {@link #POS_C}: centered position, 
    * {@link #X_C}: centered x, 
-   * {@link #X_Y}: centered y, 
+   * {@link #Y_C}: centered y,
    * {@link #ORG_X}: origin x, 
    * {@link #ORG_Y}: origin y, 
    * {@link #SCL_X}: scale x, 
@@ -369,10 +368,10 @@ public final class TweenUtils {
    * {@link #L}: lightness.
    */
   public static class ActorAccessor implements TweenAccessor<Actor> {
-    public static final int	POS = 0, X = 1, Y = 2, POS_C = 3, X_C = 4, Y_C = 5,
-    				ORIGIN = 6, ORG_X = 7, ORG_Y = 8,
-    				SCALE = 9, SCL_X = 10, SCL_Y = 11, ROT = 12,
-    				RGB = 13, R = 14, G = 15, B = 16, A = 17, H = 18, S = 19, L = 20;
+    public static final int  POS = 0, X = 1, Y = 2, POS_C = 3, X_C = 4, Y_C = 5,
+                             ORIGIN = 6, ORG_X = 7, ORG_Y = 8,
+                             SCALE = 9, SCL_X = 10, SCL_Y = 11, ROT = 12,
+                             RGB = 13, R = 14, G = 15, B = 16, A = 17, H = 18, S = 19, L = 20;
 
     @Override public int getValues(Actor target, int tweenType, float[] returnValues) {
       switch (tweenType) {
@@ -522,7 +521,7 @@ public final class TweenUtils {
   /**
    * {@link #POS_C}: centered position, 
    * {@link #X_C}: centered x, 
-   * {@link #X_Y}: centered y, 
+   * {@link #Y_C}: centered y,
    * {@link #ORG_X}: origin x, 
    * {@link #ORG_Y}: origin y, 
    * {@link #SCL_X}: scale x, 
@@ -537,10 +536,10 @@ public final class TweenUtils {
    * {@link #L}: lightness.
    */
   public static class LabelAccessor implements TweenAccessor<Label> {
-    public static final int	POS = 0, X = 1, Y = 2, POS_C = 3, X_C = 4, Y_C = 5,
-    				ORIGIN = 6, ORG_X = 7, ORG_Y = 8,
-    				SCALE = 9, SCL_X = 10, SCL_Y = 11, ROT = 12,
-    				RGB = 13, R = 14, G = 15, B = 16, A = 17, H = 18, S = 19, L = 20;
+    public static final int  POS = 0, X = 1, Y = 2, POS_C = 3, X_C = 4, Y_C = 5,
+                             ORIGIN = 6, ORG_X = 7, ORG_Y = 8,
+                             SCALE = 9, SCL_X = 10, SCL_Y = 11, ROT = 12,
+                             RGB = 13, R = 14, G = 15, B = 16, A = 17, H = 18, S = 19, L = 20;
 
     @Override public int getValues(Label target, int tweenType, float[] returnValues) {
       switch (tweenType) {
@@ -690,7 +689,7 @@ public final class TweenUtils {
   /**
    * {@link #POS_C}: centered position, 
    * {@link #X_C}: centered x, 
-   * {@link #X_Y}: centered y, 
+   * {@link #Y_C}: centered y,
    * {@link #SCL_X}: scale x, 
    * {@link #SCL_Y}: scale y, 
    * {@link #ROT}: rotation, 
@@ -703,9 +702,9 @@ public final class TweenUtils {
    * {@link #L}: lightness.
    */
   public static class SpriteAccessor implements TweenAccessor<Sprite> {
-    public static final int	POS = 0, X = 1, Y = 2, POS_C = 3, X_C = 4, Y_C = 5,
-    				SCALE = 6, SCL_X = 7, SCL_Y = 8, ROT = 9,
-    				RGB = 10, R = 11, G = 12, B = 13, A = 14, H = 15, S = 16, L = 17;
+    public static final int  POS = 0, X = 1, Y = 2, POS_C = 3, X_C = 4, Y_C = 5,
+                             SCALE = 6, SCL_X = 7, SCL_Y = 8, ROT = 9,
+                             RGB = 10, R = 11, G = 12, B = 13, A = 14, H = 15, S = 16, L = 17;
 
     @Override public int getValues(Sprite target, int tweenType, float[] returnValues) {
       switch (tweenType) {
@@ -835,7 +834,7 @@ public final class TweenUtils {
    * {@link #VOL}: volume.
    */
   public static class MusicAccessor implements TweenAccessor<Music> {
-    public static final int	VOL = 0;
+    public static final int  VOL = 0;
 
     @Override public int getValues(Music target, int tweenType, float[] returnValues) {
       switch (tweenType) {
@@ -857,7 +856,7 @@ public final class TweenUtils {
   }
 
   public static class OrthoCameraAccessor implements TweenAccessor<OrthographicCamera> {
-    public static final int	POS = 0, X = 1, Y = 2, ZOOM = 3;
+    public static final int  POS = 0, X = 1, Y = 2, ZOOM = 3;
 
     @Override public int getValues(OrthographicCamera target, int tweenType, float[] returnValues) {
       switch (tweenType) {
@@ -902,7 +901,7 @@ public final class TweenUtils {
    * {@link #VY}: velocity y, 
    * {@link #ANG}: angle. */
   public static class Box2DBodyAccessor implements TweenAccessor<Body> {
-    public static final int	VEL = 0, VX = 1, VY = 2, ANG = 3;
+    public static final int  VEL = 0, VX = 1, VY = 2, ANG = 3;
 
     @Override public int getValues(Body target, int tweenType, float[] returnValues) {
       switch (tweenType) {
@@ -944,16 +943,16 @@ public final class TweenUtils {
 
   /** {@link #POS_C}: centered position, 
    * {@link #X_C}: centered x, 
-   * {@link #X_Y}: centered y, 
+   * {@link #Y_C}: centered y,
    * {@link #PVT_X}: pivot x, 
    * {@link #PVT_Y}: pivot y, 
    * {@link #SCL_X}: scale x, 
    * {@link #SCL_Y}: scale y, 
    * {@link #ROT}: rotation. */
   public static class AndViewAccessor implements TweenAccessor<View> {
-    public static final int	POS = 0, X = 1, Y = 2, POS_C = 3, X_C = 4, Y_C = 5,
-    				PIVOT = 6, PVT_X = 7, PVT_Y = 8,
-    				SCALE = 9, SCL_X = 10, SCL_Y = 11, ROT = 12, ALPHA = 13;
+    public static final int  POS = 0, X = 1, Y = 2, POS_C = 3, X_C = 4, Y_C = 5,
+                             PIVOT = 6, PVT_X = 7, PVT_Y = 8,
+                             SCALE = 9, SCL_X = 10, SCL_Y = 11, ROT = 12, ALPHA = 13;
 
     @Override public int getValues(View target, int tweenType, float[] returnValues) {
       switch (tweenType) {
@@ -1061,7 +1060,7 @@ public final class TweenUtils {
   }
 
   public static class Vector2Accessor implements TweenAccessor<Vector2> {
-    public static final int	XY = 0, X = 1, Y = 2;
+    public static final int  XY = 0, X = 1, Y = 2;
 
     @Override public int getValues(Vector2 target, int tweenType, float[] returnValues) {
       switch (tweenType) {
@@ -1097,7 +1096,7 @@ public final class TweenUtils {
   }
 
   public static class Vector3Accessor implements TweenAccessor<Vector3> {
-    public static final int	XYZ = 0, XY = 1, X = 2, Y = 3, Z = 4;
+    public static final int  XYZ = 0, XY = 1, X = 2, Y = 3, Z = 4;
 
     @Override public int getValues(Vector3 target, int tweenType, float[] returnValues) {
       switch (tweenType) {
@@ -1148,16 +1147,7 @@ public final class TweenUtils {
     }
   }
 
-  /** {@link #POS}: position, 
-   * {@link #POS_C}: centered position, 
-   * {@link #X_C}: centered x, 
-   * {@link #X_Y}: centered y, 
-   * {@link #ORG_X}: origin x, 
-   * {@link #ORG_Y}: origin y, 
-   * {@link #SCL_X}: scale x, 
-   * {@link #SCL_Y}: scale y, 
-   * {@link #ROT}: rotation, 
-   * {@link #R}: red, 
+  /** {@link #R}: red,
    * {@link #G}: green, 
    * {@link #B}: blue, 
    * {@link #A}: alpha, 
@@ -1165,7 +1155,7 @@ public final class TweenUtils {
    * {@link #S}: saturation, 
    * {@link #L}: lightness. */
   public static class ColorAccessor implements TweenAccessor<Color> {
-    public static final int	RGB = 0, R = 1, G = 2, B = 3, A = 4, H = 5, S = 6, L = 7;
+    public static final int  RGB = 0, R = 1, G = 2, B = 3, A = 4, H = 5, S = 6, L = 7;
 
     @Override public int getValues(Color target, int tweenType, float[] returnValues) {
       switch (tweenType) {

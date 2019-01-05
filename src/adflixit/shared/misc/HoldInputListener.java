@@ -28,9 +28,9 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
  * {@link InputListener} that fires after it is been held for a certain amount of time.
  */
 public class HoldInputListener extends InputListener implements Updatable {
-  private boolean	pressed, lock;
-  private long		startTime, treshold;
-  private Callback	callback;
+  private boolean   pressed, lock;
+  private long      startTime, treshold;
+  private Callback  callback;
 
   /** @param treshold time in milliseconds */
   public HoldInputListener(long treshold, Callback cb) {
