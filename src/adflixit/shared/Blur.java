@@ -32,14 +32,14 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
  * Performs two-pass Gaussian blur.
  */
 public class Blur extends ScreenComponent<BaseScreen<?>> {
-  private final String        uniName  = "u_blur";
+  private final String        uniName = "u_blur";
   private ShaderProgram       hpass;
   private ShaderProgram       vpass;
   private FrameBuffer         fb;
   private FrameBuffer         hfb;
   private FrameBuffer         vfb;
-  private int                 passes   = 1;  // number of blurring cycles
-  private final MutableFloat  amount   = new MutableFloat(0);
+  private int                 passes  = 1;  // number of blurring cycles
+  private final MutableFloat  amount  = new MutableFloat(0);
   private boolean             pass;       // update route permit
   private boolean             scheduled;  // one-time update route permit
 

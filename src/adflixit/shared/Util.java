@@ -162,7 +162,6 @@ public final class Util {
 
   /** A template for undoing the alignment of one point relative to another in a single dimension.
    * @param p position
-   * @param l length
    * @param aln alignment flags
    * @param piv initial pivot
    * @param piv0 lowest pivot
@@ -376,7 +375,7 @@ public final class Util {
   /** Uses the standard string formatting pattern, where "%s" marks the placeholder, 
    * e.g. the pattern "%s, " will format the array {'a', 'b', 'c'} as "a, b, c".
    * @return array items ordered by the pattern, represented as text. */
-  public static <T> String arrayToStringF(String pattern, T... array) {
+  public static <T> String arrayToStringf(String pattern, T... array) {
     String s = "";
     for (T i : array) {
       s += String.format(pattern, i);
@@ -386,8 +385,8 @@ public final class Util {
   }
 
   /** @return array items ordered by the pattern, represented as text.
-   * @see #arrayToStringF(String, Object...) */
-  public static String arrayToStringF(String pattern, int... array) {
+   * @see #arrayToStringf(String, Object...) */
+  public static String arrayToStringf(String pattern, int... array) {
     String s = "";
     for (Object i : array) {
       s += String.format(pattern, i);
@@ -397,8 +396,8 @@ public final class Util {
   }
 
   /** @return array items ordered by the pattern, represented as text.
-   * @see #arrayToStringF(String, Object...) */
-  public static String arrayToStringF(String pattern, long... array) {
+   * @see #arrayToStringf(String, Object...) */
+  public static String arrayToStringf(String pattern, long... array) {
     String s = "";
     for (Object i : array) {
       s += String.format(pattern, i);
@@ -408,8 +407,8 @@ public final class Util {
   }
 
   /** @return array items ordered by the pattern, represented as text.
-   * @see #arrayToStringF(String, Object...) */
-  public static String arrayToStringF(String pattern, float... array) {
+   * @see #arrayToStringf(String, Object...) */
+  public static String arrayToStringf(String pattern, float... array) {
     String s = "";
     for (Object i : array) {
       s += String.format(pattern, i);
@@ -419,8 +418,8 @@ public final class Util {
   }
 
   /** @return array items ordered by the pattern, represented as text.
-   * @see #arrayToStringF(String, Object...) */
-  public static String arrayToStringF(String pattern, double... array) {
+   * @see #arrayToStringf(String, Object...) */
+  public static String arrayToStringf(String pattern, double... array) {
     String s = "";
     for (Object i : array) {
       s += String.format(pattern, i);
@@ -444,7 +443,7 @@ public final class Util {
   }
 
   public static String getStackTrace() {
-    return arrayToStringF("%s\n", Thread.currentThread().getStackTrace());
+    return arrayToStringf("%s\n", Thread.currentThread().getStackTrace());
   }
 
   public static void printStackTrace() {

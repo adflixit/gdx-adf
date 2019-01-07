@@ -38,23 +38,23 @@ import java.util.List;
  * TODO: shader tilt shift doesn't work correctly.
  */
 public class Postprocessor extends ScreenComponent<BaseScreen<?>> {
-  public static final int           BLUR       = 0,
-                                    TSY        = 1,
-                                    TSX        = 2,
-                                    TSYP       = 3;
-  private static final String[]     uniNames   = {
+  public static final int           BLUR      = 0,
+                                    TSY       = 1,
+                                    TSX       = 2,
+                                    TSYP      = 3;
+  private static final String[]     uniNames  = {
     "u_blur",
     "u_tiltshiftY",
     "u_tiltshiftX",
     "u_tiltshiftYPos"
   };
-  private static final int          uniLength  = uniNames.length;
+  private static final int          uniLength = uniNames.length;
 
   private ShaderProgram             firstPass;
   private ShaderProgram             lastPass;
   private FrameBuffer               firstFrameBuffer;
   private FrameBuffer               lastFrameBuffer;
-  private final List<MutableFloat>  values     = new ArrayList<>();
+  private final List<MutableFloat>  values    = new ArrayList<>();
   private int                       locks;      // update route permits
   private int                       schedules;  // one-time update route permits
 

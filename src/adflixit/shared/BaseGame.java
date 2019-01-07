@@ -80,14 +80,14 @@ public abstract class BaseGame extends Logger implements ApplicationListener {
     @Override public void quit() {Gdx.app.exit();}
   };
 
-  public static Class<? extends Actor> actorClassDescendants;  // used as the Actor class signature for the tween engine
+  public static Class<? extends Actor> actorClassDescendants; // used as the Actor class signature for the tween engine
   public static boolean             debug;
   private static XApi               xApi;
-  public static final Console       console  = new Console();
+  public static final Console       console = new Console();
   private static Skin               skin;
-  private static MutableProperties  props    = new MutableProperties();
+  private static MutableProperties  props   = new MutableProperties();
   private static Preferences        prefs;
-  protected BaseScreen<?>           screen;  // current screen
+  protected BaseScreen<?>           screen; // current screen
 
   public BaseGame() {
     setXApi(noXApi);
@@ -123,7 +123,7 @@ public abstract class BaseGame extends Logger implements ApplicationListener {
     });
     registerConsoleCommand("setprop", args -> {
       try {
-        setProp(args[0], arrayToStringF("%s ", Arrays.copyOfRange(args, 1, args.length)));
+        setProp(args[0], arrayToStringf("%s ", Arrays.copyOfRange(args, 1, args.length)));
       } catch (Exception e) {
         glog(e.getLocalizedMessage());
       }

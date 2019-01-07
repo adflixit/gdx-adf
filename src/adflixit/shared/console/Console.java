@@ -16,7 +16,7 @@
 
 package adflixit.shared.console;
 
-import static adflixit.shared.Util.arrayToStringF;
+import static adflixit.shared.Util.arrayToStringf;
 
 import com.badlogic.gdx.files.FileHandle;
 import java.io.InputStream;
@@ -30,14 +30,14 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Console {
-  private boolean                    active  = true;
-  private Thread                     thread;
-  private InputStream                in;
-  private PrintStream                out;
-  private final Scanner              scanner;
-  private final Map<String, ConCmd>  cmds    = new HashMap<>();
-  private final Map<String, ConVar>  vars    = new HashMap<>();
-  private final List<String>         parsed  = new ArrayList<>();
+  private boolean                   active  = true;
+  private Thread                    thread;
+  private InputStream               in;
+  private PrintStream               out;
+  private final Scanner             scanner;
+  private final Map<String, ConCmd> cmds    = new HashMap<>();
+  private final Map<String, ConVar> vars    = new HashMap<>();
+  private final List<String>        parsed  = new ArrayList<>();
 
   public Console(InputStream sin, PrintStream sout) {
     in = sin;
@@ -49,8 +49,9 @@ public class Console {
       }
     };
     thread.start();
-    registerCommand("print", args -> print(arrayToStringF("%s ", args)));
+    registerCommand("print", args -> print(arrayToStringf("%s ", args)));
     registerCommand("reset", args -> var(args[0]).reset());
+    registerCommand("help", args -> print(arrayToStringf("%s\n", cmds.keySet())));
   }
 
   public Console() {

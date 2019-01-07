@@ -176,7 +176,7 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
   private final MutableFloat          masterVolume        = new MutableFloat(1);  // sound volume
   private final MutableFloat          sfxVolume           = new MutableFloat(1);  // sound effects volume
   private final MutableFloat          musicVolume         = new MutableFloat(1);
-  private final List<Music>           musicList           = new ArrayList<>();  // music volume has to be manually update on a transition
+  private final List<Music>           musicList           = new ArrayList<>();    // music volume has to be manually update on a transition
   private boolean                     updatingVolume;
   private final TweenCallback         masterVolumeCallback  = (type, source) -> updatingVolume = type==BEGIN;
 
