@@ -1,3 +1,7 @@
+/**
+ * Copyright 2012 xissburg
+ */
+
 attribute vec4 a_position;
 attribute vec4 a_color;
 attribute vec2 a_texCoord0;
