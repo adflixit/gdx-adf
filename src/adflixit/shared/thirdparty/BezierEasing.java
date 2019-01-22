@@ -129,5 +129,4 @@ public class BezierEasing {
   public float ease(float x) {
     return linear ? LinearEasing(x) : BezierEasing(x);
   }
-
 }
