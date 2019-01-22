@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Adflixit
+ * Copyright 2019 Adflixit
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,62 +22,74 @@ import static adflixit.shared.BaseScreen.*;
 import static adflixit.shared.TweenUtils.*;
 import static adflixit.shared.Util.*;
 
+import adflixit.shared.BaseGame;
+import adflixit.shared.BaseScreen;
 import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenEquation;
 import aurelienribon.tweenengine.equations.Quart;
 import aurelienribon.tweenengine.primitives.MutableFloat;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Widget;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TransformDrawable;
 
 /**
- * Widget to draw an arc. Draws it by drawing multiple one-degree fragments of a circle.
- * This can also be called radial progress bar, which it is.
- * It draws clockwise.
+ * Widget that draws an arc. This can also be called radial progress bar, which it is.
  */
 public class Arc extends Widget {
-  private TransformDrawable   drawable; // drawable of a single degree
+  private Drawable            drawable; // drawable of a single degree
+  private ShapeRenderer       shr;
   private final MutableFloat  progress  = new MutableFloat(0);
   private float               radius;
+  private boolean             clockwise = true;
 
-  public Arc(Drawable drawable, float radius) {
+  public Arc(Drawable drawable, float radius, ShapeRenderer shprnd) {
     setDrawable(drawable);
     setRadius(radius);
     setSize(getPrefWidth(), getPrefHeight());
     setOrigin(center);
+    shr = shprnd;
   }
 
-  public Arc(String drawable, float radius) {
-    this(drawable(drawable), radius);
+  public Arc(String drawable, float radius, ShapeRenderer shprnd) {
+    this(drawable(drawable), radius, shprnd);
   }
 
-  public Arc(float radius) {
-    this("arc_deg", radius);
+  public Arc(float radius, ShapeRenderer shprnd) {
+    this("arc", radius, shprnd);
   }
 
-  public Arc() {
-    this(200);
+  public Arc(ShapeRenderer shprnd) {
+    this(200, shprnd);
   }
 
   public void setDrawable(Drawable drawable) {
-    if (!(drawable instanceof TransformDrawable)) {
-      throw new IllegalArgumentException("The drawable should be an instance of TransformDrawable.");
-    }
-    this.drawable = (TransformDrawable)drawable;
+    this.drawable = drawable;
   }
 
   public void setRadius(float radius) {
     this.radius = radius;
   }
 
+  public Arc setClockwise(boolean value) {
+    clockwise = value;
+    return this;
+  }
+
   public float progress() {
     return progress.floatValue();
   }
 
-  public int degrees() {
-    return progress() >= 1 ? 360 : (int)((progress()*360)%360);
+  public float degrees() {
+    return progress() * 360;
   }
 
   public void set(float value) {
@@ -122,7 +134,7 @@ public class Arc extends Widget {
   /** @param v value
    * @param d duration */
   public Tween $tween(float v, float d) {
-    return $tween(v, d, Quart.OUT);
+    return $tween(v, d, Soft.INOUT);
   }
 
   /** @param v value */
@@ -144,22 +156,47 @@ public class Arc extends Widget {
   }
 
   @Override public void draw(Batch batch, float parentAlpha) {
-    if (progress() <= 0) {
-      return;
-    }
     validate();
     Color color = getColor();
     batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
-    float x = getX() + radius;
-    float y = getY() + radius;
-    float width = drawable.getMinWidth();
-    float height = drawable.getMinHeight();
-    float scaleX = getScaleX() * (radius/height);
-    float scaleY = getScaleY() * (radius/height);
-    float rotation = getRotation();
-    for (int i=0; i < degrees(); i++) {
-      drawable.draw(batch, x, y, 0, 0, width, height, scaleX, scaleY, rotation - i);
+    float x = getX();
+    float y = getY();
+    // nested position
+    float nx = x;
+    float ny = y;
+    Group parent = getParent();
+    while (parent != getStage().getRoot()) {
+      nx += parent.getX();
+      ny += parent.getY();
+      parent = parent.getParent();
     }
+    float width = getWidth();
+    float height = getHeight();
+    float rotation = getRotation();
+    batch.end();
+    Gdx.gl.glClearDepthf(1.0f);
+    Gdx.gl.glClear(GL20.GL_DEPTH_BUFFER_BIT);
+    Gdx.gl.glColorMask(false, false, false, false);
+    Gdx.gl.glDepthFunc(GL20.GL_LESS);
+    Gdx.gl.glEnable(GL20.GL_DEPTH_TEST);
+    Gdx.gl.glDepthMask(true);
+    shr.begin(ShapeType.Filled);
+      shr.setColor(1f, 1f, 1f, 0.5f);
+      if (clockwise) {
+        shr.arc(nx + radius, ny + radius, radius + 10,
+            rotation - degrees() + 90, degrees());
+      } else {
+        shr.arc(nx + radius, ny + radius, radius + 10, rotation + 90, degrees());
+      }
+    shr.end();
+    Gdx.gl.glColorMask(true, true, true, true);
+    Gdx.gl.glDepthMask(true);
+    Gdx.gl.glDepthFunc(GL20.GL_EQUAL);
+    batch.begin();
+      drawable.draw(batch, x, y, width, height);
+    batch.end();
+    Gdx.gl.glDisable(GL20.GL_DEPTH_TEST);
+    batch.begin();
   }
 
   @Override public float getPrefWidth() {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Adflixit
+ * Copyright 2019 Adflixit
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@ package adflixit.shared;
 import static adflixit.shared.TweenUtils.*;
 import static aurelienribon.tweenengine.TweenCallback.*;
 
+import adflixit.shared.misc.Soft;
 import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.equations.Quart;
 import aurelienribon.tweenengine.primitives.MutableFloat;
@@ -32,14 +33,16 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
  * Performs two-pass Gaussian blur.
  */
 public class Blur extends ScreenComponent<BaseScreen<?>> {
-  private final String        uniName = "u_blur";
+  private static final int    RES_DENOM = 4;
+  private static final String UNI_NAME  = "u_blur";
+
   private ShaderProgram       hpass;
   private ShaderProgram       vpass;
   private FrameBuffer         fb;
   private FrameBuffer         hfb;
   private FrameBuffer         vfb;
-  private int                 passes  = 1;  // number of blurring cycles
-  private final MutableFloat  amount  = new MutableFloat(0);
+  private int                 passes    = 1;  // number of blurring cycles
+  private final MutableFloat  amount    = new MutableFloat(0);
   private boolean             pass;       // update route permit
   private boolean             scheduled;  // one-time update route permit
 
@@ -105,7 +108,6 @@ public class Blur extends ScreenComponent<BaseScreen<?>> {
 
   public void end() {
     fb.end();
-    draw();
   }
 
   public Texture inputTex() {
@@ -123,7 +125,7 @@ public class Blur extends ScreenComponent<BaseScreen<?>> {
     hfb.begin();
     bat.begin();
       if (pass || scheduled) {
-        hpass.setUniformf(uniName, amount());
+        hpass.setUniformf(UNI_NAME, amount());
       }
       tex = i > 0 ? vfb.getColorBufferTexture() : inputTex();
       bat.draw(tex, x, y, scr.screenWidth(), scr.screenHeight());
@@ -134,7 +136,7 @@ public class Blur extends ScreenComponent<BaseScreen<?>> {
     vfb.begin();
     bat.begin();
       if (pass || scheduled) {
-        vpass.setUniformf(uniName, amount());
+        vpass.setUniformf(UNI_NAME, amount());
       }
       tex = hfb.getColorBufferTexture();
       bat.draw(tex, x, y, scr.screenWidth(), scr.screenHeight());
@@ -184,9 +186,9 @@ public class Blur extends ScreenComponent<BaseScreen<?>> {
    * @param d duration */
   public Tween $tween(float v, float d) {
     killTweenTarget(amount);
-    return Tween.to(amount, 0, d).target(v).ease(Quart.OUT)
+    return Tween.to(amount, 0, d).target(v).ease(Soft.INOUT)
            .setCallback((type, source) -> {
-             if (type==BEGIN) {
+             if (type == BEGIN) {
                unlock();
              } else {
                lock();
@@ -225,7 +227,7 @@ public class Blur extends ScreenComponent<BaseScreen<?>> {
       hfb.dispose();
       vfb.dispose();
     }
-    fb = new FrameBuffer(Format.RGB888, scr.fbWidth(), scr.fbHeight(), false);
+    fb = new FrameBuffer(Format.RGB888, scr.fbWidth() / RES_DENOM, scr.fbHeight() / RES_DENOM, false);
     hfb = new FrameBuffer(Format.RGB888, scr.fbWidth(), scr.fbHeight(), false);
     vfb = new FrameBuffer(Format.RGB888, scr.fbWidth(), scr.fbHeight(), false);
   }

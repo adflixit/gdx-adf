@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Adflixit
+ * Copyright 2019 Adflixit
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -100,15 +100,15 @@ public class Console {
     }
   }
 
-  /** Interprets a given text as a command.
-   * It reads the first word (a sequence of characters between the beginning of the line and a whitespace) 
+  /** Interprets given text as a command.
+   * Reads the first word (a sequence of characters between the beginning of the line and a whitespace)
    * as a command or variable name.
-   * The rest of of the words or sentences (any text bounded between two quotation marks) 
-   * are used as the arguments to the specified command.
-   * If no command found with the given name, if a variable with the given name exists 
+   * The rest of of the words or sentences (text bound by two quotation marks)
+   * are used as arguments to the specified command.
+   * If no command found with the given name, if a variable with the specified name exists
    * it will be set to the first argument. */
   public synchronized void eval(String line) {
-    if (line==null) {
+    if (line == null) {
       throw new IllegalArgumentException("An evaluated line cannot be null.");
     }
     // parsing the input into either whole words or text bounded by quotation marks
@@ -121,7 +121,7 @@ public class Console {
     // searching for a command or a variable matching the name
     ConCmd cmd = cmds.get(parsed.get(0));
     ConVar var = vars.get(parsed.get(0));
-    if (cmd==null && var==null) {
+    if (cmd == null && var == null) {
       // if nothing found
       print("Unknown command: "+parsed.get(0));
     } else if (cmd != null) {

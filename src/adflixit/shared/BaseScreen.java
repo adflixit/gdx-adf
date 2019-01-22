@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Adflixit
+ * Copyright 2019 Adflixit
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,11 +22,11 @@ import static adflixit.shared.Util.*;
 import static aurelienribon.tweenengine.TweenCallback.*;
 import static com.badlogic.gdx.graphics.Color.WHITE;
 
+import adflixit.shared.misc.Soft;
 import aurelienribon.tweenengine.Timeline;
 import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenCallback;
 import aurelienribon.tweenengine.TweenManager;
-import aurelienribon.tweenengine.equations.Quart;
 import aurelienribon.tweenengine.primitives.MutableFloat;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
@@ -119,7 +119,7 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
   private static boolean              benchmarkTesting;  // whether it is running or not
   private static float                benchmarkTime;     // time spent on benchmark
   private static int                  benchmarkFrames;   // number of frames rendered during benchmark
-  private static float                benchmarkFps;      // FPS during the benchmark
+  private static float                benchmarkFps;      // FPS during benchmark
 
   public static void loadBenchmarkInfo() {
     if (prefsContain(benchmarkKey)) {
@@ -142,7 +142,7 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
 
   // Indicates whether the app has to run without any advanced graphical features, such as both postprocessing and texture filtering other than nearest.
   private static boolean              simpleGraphics;
-  private static boolean              advancedPerformance;  // indicates whether the app may use advanced performance features, such as a GPU
+  private static boolean              advancedPerformance;  // indicates whether the app may use the advanced performance features, such as GPU
   public static final int             resDenom            = 4;  // resolution denominator used by the postprocessing economy
   public static final TextureFilter   textureFilterHq     = TextureFilter.Linear,
                                       textureFilterLq     = TextureFilter.Nearest;
@@ -160,6 +160,7 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
   protected final ShapeRenderer       shapeRenderer       = new ShapeRenderer();
   protected final AdaptiveViewport    uiViewport          = new AdaptiveViewport();
   protected final Stage               ui                  = new Stage(uiViewport);
+  protected final ShapeRenderer       uiShapeRenderer     = new ShapeRenderer();
   protected final Group[]             uiLayers            = {new Group(), new Group(), new Group()};
   protected final Overlay             overlay             = new Overlay(this);
   protected final Blur                blur                = new Blur(this);
@@ -168,7 +169,7 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
   protected final InputMultiplexer    inputMultiplexer    = new InputMultiplexer();
   protected final Vector2             touch               = new Vector2();
   protected FrameBuffer               frameBuffer;
-  protected boolean                   useFrameBuffer;
+  protected boolean                   drawToFrameBuffer;
 
   private final MutableFloat          camShake            = new MutableFloat(0);  // current camera shake amplitude
   private final MutableFloat          timescale           = new MutableFloat(1);  // time multiplier
@@ -178,7 +179,7 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
   private final MutableFloat          musicVolume         = new MutableFloat(1);
   private final List<Music>           musicList           = new ArrayList<>();    // music volume has to be manually update on a transition
   private boolean                     updatingVolume;
-  private final TweenCallback         masterVolumeCallback  = (type, source) -> updatingVolume = type==BEGIN;
+  private final TweenCallback         masterVolumeCallback  = (type, source) -> updatingVolume = type == BEGIN;
 
   // Temporal values
   protected final Vector2             tmpv2               = new Vector2();
@@ -326,18 +327,10 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
   }
 
   public int fbWidth() {
-    return screenWidthI() / resDenom;
-  }
-
-  public int fbHeight() {
-    return screenHeightI() / resDenom;
-  }
-
-  public int primaryFbWidth() {
     return screenWidthI();
   }
 
-  public int primaryFbHeight() {
+  public int fbHeight() {
     return screenHeightI();
   }
 
@@ -396,13 +389,177 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
     return a * (outputWidth() / screenWidth());
   }
 
+  /** Performs the camera shake procedure. */
+  private void shakeCamera() {
+    // move both camera and UI off their pivots
+    if (camShake() > 0) {
+      double camAngle = rand(CIRCLE), uiAngle = rand(CIRCLE);
+      float camRange = camShake(), uiRange = camRange * .5f;
+      Vector3 pos = cameraPos();
+      camera.position.set(pos.x + mcos(camAngle, camRange), pos.y + msin(camAngle, camRange), 0);
+      uiLayers[UIL_GAME].setPosition(mcos(uiAngle, uiRange), msin(uiAngle, uiRange));
+    }
+  }
+
+  private void resetCameraPos() {
+    cameraPos().set(camBasePos);
+    uiLayers[UIL_GAME].setPosition(0, 0);
+  }
+
+  protected void update() {
+    tweenMgr.update(dt());
+    tscTweenMgr.update(dtm());
+    uiTweenMgr.update(uiMdt());
+    updater.update();
+    shapeRenderer.setProjectionMatrix(camera.combined);
+    ui.act();
+    uiShapeRenderer.setProjectionMatrix(ui.getCamera().combined);
+    overlay.update();
+    updateInput();
+    // music has to be manually updated when is changed through transitions
+    if (updatingVolume) {
+      for (Music music : musicList) {
+        music.setVolume(musicVolume());
+      }
+    }
+  }
+
+  protected boolean doPostprocess() {
+    return benchmarkTesting || (blur.isActive() && advancedPerformance && !simpleGraphics);
+  }
+
+  protected void prepareDraw() {
+    if (doPostprocess) {
+      blur.begin();
+    }
+  }
+
+  protected void finalizeDraw() {
+    if (doPostprocess) {
+      blur.end();
+      blur.draw();
+    }
+  }
+
+  /** Called before {@link #draw()}. */
+  protected void drawPre() {
+  }
+
+  protected void draw() {
+  }
+
+  /** Called after {@link #draw()}. */
+  protected void drawPost() {
+  }
+
+  protected void drawDebug() {
+  }
+
+  protected void drawUi() {
+    ui.draw();
+  }
+
+  protected void clearScreen() {
+    Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+  }
+
+  private void setCameraToOrtho(boolean yDown) {
+    if (yDown) {
+      camera.up.set(0,-1,0);
+      camera.direction.set(0,0,1);
+    } else {
+      camera.up.set(0,1,0);
+      camera.direction.set(0,0,-1);
+    }
+    camera.position.set(camera.zoom*cameraX(), camera.zoom*cameraY(), 0);
+  }
+
+  public void render() {
+    update();
+    setCameraToOrtho(false);
+    viewport.apply();
+    shakeCamera();
+    batch.setProjectionMatrix(camera.combined);
+    doPostprocess = doPostprocess();
+    prepareDraw();
+    clearScreen();
+    if (drawToFrameBuffer) {
+      frameBuffer.begin();
+    }
+    batch.begin();
+    drawPre();
+    draw();
+    drawPost();
+    if (debug) {
+      drawDebug();
+    }
+    batch.end();
+    if (drawToFrameBuffer) {
+      frameBuffer.end();
+    }
+    finalizeDraw();
+    drawUi();
+    resetCameraPos();
+    updateBenchmark();
+  }
+
+  public void dispose() {
+    batch.dispose();
+    shapeRenderer.dispose();
+    ui.dispose();
+    uiShapeRenderer.dispose();
+    frameBuffer.dispose();
+    blur.dispose();
+  }
+
+  public void resize() {
+    logSetup("resizing = "+screenWidth()+" "+screenHeight());
+    // record the previous screen size
+    if (lastScreenSizeJunc) {
+      evenLastScreenSize.set(screenWidth(), screenHeight());
+    } else {
+      oddLastScreenSize.set(screenWidth(), screenHeight());
+    }
+    lastScreenSizeJunc = !lastScreenSizeJunc;
+    viewport.update(screenWidth(), screenHeight(), outputWidth(), outputHeight());
+    uiViewport.update(screenWidth(), screenHeight(), outputWidth(), outputHeight(), true);
+    overlay.resize();
+    tapper.resize();
+    blur.resize();
+    // frame buffer has to be created here to avoid creating it twice every time
+    if (firstResize) {
+      firstResize = false;
+    } else {
+      frameBuffer.dispose();
+    }
+    frameBuffer = new FrameBuffer(Format.RGB888, fbWidth(), fbHeight(), false);
+    logDone();
+  }
+
+  /** Called when the app first starts fully working, i.e. after the screen turns on. */
+  public void startup() {
+  }
+
+  public void show() {
+    Gdx.input.setInputProcessor(inputMultiplexer);
+  }
+
+  public void hide() {
+  }
+
+  public void pause() {
+  }
+
+  public void resume() {
+  }
+
   /** Shows the ad banner with the specified animation duration. */
   protected void showAd(float d) {
-    /*if (Gdx.app.getType()==ApplicationType.Android) {
+    /*if (Gdx.app.getType() == ApplicationType.Android) {
       AdView av = getAdView();
       killTarget(av);
       Tween.to(av, AndViewAccessor.Y, d)
-      .targetRelative(av.getTop() > av.getBottom() ? -av.getHeight() : av.getHeight()).ease(Quart.OUT)
+      .targetRelative(av.getTop() > av.getBottom() ? -av.getHeight() : av.getHeight()).ease(Soft.INOUT)
       .start(tweenMgr);
     }*/
   }
@@ -414,11 +571,11 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
 
   /** Hides the ad banner with the specified animation duration. */
   protected void hideAd(float d) {
-    /*if (Gdx.app.getType()==ApplicationType.Android) {
+    /*if (Gdx.app.getType() == ApplicationType.Android) {
       AdView av = getAdView();
       killTarget(av);
       Tween.to(av, AndViewAccessor.Y, d)
-      .targetRelative(av.getTop() > av.getBottom() ? av.getHeight() : -av.getHeight()).ease(Quart.OUT)
+      .targetRelative(av.getTop() > av.getBottom() ? av.getHeight() : -av.getHeight()).ease(Soft.INOUT)
       .start(tweenMgr);
     }*/
   }
@@ -448,6 +605,95 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
         ", master volume = "+masterVolume()+
         ", sfx volume = "+sfxVolume()+
         ", music volume = "+musicVolume());
+  }
+
+  /** @param parent container
+   * @param z z-index
+   * @param cb callback
+   * @param down should it fire on touch down
+   * @see {@link Tapper#set(Group, int, Callback, boolean)} */
+  public void setTapper(Group parent, int z, Callback cb, boolean down) {
+    tapper.set(parent, z, cb, down);
+  }
+
+  /** Sets tapper to fire on touch down.
+   * @param parent container
+   * @param z z-index
+   * @param cb callback
+   * @see {@link Tapper#set(Group, int, Callback, boolean)} */
+  public void setTapper(Group parent, int z, Callback cb) {
+    tapper.set(parent, z, cb, true);
+  }
+
+  /** @param parent container
+   * @param z z-index
+   * @param cb callback
+   * @param down should it fire on touch down
+   * @see {@link Tapper#setOnce(Group, int, Callback, boolean)} */
+  public void setTapperOnce(Group parent, int z, Callback cb, boolean down) {
+    tapper.setOnce(parent, z, cb, down);
+  }
+
+  /** Sets tapper to fire on touch down.
+   * @param parent container
+   * @param z z-index
+   * @param cb callback
+   * @see {@link Tapper#setOnce(Group, int, Callback, boolean)} */
+  public void setTapperOnce(Group parent, int z, Callback cb) {
+    tapper.setOnce(parent, z, cb, true);
+  }
+
+  /** Starts a timer that calls the callback at the start and at the end.
+   * @param d delay
+   * @param cb callback
+   * @return tween handle */
+  public Tween setTimer(float d, TweenCallback cb) {
+    return $setTimer(d, cb).start(tweenMgr);
+  }
+
+  /** Starts a timer that calls the callback at the start and at the end and repeats the specified number of times.
+   * @param d delay
+   * @param r repetition
+   * @param cb callback
+   * @return tween handle */
+  public Tween setTimer(float d, int r, TweenCallback cb) {
+    return $setTimer(d, r, cb).start(tweenMgr);
+  }
+
+  /** Starts a timer counted by the timescale that calls the callback at the start and at the end.
+   * @param d delay
+   * @param cb callback
+   * @return tween handle */
+  public Tween setTimescaledTimer(float d, TweenCallback cb) {
+    return $setTimer(d, cb).start(tscTweenMgr);
+  }
+
+  /** Starts a timer counted by the timescale that calls the callback at the start and at the end and repeats the specified number of times.
+   * @param d delay
+   * @param r repetition
+   * @param cb callback
+   * @return tween handle */
+  public Tween setTimescaledTimer(float d, int r, TweenCallback cb) {
+    return $setTimer(d, r, cb).start(tscTweenMgr);
+  }
+
+  /** Creates a timer handle that calls the callback at the start and at the end.
+   * @param d duration
+   * @param cb callback
+   * @return tween handle */
+  public Tween $setTimer(float d, TweenCallback cb) {
+    return delayTween(d)
+            .setCallback(cb)
+            .setCallbackTriggers(BEGIN|COMPLETE);
+  }
+
+  /** Creates a timer handle that calls the callback at the start and at the end and repeats the specified number of times.
+   * @param d duration
+   * @param r repetition
+   * @param cb callback
+   * @return tween handle */
+  public Tween $setTimer(float d, int r, TweenCallback cb) {
+    return $setTimer(d, cb).repeat(r, 0);
   }
 
   /** @return camera shake amplitude. */
@@ -615,7 +861,7 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
   }
 
   /** Sets the UI timescale multiplier to 0. */
-  public void resetUITimescale() {
+  public void resetUiTimescale() {
     setUiTimescale(0);
   }
 
@@ -1034,7 +1280,7 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
    * @return tween handle */
   public Tween $tweenCamShake(float v, float d) {
     killTweenTarget(camShake);
-    return Tween.to(camShake, 0, d).target(v).ease(Quart.OUT);
+    return Tween.to(camShake, 0, d).target(v).ease(Soft.INOUT);
   }
 
   /** Creates a handle to tween the camera shake amplitude.
@@ -1095,7 +1341,7 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
    * @return tween handle */
   public Tween $tweenTimescale(float v, float d) {
     killTweenTarget(timescale);
-    return Tween.to(timescale, 0, d).target(v).ease(Quart.OUT);
+    return Tween.to(timescale, 0, d).target(v).ease(Soft.INOUT);
   }
 
   /** Creates a handle to tween the timescale multiplier.
@@ -1156,7 +1402,7 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
    * @return tween handle */
   public Tween $tweenUiTimescale(float v, float d) {
     killTweenTarget(uiTimescale);
-    return Tween.to(uiTimescale, 0, d).target(v).ease(Quart.OUT);
+    return Tween.to(uiTimescale, 0, d).target(v).ease(Soft.INOUT);
   }
 
   /** Creates a handle to tween the UI timescale multiplier.
@@ -1217,7 +1463,7 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
    * @return tween handle */
   public Tween $tweenMasterVolume(float v, float d) {
     killTweenTarget(masterVolume);
-    return Tween.to(masterVolume, 0, d).target(v).ease(Quart.OUT)
+    return Tween.to(masterVolume, 0, d).target(v).ease(Soft.INOUT)
            .setCallbackTriggers(BEGIN|COMPLETE).setCallback(masterVolumeCallback);
   }
 
@@ -1279,7 +1525,7 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
    * @return tween handle */
   public Tween $tweenSfxVolume(float v, float d) {
     killTweenTarget(sfxVolume);
-    return Tween.to(sfxVolume, 0, d).target(v).ease(Quart.OUT);
+    return Tween.to(sfxVolume, 0, d).target(v).ease(Soft.INOUT);
   }
 
   /** Creates a handle to tween the sound effects volume.
@@ -1340,7 +1586,7 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
    * @return tween handle */
   public Tween $tweenMusicVolume(float v, float d) {
     killTweenTarget(musicVolume);
-    return Tween.to(musicVolume, 0, d).target(v).ease(Quart.OUT)
+    return Tween.to(musicVolume, 0, d).target(v).ease(Soft.INOUT)
            .setCallbackTriggers(BEGIN|COMPLETE).setCallback(masterVolumeCallback);
   }
 
@@ -1401,7 +1647,7 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
    * @return tween handle */
   public Tween $moveCameraX(float x, float d) {
     killTweenTarget(camera, OrthoCameraAccessor.X);
-    return Tween.to(camera, OrthoCameraAccessor.X, d).target(x).ease(Quart.INOUT);
+    return Tween.to(camera, OrthoCameraAccessor.X, d).target(x).ease(Soft.INOUT);
   }
 
   /** Creates a handle to slide the camera x.
@@ -1415,7 +1661,7 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
    * @return tween handle */
   public Tween $moveCameraY(float y, float d) {
     killTweenTarget(camera, OrthoCameraAccessor.Y);
-    return Tween.to(camera, OrthoCameraAccessor.Y, d).target(y).ease(Quart.INOUT);
+    return Tween.to(camera, OrthoCameraAccessor.Y, d).target(y).ease(Soft.INOUT);
   }
 
   /** Creates a handle to tween to slide the camera y.
@@ -1429,7 +1675,7 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
    * @return tween handle */
   public Tween $moveCamera(float x, float y, float d) {
     killTweenTarget(camera, OrthoCameraAccessor.POS);
-    return Tween.to(camera, OrthoCameraAccessor.POS, d).target(x, y).ease(Quart.INOUT);
+    return Tween.to(camera, OrthoCameraAccessor.POS, d).target(x, y).ease(Soft.INOUT);
   }
 
   /** Creates a handle to tween to slide the camera position.
@@ -1444,7 +1690,7 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
    * @return tween handle */
   public Tween $zoomCamera(float z, float d) {
     killTweenTarget(camera, OrthoCameraAccessor.ZOOM);
-    return Tween.to(camera, OrthoCameraAccessor.ZOOM, d).target(z).ease(Quart.OUT);
+    return Tween.to(camera, OrthoCameraAccessor.ZOOM, d).target(z).ease(Soft.INOUT);
   }
 
   /** Creates a handle to tween the camera zoom.
@@ -1473,7 +1719,7 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
    * @return tween handle */
   public Tween $fadeUi(float v, float d) {
     killTweenTarget(ui.getRoot(), ActorAccessor.A);
-    return Tween.to(ui.getRoot(), ActorAccessor.A, d).target(v).ease(Quart.OUT);
+    return Tween.to(ui.getRoot(), ActorAccessor.A, d).target(v).ease(Soft.INOUT);
   }
 
   /** Creates a handle to tween  to 1.
@@ -1524,7 +1770,7 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
     for (int i=0; i < UIL_LENGTH; i++) {
       if (hasFlag(fl, 1<<i)) {
         killTweenTarget(uiLayers[i], ActorAccessor.A);
-        tl.push(Tween.to(uiLayers[i], ActorAccessor.A, d).target(v).ease(Quart.OUT));
+        tl.push(Tween.to(uiLayers[i], ActorAccessor.A, d).target(v).ease(Soft.INOUT));
       }
     }
     return tl;
@@ -3454,249 +3700,6 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
    * @return tween handle */
   public Tween $setDimL() {
     return $dimInL(0);
-  }
-
-  /** @param parent container
-   * @param z z-index
-   * @param cb callback
-   * @param down should it fire on touch down
-   * @see {@link Tapper#set(Group, int, Callback, boolean)} */
-  public void setTapper(Group parent, int z, Callback cb, boolean down) {
-    tapper.set(parent, z, cb, down);
-  }
-
-  /** Sets tapper to fire on touch down.
-   * @param parent container
-   * @param z z-index
-   * @param cb callback
-   * @see {@link Tapper#set(Group, int, Callback, boolean)} */
-  public void setTapper(Group parent, int z, Callback cb) {
-    tapper.set(parent, z, cb, true);
-  }
-
-  /** @param parent container
-   * @param z z-index
-   * @param cb callback
-   * @param down should it fire on touch down
-   * @see {@link Tapper#setOnce(Group, int, Callback, boolean)} */
-  public void setTapperOnce(Group parent, int z, Callback cb, boolean down) {
-    tapper.setOnce(parent, z, cb, down);
-  }
-
-  /** Sets tapper to fire on touch down.
-   * @param parent container
-   * @param z z-index
-   * @param cb callback
-   * @see {@link Tapper#setOnce(Group, int, Callback, boolean)} */
-  public void setTapperOnce(Group parent, int z, Callback cb) {
-    tapper.setOnce(parent, z, cb, true);
-  }
-
-  /** Starts a timer that calls the callback at the start and at the end.
-   * @param d delay
-   * @param cb callback
-   * @return tween handle */
-  public Tween setTimer(float d, TweenCallback cb) {
-    return $setTimer(d, cb).start(tweenMgr);
-  }
-
-  /** Starts a timer that calls the callback at the start and at the end and repeats the specified number of times.
-   * @param d delay
-   * @param r repetition
-   * @param cb callback
-   * @return tween handle */
-  public Tween setTimer(float d, int r, TweenCallback cb) {
-    return $setTimer(d, r, cb).start(tweenMgr);
-  }
-
-  /** Starts a timer counted by the timescale that calls the callback at the start and at the end.
-   * @param d delay
-   * @param cb callback
-   * @return tween handle */
-  public Tween setTimescaledTimer(float d, TweenCallback cb) {
-    return $setTimer(d, cb).start(tscTweenMgr);
-  }
-
-  /** Starts a timer counted by the timescale that calls the callback at the start and at the end and repeats the specified number of times.
-   * @param d delay
-   * @param r repetition
-   * @param cb callback
-   * @return tween handle */
-  public Tween setTimescaledTimer(float d, int r, TweenCallback cb) {
-    return $setTimer(d, r, cb).start(tscTweenMgr);
-  }
-
-  /** Creates a timer handle that calls the callback at the start and at the end.
-   * @param d duration
-   * @param cb callback
-   * @return tween handle */
-  public Tween $setTimer(float d, TweenCallback cb) {
-    return delayTween(d)
-    .setCallback(cb)
-    .setCallbackTriggers(BEGIN|COMPLETE);
-  }
-
-  /** Creates a timer handle that calls the callback at the start and at the end and repeats the specified number of times.
-   * @param d duration
-   * @param r repetition
-   * @param cb callback
-   * @return tween handle */
-  public Tween $setTimer(float d, int r, TweenCallback cb) {
-    return $setTimer(d, cb).repeat(r, 0);
-  }
-
-  /** Performs the camera shake procedure. */
-  private void shakeCamera() {
-    // move both camera and UI off their pivots
-    if (camShake() > 0) {
-      double camAngle = rand(CIRCLE), uiAngle = rand(CIRCLE);
-      float camRange = camShake(), uiRange = camRange * .5f;
-      Vector3 pos = cameraPos();
-      camera.position.set(pos.x + mcos(camAngle, camRange), pos.y + msin(camAngle, camRange), 0);
-      uiLayers[UIL_GAME].setPosition(mcos(uiAngle, uiRange), msin(uiAngle, uiRange));
-    }
-  }
-
-  private void resetCameraPos() {
-    cameraPos().set(camBasePos);
-    uiLayers[UIL_GAME].setPosition(0, 0);
-  }
-
-  protected void update() {
-    tweenMgr.update(dt());
-    tscTweenMgr.update(dtm());
-    uiTweenMgr.update(uiMdt());
-    updater.update();
-    overlay.update();
-    ui.act();
-    updateInput();
-    // music has to be manually updated when is changed through transitions
-    if (updatingVolume) {
-      for (Music music : musicList) {
-        music.setVolume(musicVolume());
-      }
-    }
-  }
-
-  protected boolean doPostprocess() {
-    return benchmarkTesting || (blur.isActive() && advancedPerformance && !simpleGraphics);
-  }
-
-  protected void prepareDraw() {
-    if (doPostprocess) {
-      blur.begin();
-    }
-  }
-
-  protected void finalizeDraw() {
-    if (doPostprocess) {
-      blur.end();
-    }
-  }
-
-  /** Called before {@link #draw()}. */
-  protected void drawPre() {
-  }
-
-  protected void draw() {
-  }
-
-  /** Called after {@link #draw()}. */
-  protected void drawPost() {
-  }
-
-  protected void drawDebug() {
-  }
-
-  protected void drawUi() {
-    ui.draw();
-  }
-
-  protected void clearScreen() {
-    Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
-  }
-
-  private void setCameraToOrtho(boolean yDown) {
-    if (yDown) {
-      camera.up.set(0,-1,0);
-      camera.direction.set(0,0,1);
-    } else {
-      camera.up.set(0,1,0);
-      camera.direction.set(0,0,-1);
-    }
-    camera.position.set(camera.zoom*cameraX(), camera.zoom*cameraY(), 0);
-  }
-
-  public void render() {
-    update();
-    setCameraToOrtho(false);
-    viewport.apply();
-    shakeCamera();
-    batch.setProjectionMatrix(camera.combined);
-    doPostprocess = doPostprocess();
-    prepareDraw();
-    clearScreen();
-    batch.begin();
-      drawPre();
-      draw();
-      drawPost();
-      if (debug) {
-        drawDebug();
-      }
-    batch.end();
-    finalizeDraw();
-    drawUi();
-    resetCameraPos();
-    updateBenchmark();
-  }
-
-  public void dispose() {
-    batch.dispose();
-    shapeRenderer.dispose();
-    ui.dispose();
-    frameBuffer.dispose();
-    blur.dispose();
-  }
-
-  public void resize() {
-    logSetup("resizing = "+screenWidth()+" "+screenHeight());
-    // record the previous screen size
-    if (lastScreenSizeJunc) {
-      evenLastScreenSize.set(screenWidth(), screenHeight());
-    } else {
-      oddLastScreenSize.set(screenWidth(), screenHeight());
-    }
-    lastScreenSizeJunc = !lastScreenSizeJunc;
-    viewport.update(screenWidth(), screenHeight(), outputWidth(), outputHeight());
-    uiViewport.update(screenWidth(), screenHeight(), outputWidth(), outputHeight(), true);
-    overlay.resize();
-    tapper.resize();
-    blur.resize();
-    // frame buffer has to be created here to avoid creating it twice every time
-    if (firstResize) {
-      firstResize = false;
-    } else {
-      frameBuffer.dispose();
-    }
-    frameBuffer = new FrameBuffer(Format.RGB888, primaryFbWidth(), primaryFbHeight(), false);
-    logDone();
-  }
-
-  /** Called when the app first starts fully working, i.e. after the screen turns on. */
-  public void startup() {
-  }
-
-  public void show() {
-    Gdx.input.setInputProcessor(inputMultiplexer);
-  }
-
-  public void hide() {
-  }
-
-  public void pause() {
-  }
-
-  public void resume() {
   }
 
   protected void updateInput() {

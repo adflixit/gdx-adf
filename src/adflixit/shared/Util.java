@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Adflixit
+ * Copyright 2019 Adflixit
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -61,9 +61,9 @@ public final class Util {
                                 C_HD              = .2f,    // half duration
                                 C_OD              = .6f,    // one and a half duration
                                 C_DD              = .8f,    // double duration
-                                C_MD              = 1f,     // moderate duration
+                                C_MD              = 1,      // moderate duration
                                 C_ID              = 1.5f,   // intermediate duration
-                                C_FD              = 2f,     // fair duration
+                                C_FD              = 2,      // fair duration
                                 C_BD              = 2.5f,   // big duration
                                 C_GD              = 4,      // giant duration
                                 C_DT              = 100,    // distance
@@ -220,9 +220,9 @@ public final class Util {
    * @param piv initial pivot */
   public static Vector2 align(float x, float y, float width, float height, int aln, int piv) {
     /*if ((aln & right) != 0) x -= width;
-    else if ((aln & left)==0) x -= width / 2;
+    else if ((aln & left) == 0) x -= width / 2;
     if ((aln & top) != 0) y -= height;
-    else if ((aln & bottom)==0) y -= height / 2;*/
+    else if ((aln & bottom) == 0) y -= height / 2;*/
     return tmpv2.set(alignX(x, width, aln, piv), alignY(y, height, aln, piv));
   }
 
@@ -711,19 +711,19 @@ public final class Util {
   }
 
   public static boolean fixtureIsInContact(Contact contact, Fixture fix) {
-    return contact.getFixtureA()==fix || contact.getFixtureB()==fix;
+    return contact.getFixtureA() == fix || contact.getFixtureB() == fix;
   }
 
   public static boolean checkContactByCategory(Fixture fixa, Fixture fixb, short cba, short cbb) {
-    return categoryBits(fixa)==cba && categoryBits(fixb)==cbb;
+    return categoryBits(fixa) == cba && categoryBits(fixb) == cbb;
   }
 
   public static boolean checkContactByMask(Fixture fixa, Fixture fixb, short mba, short mbb) {
-    return maskBits(fixa)==mba && maskBits(fixb)==mbb;
+    return maskBits(fixa) == mba && maskBits(fixb) == mbb;
   }
 
   public static boolean checkContactByGroup(Fixture fixa, Fixture fixb, short gia, short gib) {
-    return groupIndex(fixa)==gia && groupIndex(fixb)==gib;
+    return groupIndex(fixa) == gia && groupIndex(fixb) == gib;
   }
 
   public static boolean checkContactByCategory(Contact contact, short cba, short cbb) {
@@ -739,15 +739,15 @@ public final class Util {
   }
 
   public static boolean checkUnorderedContactByCategory(Fixture fixa, Fixture fixb, short cba, short cbb) {
-    return (categoryBits(fixa)==cba && categoryBits(fixb)==cbb) || (categoryBits(fixa)==cbb && categoryBits(fixb)==cba);
+    return (categoryBits(fixa) == cba && categoryBits(fixb) == cbb) || (categoryBits(fixa) == cbb && categoryBits(fixb) == cba);
   }
 
   public static boolean checkUnorderedContactByMask(Fixture fixa, Fixture fixb, short mba, short mbb) {
-    return (maskBits(fixa)==mba && maskBits(fixb)==mbb) || (maskBits(fixa)==mbb && maskBits(fixb)==mba);
+    return (maskBits(fixa) == mba && maskBits(fixb) == mbb) || (maskBits(fixa) == mbb && maskBits(fixb) == mba);
   }
 
   public static boolean checkUnorderedContactByGroup(Fixture fixa, Fixture fixb, short gia, short gib) {
-    return (groupIndex(fixa)==gia && groupIndex(fixb)==gib) || (maskBits(fixa)==gib && maskBits(fixb)==gia);
+    return (groupIndex(fixa) == gia && groupIndex(fixb) == gib) || (maskBits(fixa) == gib && maskBits(fixb) == gia);
   }
 
   public static boolean checkUnorderedContactByCategory(Contact contact, short cba, short cbb) {

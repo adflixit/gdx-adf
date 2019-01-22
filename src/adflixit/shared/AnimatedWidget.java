@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Adflixit
+ * Copyright 2019 Adflixit
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ import static adflixit.shared.TweenUtils.*;
 import static adflixit.shared.Util.*;
 import static java.lang.Math.*;
 
+import adflixit.shared.misc.Soft;
 import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenEquation;
 import aurelienribon.tweenengine.equations.Linear;
@@ -52,7 +53,7 @@ public class AnimatedWidget extends Widget {
   }
 
   public void setAnimation(Animation<TextureRegion> anim) {
-    if (anim==null) {
+    if (anim == null) {
       throw new IllegalArgumentException("Animation can't be null.");
     }
     this.anim = anim;
@@ -117,7 +118,7 @@ public class AnimatedWidget extends Widget {
    * @param d duration
    * @return tween handle */
   public Tween $tween(float v, float d) {
-    return $tween(v, d, Quart.OUT);
+    return $tween(v, d, Soft.INOUT);
   }
 
   /** Creates a tween handle to tween the playtime mark.
@@ -129,7 +130,7 @@ public class AnimatedWidget extends Widget {
 
   /** Creates the playtime tween handle. */
   private void initTween() {
-    if (tween==null) {
+    if (tween == null) {
       tween = Tween.to(time, 0, duration).target(duration).ease(Linear.INOUT);
     }
   }

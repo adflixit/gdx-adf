@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Adflixit
+ * Copyright 2019 Adflixit
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@ import static adflixit.shared.Util.*;
 import static aurelienribon.tweenengine.TweenCallback.*;
 import static com.badlogic.gdx.utils.Align.*;
 
+import adflixit.shared.misc.Soft;
 import android.view.View;
 import aurelienribon.tweenengine.Timeline;
 import aurelienribon.tweenengine.Tween;
@@ -184,7 +185,7 @@ public final class TweenUtils {
    * @return handle to tween the actor's opacity. */
   public static Tween $fadeActor(Actor target, float a, float d) {
     killTweenTarget(target, ActorAccessor.A);
-    return Tween.to(target, ActorAccessor.A, d).target(a).ease(Quart.OUT);
+    return Tween.to(target, ActorAccessor.A, d).target(a).ease(Soft.INOUT);
   }
 
   /** @param a alpha
@@ -220,7 +221,7 @@ public final class TweenUtils {
    * @return handle to tween the label's opacity. */
   public static Tween $fadeLabel(Label target, float a, float d) {
     killTweenTarget(target, LabelAccessor.A);
-    return Tween.to(target, LabelAccessor.A, d).target(a).ease(Quart.OUT);
+    return Tween.to(target, LabelAccessor.A, d).target(a).ease(Soft.INOUT);
   }
 
   /** @return handle to tween the label's opacity.
@@ -256,7 +257,7 @@ public final class TweenUtils {
    * @return handle to tween the actor's color. */
   public static Tween $tweenActorColor(Actor target, Color clr, float d) {
     killTweenTarget(target, ActorAccessor.RGB);
-    return Tween.to(target, ActorAccessor.RGB, d).target(clr.r, clr.g, clr.b).ease(Quart.OUT);
+    return Tween.to(target, ActorAccessor.RGB, d).target(clr.r, clr.g, clr.b).ease(Soft.INOUT);
   }
 
   /** @param clr color
@@ -270,7 +271,7 @@ public final class TweenUtils {
    * @return handle to tween the label's color. */
   public static Tween $tweenLabelColor(Label target, Color clr, float d) {
     killTweenTarget(target, LabelAccessor.RGB);
-    return Tween.to(target, LabelAccessor.RGB, d).target(clr.r, clr.g, clr.b).ease(Quart.OUT);
+    return Tween.to(target, LabelAccessor.RGB, d).target(clr.r, clr.g, clr.b).ease(Soft.INOUT);
   }
 
   /** @param clr color
@@ -308,11 +309,11 @@ public final class TweenUtils {
   /** @return multiple {@link TweenCallback} stacked into one. */
   public static TweenCallback multiplexCallbacks(final TweenCallback... callbacks) {
     return (type, source) -> {
-      if (type==BEGIN) {
+      if (type == BEGIN) {
         for (TweenCallback callback : callbacks) {
           callback.onEvent(type, source);
         }
-      } else if (type==BEGIN) {
+      } else if (type == BEGIN) {
         for (TweenCallback callback : callbacks) {
           callback.onEvent(type, source);
         }
@@ -323,9 +324,9 @@ public final class TweenUtils {
   /** @return {@link TweenCallback} that shows actor(s) in the beginning of an animation and hides it in the end. */
   public static TweenCallback visibilityCallback(final Actor... targets) {
     return (type, source) -> {
-      if (type==BEGIN) {
+      if (type == BEGIN) {
         showActors(targets);
-      } else if (type==COMPLETE) {
+      } else if (type == COMPLETE) {
         hideActors(targets);
       }
     };
@@ -334,7 +335,7 @@ public final class TweenUtils {
   /** @return {@link TweenCallback} that removes the target from all trackers. */
   public static TweenCallback killTargetCallback(final Object target) {
     return (type, source) -> {
-      if (type==BEGIN || type==COMPLETE) {
+      if (type == BEGIN || type == COMPLETE) {
         killTweenTarget(target);
       }
     };
@@ -342,7 +343,7 @@ public final class TweenUtils {
 
   public static TweenCallback killTargetsCallback(final Object... targets) {
     return (type, source) -> {
-      if (type==BEGIN || type==COMPLETE) {
+      if (type == BEGIN || type == COMPLETE) {
         for (Object target : targets) {
           killTweenTarget(target);
         }

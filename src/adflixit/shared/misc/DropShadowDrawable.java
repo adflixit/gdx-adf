@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Adflixit
+ * Copyright 2019 Adflixit
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TransformDrawable;
 
 /**
  * Draws any drawable with a shadow underneath it.
- * The shadow has to be a pre-made {@link TextureRegion}.
+ * The shadow has to be a pre-made {@link Drawable}.
  */
 public class DropShadowDrawable extends BaseDrawable implements TransformDrawable {
   private Drawable          drawable;
@@ -35,46 +35,47 @@ public class DropShadowDrawable extends BaseDrawable implements TransformDrawabl
   private TransformDrawable transDrawable;  // in case it is a TransformDrawable
   private TransformDrawable transShadow;    // ditto
   private float             radius;         // shadow radius, should be specified manually
-  private float             offset;         // shadow vertical offset
+  private float             offsetX;        // shadow horizontal offset
+  private float             offsetY;        // shadow vertical offset
 
-  public DropShadowDrawable(Drawable drawable, Drawable shadow, float radius, float offset) {
+  public DropShadowDrawable(Drawable drawable, Drawable shadow, float radius, float offsetX, float offsetY) {
     this.drawable = drawable;
     if (drawable instanceof TransformDrawable) {
       transDrawable = (TransformDrawable)drawable;
     }
-    setShadow(shadow, radius, offset);
+    setShadow(shadow, radius, offsetX, offsetY);
   }
 
   public DropShadowDrawable(Drawable drawable, Drawable shadow) {
-    this(drawable, shadow, C_SHD_RAD, C_SHD_OFS);
+    this(drawable, shadow, C_SHD_RAD, C_SHD_OFS, 0);
   }
 
-  public DropShadowDrawable(Skin skin, String drawable, String shadow, float radius, float offset) {
-    this(skin.getDrawable(drawable), skin.getDrawable(shadow), radius, offset);
+  public DropShadowDrawable(Skin skin, String drawable, String shadow, float radius, float offsetX, float offsetY) {
+    this(skin.getDrawable(drawable), skin.getDrawable(shadow), radius, offsetX, offsetY);
   }
 
   public DropShadowDrawable(Skin skin, String drawable, String shadow) {
-    this(skin, drawable, shadow, C_SHD_RAD, C_SHD_OFS);
+    this(skin, drawable, shadow, C_SHD_RAD, C_SHD_OFS, 0);
   }
 
-  public DropShadowDrawable(Skin skin, String drawable, float radius, float offset) {
-    this(skin, drawable, drawable+"_shd", radius, offset);
+  public DropShadowDrawable(Skin skin, String drawable, float radius, float offsetX, float offsetY) {
+    this(skin, drawable, drawable+"_shd", radius, offsetX, offsetY);
   }
 
   public DropShadowDrawable(Skin skin, String drawable) {
-    this(skin, drawable, drawable+"_shd", C_SHD_RAD, C_SHD_OFS);
+    this(skin, drawable, drawable+"_shd", C_SHD_RAD, C_SHD_OFS, 0);
   }
 
-  public DropShadowDrawable(String drawable, String shadow, float radius, float offset) {
-    this(skin(), drawable, shadow, radius, offset);
+  public DropShadowDrawable(String drawable, String shadow, float radius, float offsetX, float offsetY) {
+    this(skin(), drawable, shadow, radius, offsetX, offsetY);
   }
 
   public DropShadowDrawable(String drawable, String shadow) {
     this(skin(), drawable, shadow);
   }
 
-  public DropShadowDrawable(String drawable, float radius, float offset) {
-    this(skin(), drawable, radius, offset);
+  public DropShadowDrawable(String drawable, float radius, float offsetX, float offsetY) {
+    this(skin(), drawable, radius, offsetX, offsetY);
   }
 
   public DropShadowDrawable(String drawable) {
@@ -88,12 +89,12 @@ public class DropShadowDrawable extends BaseDrawable implements TransformDrawabl
   @Override public void draw(Batch batch, float x, float y, float originX, float originY,
       float width, float height, float scaleX, float scaleY, float rotation) {
     if (isTransformable()) {
-      transShadow.draw(batch, x - radius/2, y - radius/2 - offset, originX + radius/2, originY + radius/2,
+      transShadow.draw(batch, x - radius/2 - offsetX, y - radius/2 - offsetY, originX + radius/2, originY + radius/2,
           width + radius, height + radius, scaleX, scaleY, rotation);
       transDrawable.draw(batch, x, y, originX, originY, width, height, scaleX, scaleY, rotation);
     } else {
       if (shadow != null) {
-        shadow.draw(batch, x - radius/2, y - radius/2 - offset, width + radius, height + radius);
+        shadow.draw(batch, x - radius/2 - offsetX, y - radius/2 - offsetY, width + radius, height + radius);
       }
       if (drawable != null) {
         drawable.draw(batch, x, y, width, height);
@@ -113,7 +114,7 @@ public class DropShadowDrawable extends BaseDrawable implements TransformDrawabl
     return shadow;
   }
 
-  public void setShadow(Drawable shadow, float radius, float offset) {
+  public void setShadow(Drawable shadow, float radius, float offsetX, float offsetY) {
     if (this.shadow != shadow) {
       this.shadow = shadow;
       if (shadow instanceof TransformDrawable) {
@@ -121,11 +122,12 @@ public class DropShadowDrawable extends BaseDrawable implements TransformDrawabl
       }
     }
     this.radius = radius;
-    this.offset = offset;
+    this.offsetX = offsetX;
+    this.offsetY = offsetY;
   }
 
   public void setShadow(Drawable shadow) {
-    setShadow(shadow, radius, offset);
+    setShadow(shadow, radius, offsetX, offsetY);
   }
 
   @Override public float getLeftWidth() {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Adflixit
+ * Copyright 2019 Adflixit
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -100,7 +100,7 @@ public abstract class Pool<E> extends ArrayList<E> implements List<E> {
 
   /** @return the first found free item. If there are none, the pool is being expanded. */
   public E nextFreeExtra() {
-    if (nextFree()==null) {
+    if (nextFree() == null) {
       grow(5);
     }
     return nextFree();

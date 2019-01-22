@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Adflixit
+ * Copyright 2019 Adflixit
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -382,15 +382,15 @@ public class Overlay extends ScreenComponent<BaseScreen<?>> {
 
   public void resize() {
     // linear filter workaround
-    sheers.setPosition(-2, -2);
-    blackouts.setPosition(-2, -2);
-    tint.setPosition(-2, -2);
-    dim.setPosition(-2, -2);
-    vignette.setSize(-2, -2);
-    sheers.setSize(scr.screenWidth() + 4, scr.screenHeight() + 4);
-    blackouts.setSize(scr.screenWidth() + 4, scr.screenHeight() + 4);
-    tint.setSize(scr.screenWidth() + 4, scr.screenHeight() + 4);
-    dim.setSize(scr.screenWidth() + 4, scr.screenHeight() + 4);
-    vignette.setSize(scr.screenWidth() + 4, scr.screenHeight() + 4);
+    sheers.setPosition(-5, -5);
+    blackouts.setPosition(-5, -5);
+    tint.setPosition(-5, -5);
+    dim.setPosition(-5, -5);
+    vignette.setSize(-5, -5);
+    sheers.setSize(scr.screenWidth() + 10, scr.screenHeight() + 10);
+    blackouts.setSize(scr.screenWidth() + 10, scr.screenHeight() + 10);
+    tint.setSize(scr.screenWidth() + 10, scr.screenHeight() + 10);
+    dim.setSize(scr.screenWidth() + 10, scr.screenHeight() + 10);
+    vignette.setSize(scr.screenWidth() + 10, scr.screenHeight() + 10);
   }
 }

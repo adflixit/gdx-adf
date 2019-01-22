@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Adflixit
+ * Copyright 2019 Adflixit
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ import com.badlogic.gdx.Gdx;
  */
 public abstract class Logger {
   public static final void glog(String msg) {
-    if (Gdx.app.getType()==ApplicationType.Android) {
+    if (Gdx.app.getType() == ApplicationType.Android) {
       Gdx.app.log("App", msg);
     } else {
       System.out.println(msg);
@@ -32,7 +32,7 @@ public abstract class Logger {
   }
 
   public static final void glogSetup(String msg) {
-    if (Gdx.app.getType()==ApplicationType.Android) {
+    if (Gdx.app.getType() == ApplicationType.Android) {
       Gdx.app.log("App", msg);
     } else {
       System.out.print(msg);
@@ -40,7 +40,7 @@ public abstract class Logger {
   }
 
   public static final void glogDone() {
-    if (Gdx.app.getType()==ApplicationType.Android) {
+    if (Gdx.app.getType() == ApplicationType.Android) {
       Gdx.app.log("App", "Done");
     } else {
       System.out.print(" -> done\n");
@@ -48,7 +48,7 @@ public abstract class Logger {
   }
 
   public final void log(String msg) {
-    if (Gdx.app.getType()==ApplicationType.Android) {
+    if (Gdx.app.getType() == ApplicationType.Android) {
       Gdx.app.log("App", getClass().getSimpleName()+": "+msg);
     } else {
       System.out.println(getClass().getSimpleName()+": "+msg);
@@ -56,7 +56,7 @@ public abstract class Logger {
   }
 
   public final void logSetup(String msg) {
-    if (Gdx.app.getType()==ApplicationType.Android) {
+    if (Gdx.app.getType() == ApplicationType.Android) {
       Gdx.app.log("App", getClass().getSimpleName()+": "+msg);
     } else {
       System.out.print(getClass().getSimpleName()+": "+msg);
@@ -64,7 +64,7 @@ public abstract class Logger {
   }
 
   public final void logDone() {
-    if (Gdx.app.getType()==ApplicationType.Android) {
+    if (Gdx.app.getType() == ApplicationType.Android) {
       Gdx.app.log("App", getClass().getSimpleName()+": Done");
     } else {
       System.out.print(" -> done\n");

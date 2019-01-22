@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Adflixit
+ * Copyright 2019 Adflixit
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ import static adflixit.shared.TweenUtils.*;
 import static adflixit.shared.Util.*;
 import static aurelienribon.tweenengine.TweenCallback.*;
 
+import adflixit.shared.misc.Soft;
 import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenCallback;
 import aurelienribon.tweenengine.equations.Quart;
@@ -35,13 +36,16 @@ import java.util.List;
 
 /**
  * Draws the specified texture (usually the frame buffer output) with a shader filter.
- * TODO: shader tilt shift doesn't work correctly.
+ * TODO: tilt shift shader doesn't work correctly.
  */
 public class Postprocessor extends ScreenComponent<BaseScreen<?>> {
+  public static final int           RES_DENOM = 4;
+  
   public static final int           BLUR      = 0,
                                     TSY       = 1,
                                     TSX       = 2,
                                     TSYP      = 3;
+
   private static final String[]     uniNames  = {
     "u_blur",
     "u_tiltshiftY",
@@ -52,8 +56,9 @@ public class Postprocessor extends ScreenComponent<BaseScreen<?>> {
 
   private ShaderProgram             firstPass;
   private ShaderProgram             lastPass;
-  private FrameBuffer               firstFrameBuffer;
-  private FrameBuffer               lastFrameBuffer;
+  private FrameBuffer               fb;
+  private FrameBuffer               firstFb;
+  private FrameBuffer               lastFb;
   private final List<MutableFloat>  values    = new ArrayList<>();
   private int                       locks;      // update route permits
   private int                       schedules;  // one-time update route permits
@@ -93,8 +98,16 @@ public class Postprocessor extends ScreenComponent<BaseScreen<?>> {
     schedules = 0;
   }
 
+  public void begin() {
+    fb.begin();
+  }
+
+  public void end() {
+    fb.end();
+  }
+
   public Texture inputTex() {
-    return scr.fbTex();
+    return fb.getColorBufferTexture();
   }
 
   public void draw() {
@@ -108,7 +121,7 @@ public class Postprocessor extends ScreenComponent<BaseScreen<?>> {
     }
     // horizontal pass
     bat.setShader(firstPass);
-    firstFrameBuffer.begin();
+    firstFb.begin();
     bat.begin();
       for (int i=0; i < uniLength; i++) {
         int m = 1<<i;
@@ -118,10 +131,10 @@ public class Postprocessor extends ScreenComponent<BaseScreen<?>> {
       }
       bat.draw(tex, x, y, scr.screenWidth(), scr.screenHeight(), 0,0,1,1);
     bat.end();
-    firstFrameBuffer.end();
+    firstFb.end();
     // vertical pass
     bat.setShader(lastPass);
-    lastFrameBuffer.begin();
+    lastFb.begin();
     bat.begin();
       for (int i=0; i < uniLength; i++) {
         int m = 1<<i;
@@ -133,13 +146,13 @@ public class Postprocessor extends ScreenComponent<BaseScreen<?>> {
           }
         }
       }
-      tex = firstFrameBuffer.getColorBufferTexture();
+      tex = firstFb.getColorBufferTexture();
       bat.draw(tex, x, y, scr.screenWidth(), scr.screenHeight(), 0,0,1,1);
     bat.end();
-    lastFrameBuffer.end();
+    lastFb.end();
     bat.setShader(null);
     bat.begin();
-      tex = lastFrameBuffer.getColorBufferTexture();
+      tex = lastFb.getColorBufferTexture();
       bat.draw(tex, x, y, scr.screenWidth(), scr.screenHeight(), 0,0,1,1);
     bat.end();
   }
@@ -208,9 +221,9 @@ public class Postprocessor extends ScreenComponent<BaseScreen<?>> {
    * @param d duration */
   public Tween $tween(int i, float v, float d) {
     killTweenTarget(field(i));
-    return Tween.to(field(i), 0, d).target(v).ease(Quart.OUT)
+    return Tween.to(field(i), 0, d).target(v).ease(Soft.INOUT)
            .setCallback((type, source) -> {
-             if (type==BEGIN) {
+             if (type == BEGIN) {
                unlock(i);
              } else {
                lock(i);
@@ -240,18 +253,19 @@ public class Postprocessor extends ScreenComponent<BaseScreen<?>> {
   public void dispose() {
     firstPass.dispose();
     lastPass.dispose();
-    firstFrameBuffer.dispose();
-    lastFrameBuffer.dispose();
+    firstFb.dispose();
+    lastFb.dispose();
   }
 
   public void resize() {
     if (firstResize) {
       firstResize = false;
     } else {
-      firstFrameBuffer.dispose();
-      lastFrameBuffer.dispose();
+      firstFb.dispose();
+      lastFb.dispose();
     }
-    firstFrameBuffer = new FrameBuffer(Format.RGBA8888, scr.fbWidth(), scr.fbHeight(), false);
-    lastFrameBuffer = new FrameBuffer(Format.RGBA8888, scr.fbWidth(), scr.fbHeight(), false);
+    fb = new FrameBuffer(Format.RGBA8888, scr.fbWidth() / RES_DENOM, scr.fbHeight() / RES_DENOM, false);
+    firstFb = new FrameBuffer(Format.RGBA8888, scr.fbWidth(), scr.fbHeight(), false);
+    lastFb = new FrameBuffer(Format.RGBA8888, scr.fbWidth(), scr.fbHeight(), false);
   }
 }

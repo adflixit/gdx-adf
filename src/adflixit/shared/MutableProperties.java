@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Adflixit
+ * Copyright 2019 Adflixit
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,7 +54,7 @@ public class MutableProperties extends Properties {
 
   /** Loads the specified properties. The file type depends on the platform. */
   public void load(String path) {
-    file = Gdx.app.getType()==ApplicationType.Desktop ? localFile(path) : internalFile(path);
+    file = Gdx.app.getType() == ApplicationType.Desktop ? localFile(path) : internalFile(path);
     try {
       load(file.read());
     } catch (IOException e) {
@@ -80,7 +80,7 @@ public class MutableProperties extends Properties {
    * @throws IllegalArgumentException if no entry is found. */
   public String get(String key) throws IllegalArgumentException {
   String value = getProperty(key);
-    if (value==null) {
+    if (value == null) {
       throw new IllegalArgumentException("No '"+key+"' property found.");
     }
     return value;
@@ -100,7 +100,7 @@ public class MutableProperties extends Properties {
    * @throws IllegalArgumentException if no entry is found. */
   public float getFloat(String key) throws IllegalArgumentException {
     Float value = floats.get(key);
-    if (value==null) {
+    if (value == null) {
       throw new IllegalArgumentException("No '"+key+"' property found.");
     }
     return value.floatValue();
@@ -119,10 +119,10 @@ public class MutableProperties extends Properties {
   /** Changes an existing property.
    * @return the previous value of the specified key. */
   public Object set(String key, String value) throws NullPointerException, IllegalArgumentException {
-    if (key==null) {
+    if (key == null) {
       throw new NullPointerException("Key can't be null.");
     }
-    if (value==null || value.equals("")) {
+    if (value == null || value.equals("")) {
       throw new NullPointerException("Value can't be null or empty.");
     }
     if (!containsKey(key)) {
