@@ -45,7 +45,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TransformDrawable;
  * Widget that draws an arc. This can also be called radial progress bar, which it is.
  */
 public class Arc extends Widget {
-  private Drawable            drawable; // drawable of a single degree
+  private Drawable            drawable;
   private ShapeRenderer       shr;
   private final MutableFloat  progress  = new MutableFloat(0);
   private float               radius;
