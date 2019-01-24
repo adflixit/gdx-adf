@@ -7,10 +7,10 @@ varying vec2 v_texCoords;
 varying vec2 v_blurTexCoords[14];
 uniform mat4 u_projTrans;
 
-uniform float	u_blur;
-uniform float	u_tiltshiftY;
-uniform float	u_tiltshiftX;
-uniform float	u_tiltshiftYPos;
+uniform float u_blur;
+uniform float u_tiltshiftY;
+uniform float u_tiltshiftX;
+uniform float u_tiltshiftYPos;
 
 #define tsyp (u_tiltshiftYPos <= 0. ? abs(uv.y-.3) : abs(uv.y-u_tiltshiftYPos))
 #define tsxp abs(uv.x-.5)
