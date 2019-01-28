@@ -161,12 +161,16 @@ public class Postprocessor extends ScreenComponent<BaseScreen<?>> {
     return value(BLUR)+value(TSY)+value(TSX) > 0;
   }
 
-  /** @return does the filter occupy the whole screen.  */
+  /**
+   * @return does the filter occupy the whole screen. 
+   */
   public boolean isFull() {
     return value(BLUR) > 0;
   }
 
-  /** Grants access to the update route for a filter specified by the index. */
+  /**
+   * Grants access to the update route for a filter specified by the index.
+   */
   private void unlock(int i) {
     int m = 1<<i;
     if (!hasFlag(locks, m)) {
@@ -174,7 +178,9 @@ public class Postprocessor extends ScreenComponent<BaseScreen<?>> {
     }
   }
 
-  /** Revokes access to the update route for a filter specified by the index. */
+  /**
+   * Revokes access to the update route for a filter specified by the index.
+   */
   private void lock(int i) {
     int m = 1<<i;
     if (hasFlag(locks, m)) {
@@ -182,7 +188,9 @@ public class Postprocessor extends ScreenComponent<BaseScreen<?>> {
     }
   }
 
-  /** Requests one-time access to the update route. */
+  /**
+   * Requests one-time access to the update route.
+   */
   private void schedule(int i) {
     int m = 1<<i;
     if (!hasFlag(schedules, m)) {
@@ -190,7 +198,9 @@ public class Postprocessor extends ScreenComponent<BaseScreen<?>> {
     }
   }
 
-  /** Resets one-time access to the update route. */
+  /**
+   * Resets one-time access to the update route.
+   */
   private void unschedule(int i) {
     int m = 1<<i;
     if (hasFlag(schedules, m)) {
@@ -216,9 +226,11 @@ public class Postprocessor extends ScreenComponent<BaseScreen<?>> {
     set(i, 0);
   }
 
-  /** @param i index
+  /**
+   * @param i index
    * @param v value
-   * @param d duration */
+   * @param d duration
+   */
   public Tween $tween(int i, float v, float d) {
     killTweenTarget(field(i));
     return Tween.to(field(i), 0, d).target(v).ease(Soft.INOUT)
@@ -232,20 +244,26 @@ public class Postprocessor extends ScreenComponent<BaseScreen<?>> {
            .setCallbackTriggers(BEGIN|COMPLETE);
   }
 
-  /** @param i index
-   * @param d duration */
+  /**
+   * @param i index
+   * @param d duration
+   */
   public Tween $tweenOut(int i, float d) {
     return $tween(i, 0, d);
   }
 
-  /** @param i index
-   * @param v value */
+  /**
+   * @param i index
+   * @param v value
+   */
   public Tween $set(int i, float v) {
     killTweenTarget(field(i));
     return Tween.set(field(i), 0).target(v).setCallback((type, source) -> schedule(i));
   }
 
-  /** @param i index */
+  /**
+   * @param i index
+   */
   public Tween $reset(int i) {
     return $set(i, 0);
   }

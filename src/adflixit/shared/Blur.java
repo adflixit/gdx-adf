@@ -16,12 +16,12 @@
 
 package adflixit.shared;
 
+import static adflixit.shared.BaseGame.*;
 import static adflixit.shared.TweenUtils.*;
 import static aurelienribon.tweenengine.TweenCallback.*;
 
 import adflixit.shared.misc.Soft;
 import aurelienribon.tweenengine.Tween;
-import aurelienribon.tweenengine.equations.Quart;
 import aurelienribon.tweenengine.primitives.MutableFloat;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap.Format;
@@ -33,16 +33,28 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
  * Performs two-pass Gaussian blur.
  */
 public class Blur extends ScreenComponent<BaseScreen<?>> {
+  static {
+    ConCmd("reloadblur", args -> {
+      glogSetup("Reloading blur");
+      BaseGame.getInstance().getScreen().reloadBlur();
+      glogDone();
+    });
+  }
+
   private static final int    RES_DENOM = 4;
   private static final String UNI_NAME  = "u_blur";
+
+  private boolean             isFileBased;  // is shader code file-based
+  private final FileHandle[]  files   = new FileHandle[4];
 
   private ShaderProgram       hpass;
   private ShaderProgram       vpass;
   private FrameBuffer         fb;
   private FrameBuffer         hfb;
   private FrameBuffer         vfb;
-  private int                 passes    = 1;  // number of blurring cycles
-  private final MutableFloat  amount    = new MutableFloat(0);
+
+  private int                 passes  = 1;  // number of blurring cycles
+  private final MutableFloat  amount  = new MutableFloat(0);
   private boolean             pass;       // update route permit
   private boolean             scheduled;  // one-time update route permit
 
@@ -58,11 +70,17 @@ public class Blur extends ScreenComponent<BaseScreen<?>> {
   public Blur(BaseScreen<?> screen, FileHandle hvert, FileHandle hfrag, FileHandle vvert, FileHandle vfrag) {
     super(screen);
     load(hvert, hfrag, vvert, vfrag);
+    isFileBased = true;
+    files[0] = hvert;
+    files[1] = hfrag;
+    files[2] = vvert;
+    files[3] = vfrag;
   }
 
   public Blur(BaseScreen<?> screen, String hvert, String hfrag, String vvert, String vfrag) {
     super(screen);
     load(hvert, hfrag, vvert, vfrag);
+    isFileBased = false;
   }
 
   public void load(FileHandle hvert, FileHandle hfrag, FileHandle vvert, FileHandle vfrag) {
@@ -73,6 +91,12 @@ public class Blur extends ScreenComponent<BaseScreen<?>> {
   public void load(String hvert, String hfrag, String vvert, String vfrag) {
     hpass = new ShaderProgram(hvert, hfrag);
     vpass = new ShaderProgram(vvert, vfrag);
+  }
+
+  public void reload() {
+    if (isFileBased) {
+      load(files[0], files[1], files[2], files[3]);
+    }
   }
 
   public Blur setPasses(int i) {
@@ -114,10 +138,12 @@ public class Blur extends ScreenComponent<BaseScreen<?>> {
     return fb.getColorBufferTexture();
   }
 
-  /** Performs the blurring routine.
+  /**
+   * Performs the blurring routine.
    * @param i iterations
    * @param x result drawing x
-   * @param y result drawing y */
+   * @param y result drawing y
+   */
   private void pass(int i, float x, float y) {
     Texture tex;
     // horizontal pass
@@ -144,22 +170,30 @@ public class Blur extends ScreenComponent<BaseScreen<?>> {
     vfb.end();
   }
 
-  /** Locks the shader update route. */
+  /**
+   * Locks the shader update route.
+   */
   private void lock() {
     pass = false;
   }
 
-  /** Unlocks the shader update route. */
+  /**
+   * Unlocks the shader update route.
+   */
   private void unlock() {
     pass = true;
   }
 
-  /** Schedules a one-time access to the update route. */
+  /**
+   * Schedules a one-time access to the update route.
+   */
   private void schedule() {
     scheduled = true;
   }
 
-  /** Resets the one-time access to the update route. */
+  /**
+   * Resets the one-time access to the update route.
+   */
   private void unschedule() {
     scheduled = false;
   }
@@ -182,8 +216,10 @@ public class Blur extends ScreenComponent<BaseScreen<?>> {
     setAmount(0);
   }
 
-  /** @param v value
-   * @param d duration */
+  /**
+   * @param v value
+   * @param d duration
+   */
   public Tween $tween(float v, float d) {
     killTweenTarget(amount);
     return Tween.to(amount, 0, d).target(v).ease(Soft.INOUT)
@@ -197,12 +233,16 @@ public class Blur extends ScreenComponent<BaseScreen<?>> {
            .setCallbackTriggers(BEGIN|COMPLETE);
   }
 
-  /** @param d duration */
+  /**
+   * @param d duration
+   */
   public Tween $tweenOut(float d) {
     return $tween(0, d);
   }
 
-  /** @param v value */
+  /**
+   * @param v value
+   */
   public Tween $setAmount(float v) {
     killTweenTarget(amount);
     return Tween.set(amount, 0).target(v).setCallback((type, source) -> schedule());

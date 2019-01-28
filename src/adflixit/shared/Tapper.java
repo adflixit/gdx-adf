@@ -91,7 +91,9 @@ public class Tapper extends ScreenComponent<BaseScreen<?>> {
     }
   }
 
-  /** Aligns position by the very root of the UI scene. */
+  /**
+   * Aligns position by the very root of the UI scene.
+   */
   public void updatePos() {
     Group parent = area.getParent();
     area.setPosition(0, 0);

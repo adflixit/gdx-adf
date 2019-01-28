@@ -101,27 +101,37 @@ public final class Util {
   public static final Vector3   tmpv3             = new Vector3();
   public static final Color     tmpclr            = new Color();
 
-  /** @return current time in milliseconds. */
+  /**
+   * @return current time in milliseconds.
+   */
   public static long currentTime() {
     return System.currentTimeMillis();
   }
 
-  /** @return current time in seconds. */
+  /**
+   * @return current time in seconds.
+   */
   public static long currentTimeS() {
     return currentTime()/1000;
   }
 
-  /** @return current time in minutes. */
+  /**
+   * @return current time in minutes.
+   */
   public static long currentTimeM() {
     return currentTimeS()/60;
   }
 
-  /** @return current time in hours. */
+  /**
+   * @return current time in hours.
+   */
   public static long currentTimeH() {
     return currentTimeM()/60;
   }
 
-  /** @return current time in days. */
+  /**
+   * @return current time in days.
+   */
   public static long currentTimeD() {
     return currentTimeH()/24;
   }
@@ -130,13 +140,15 @@ public final class Util {
     throw new IllegalArgumentException("Illegal argument(s): "+info+".");
   }
 
-  /** A template for calculating the position of one point relative to another in a single dimension.
+  /**
+   * A template for calculating the position of one point relative to another in a single dimension.
    * @param p position
    * @param l length
    * @param aln alignment flags
    * @param piv initial pivot
    * @param piv0 lowest pivot
-   * @param piv1 highest pivot */
+   * @param piv1 highest pivot
+   */
   private static float alignT(float p, float l, int aln, int piv, int piv0, int piv1) {
     if (hasFlag(piv, piv0)) {
       if (hasFlag(aln, piv1)) {
@@ -160,12 +172,14 @@ public final class Util {
     return p;
   }
 
-  /** A template for undoing the alignment of one point relative to another in a single dimension.
+  /**
+   * A template for undoing the alignment of one point relative to another in a single dimension.
    * @param p position
    * @param aln alignment flags
    * @param piv initial pivot
    * @param piv0 lowest pivot
-   * @param piv1 highest pivot */
+   * @param piv1 highest pivot
+   */
   private static float disalignT(float p, float d, int aln, int piv, int piv0, int piv1) {
     if (hasFlag(piv, piv0)) {
       if (hasFlag(aln, piv1)) {
@@ -189,35 +203,45 @@ public final class Util {
     return p;
   }
 
-  /** Aligns {@code x} in {@code width} relative to the pivot.
+  /**
+   * Aligns {@code x} in {@code width} relative to the pivot.
    * @param aln alignment flags
-   * @param piv initial pivot */
+   * @param piv initial pivot
+   */
   public static float alignX(float x, float width, int aln, int piv) {
     return alignT(x, width, aln, piv, left, right);
   }
 
-  /** Aligns {@code x} in {@code width} relative to the bottom left point.
-   * @param aln alignment flags */
+  /**
+   * Aligns {@code x} in {@code width} relative to the bottom left point.
+   * @param aln alignment flags
+   */
   public static float alignX(float x, float width, int aln) {
     return alignX(x, width, aln, bottomLeft);
   }
 
-  /** Aligns {@code y} in {@code height} relative to the pivot.
+  /**
+   * Aligns {@code y} in {@code height} relative to the pivot.
    * @param aln alignment flags
-   * @param piv initial pivot */
+   * @param piv initial pivot
+   */
   public static float alignY(float y, float height, int aln, int piv) {
     return alignT(y, height, aln, piv, bottom, top);
   }
 
-  /** Aligns {@code y} in {@code height} relative to the bottom left point.
-   * @param aln alignment flags */
+  /**
+   * Aligns {@code y} in {@code height} relative to the bottom left point.
+   * @param aln alignment flags
+   */
   public static float alignY(float y, float height, int aln) {
     return alignY(y, height, aln, bottomLeft);
   }
 
-  /** Aligns {@code x} and {@code y} both in {@code width} and {@code height} respectively relative to the pivot.
+  /**
+   * Aligns {@code x} and {@code y} both in {@code width} and {@code height} respectively relative to the pivot.
    * @param aln alignment flags
-   * @param piv initial pivot */
+   * @param piv initial pivot
+   */
   public static Vector2 align(float x, float y, float width, float height, int aln, int piv) {
     /*if ((aln & right) != 0) x -= width;
     else if ((aln & left) == 0) x -= width / 2;
@@ -226,89 +250,113 @@ public final class Util {
     return tmpv2.set(alignX(x, width, aln, piv), alignY(y, height, aln, piv));
   }
 
-  /** Aligns {@code x} and {@code y} both in {@code width} and {@code height} respectively relative to the bottom left point.
-   * @param aln alignment flags */
+  /**
+   * Aligns {@code x} and {@code y} both in {@code width} and {@code height} respectively relative to the bottom left point.
+   * @param aln alignment flags
+   */
   public static Vector2 align(float x, float y, float width, float height, int aln) {
     return align(x, y, width, height, aln, bottomLeft);
   }
 
-  /** Aligns {@code x} and {@code y} both in {@code width} and {@code height} respectively relative to the pivot.
+  /**
+   * Aligns {@code x} and {@code y} both in {@code width} and {@code height} respectively relative to the pivot.
    * @param v vector
    * @param aln alignment flags
-   * @param piv initial pivot */
+   * @param piv initial pivot
+   */
   public static Vector2 align(Vector2 v, float width, float height, int aln, int piv) {
     return align(v.x, v.y, width, height, aln, piv);
   }
 
-  /** Aligns {@code x} and {@code y} both in {@code width} and {@code height} respectively relative to the bottom left point.
+  /**
+   * Aligns {@code x} and {@code y} both in {@code width} and {@code height} respectively relative to the bottom left point.
    * @param v vector
-   * @param aln alignment flags */
+   * @param aln alignment flags
+   */
   public static Vector2 align(Vector2 v, float width, float height, int aln) {
     return align(v, width, height, aln, bottomLeft);
   }
 
-  /** Reverses the alignment of {@code x} in {@code width} relative to the pivot.
+  /**
+   * Reverses the alignment of {@code x} in {@code width} relative to the pivot.
    * @param aln alignment flags
-   * @param piv initial pivot */
+   * @param piv initial pivot
+   */
   public static float disalignX(float x, float width, int aln, int piv) {
     return disalignT(x, width, aln, piv, left, right);
   }
 
-  /** Reverses the alignment of {@code x} in {@code width} relative to the bottom left point.
-   * @param aln alignment flags */
+  /**
+   * Reverses the alignment of {@code x} in {@code width} relative to the bottom left point.
+   * @param aln alignment flags
+   */
   public static float disalignX(float x, float width, int aln) {
     return disalignX(x, width, aln, bottomLeft);
   }
 
-  /** Reverses the alignment of {@code y} in {@code height} relative to the pivot.
+  /**
+   * Reverses the alignment of {@code y} in {@code height} relative to the pivot.
    * @param aln alignment flags
-   * @param piv initial pivot */
+   * @param piv initial pivot
+   */
   public static float disalignY(float y, float height, int aln, int piv) {
     return disalignT(y, height, aln, piv, bottom, top);
   }
 
-  /** Reverses the alignment of {@code y} in {@code height} relative to the bottom left point.
-   * @param aln alignment flags */
+  /**
+   * Reverses the alignment of {@code y} in {@code height} relative to the bottom left point.
+   * @param aln alignment flags
+   */
   public static float disalignY(float y, float height, int aln) {
     return disalignY(y, height, aln, bottomLeft);
   }
 
-  /** Reverses the alignment of {@code x} and {@code y} both in {@code width} and {@code height} respectively 
+  /**
+   * Reverses the alignment of {@code x} and {@code y} both in {@code width} and {@code height} respectively 
    * relative to the pivot.
    * @param aln alignment flags
-   * @param piv initial pivot */
+   * @param piv initial pivot
+   */
   public static Vector2 disalign(float x, float y, float width, float height, int aln, int piv) {
     return tmpv2.set(disalignX(x, width, aln, piv), disalignY(y, height, aln, piv));
   }
 
-  /** Reverses the alignment of {@code x} and {@code y} both in {@code width} and {@code height} respectively 
+  /**
+   * Reverses the alignment of {@code x} and {@code y} both in {@code width} and {@code height} respectively 
    * relative to the bottom left point.
-   * @param aln alignment flags */
+   * @param aln alignment flags
+   */
   public static Vector2 disalign(float x, float y, float width, float height, int aln) {
     return disalign(x, y, width, height, aln, bottomLeft);
   }
 
-  /** Reverses the alignment of {@code x} and {@code y} both in {@code width} and {@code height} respectively 
+  /**
+   * Reverses the alignment of {@code x} and {@code y} both in {@code width} and {@code height} respectively 
    * relative to the pivot.
    * @param v vector
    * @param aln alignment flags
-   * @param piv initial pivot */
+   * @param piv initial pivot
+   */
   public static Vector2 disalign(Vector2 v, float width, float height, int aln, int piv) {
     return disalign(v.x, v.y, width, height, aln, piv);
   }
 
-  /** Reverses the alignment of {@code x} and {@code y} both in {@code width} and {@code height} respectively 
+  /**
+   * Reverses the alignment of {@code x} and {@code y} both in {@code width} and {@code height} respectively 
    * relative to the bottom left point.
    * @param v vector
-   * @param aln alignment flags */
+   * @param aln alignment flags
+   */
   public static Vector2 disalign(Vector2 v, float width, float height, int aln) {
     return disalign(v, width, height, aln, bottomLeft);
   }
 
-  /** @return {@link Align} translated to string. */
+  /**
+   * @return {@link Align} translated to string.
+   */
   public static String alnToStr(int aln) {
     String s = "";
-    boolean v = hasFlag(aln,top)||hasFlag(aln,bottom), h = hasFlag(aln,left)||hasFlag(aln,right);
+    boolean v = hasFlag(aln,top) || hasFlag(aln,bottom), h = hasFlag(aln,left) || hasFlag(aln,right);
     if (hasFlag(aln, center)) {
       s+="center"+(v||h?" ":"");
     }
@@ -327,119 +375,147 @@ public final class Util {
     return aln != 0 ? s : "n/a";
   }
 
-  /** @return array items represented as text. */
+  /**
+   * @return array items represented as text.
+   */
   public static <T> String arrayToString(T... array) {
     String s = "";
     for (T i : array) {
       s += i+", ";
     }
-    return s.substring(0, s.length()-2);
+    return s.substring(0, s.length() - 2);
   }
 
-  /** @return array items represented as text. */
+  /**
+   * @return array items represented as text.
+   */
   public static String arrayToString(int... array) {
     String s = "";
     for (Object i : array) {
       s += i+", ";
     }
-    return s.substring(0, s.length()-2);
+    return s.substring(0, s.length() - 2);
   }
 
-  /** @return array items represented as text. */
+  /**
+   * @return array items represented as text.
+   */
   public static String arrayToString(long... array) {
     String s = "";
     for (Object i : array) {
       s += i+", ";
     }
-    return s.substring(0, s.length()-2);
+    return s.substring(0, s.length() - 2);
   }
 
-  /** @return array items represented as text. */
+  /**
+   * @return array items represented as text.
+   */
   public static String arrayToString(float... array) {
     String s = "";
     for (Object i : array) {
       s += i+", ";
     }
-    return s.substring(0, s.length()-2);
+    return s.substring(0, s.length() - 2);
   }
 
-  /** @return array items represented as text. */
+  /**
+   * @return array items represented as text.
+   */
   public static String arrayToString(double... array) {
     String s = "";
     for (Object i : array) {
       s += i+", ";
     }
-    return s.substring(0, s.length()-2);
+    return s.substring(0, s.length() - 2);
   }
 
-  /** Uses the standard string formatting pattern, where "%s" marks the placeholder, 
+  /**
+   * Uses the standard string formatting pattern, where "%s" marks the placeholder, 
    * e.g. the pattern "%s, " will format the array {'a', 'b', 'c'} as "a, b, c".
-   * @return array items ordered by the pattern, represented as text. */
+   * @return array items ordered by the pattern, represented as text.
+   */
   public static <T> String arrayToStringf(String pattern, T... array) {
     String s = "";
     for (T i : array) {
       s += String.format(pattern, i);
     }
     // trimming
-    return s.substring(0, s.length()-(pattern.length()-(pattern.indexOf("%s")+2)));
+    return s.substring(0, s.length() - (pattern.length() - (pattern.indexOf("%s")+2)));
   }
 
-  /** @return array items ordered by the pattern, represented as text.
-   * @see #arrayToStringf(String, Object...) */
+  /**
+   * @return array items ordered by the pattern, represented as text.
+   * @see #arrayToStringf(String, Object...)
+   */
   public static String arrayToStringf(String pattern, int... array) {
     String s = "";
     for (Object i : array) {
       s += String.format(pattern, i);
     }
     // trimming
-    return s.substring(0, s.length()-(pattern.length()-(pattern.indexOf("%s")+2)));
+    return s.substring(0, s.length() - (pattern.length() - (pattern.indexOf("%s")+2)));
   }
 
-  /** @return array items ordered by the pattern, represented as text.
-   * @see #arrayToStringf(String, Object...) */
+  /**
+   * @return array items ordered by the pattern, represented as text.
+   * @see #arrayToStringf(String, Object...)
+   */
   public static String arrayToStringf(String pattern, long... array) {
     String s = "";
     for (Object i : array) {
       s += String.format(pattern, i);
     }
     // trimming
-    return s.substring(0, s.length()-(pattern.length()-(pattern.indexOf("%s")+2)));
+    return s.substring(0, s.length() - (pattern.length() - (pattern.indexOf("%s")+2)));
   }
 
-  /** @return array items ordered by the pattern, represented as text.
-   * @see #arrayToStringf(String, Object...) */
+  /**
+   * @return array items ordered by the pattern, represented as text.
+   * @see #arrayToStringf(String, Object...)
+   */
   public static String arrayToStringf(String pattern, float... array) {
     String s = "";
     for (Object i : array) {
       s += String.format(pattern, i);
     }
     // trimming
-    return s.substring(0, s.length()-(pattern.length()-(pattern.indexOf("%s")+2)));
+    return s.substring(0, s.length() - (pattern.length() - (pattern.indexOf("%s")+2)));
   }
 
-  /** @return array items ordered by the pattern, represented as text.
-   * @see #arrayToStringf(String, Object...) */
+  /**
+   * @return array items ordered by the pattern, represented as text.
+   * @see #arrayToStringf(String, Object...)
+   */
   public static String arrayToStringf(String pattern, double... array) {
     String s = "";
     for (Object i : array) {
       s += String.format(pattern, i);
     }
     // trimming
-    return s.substring(0, s.length()-(pattern.length()-(pattern.indexOf("%s")+2)));
+    return s.substring(0, s.length() - (pattern.length() - (pattern.indexOf("%s")+2)));
   }
 
-  /** @param s text to be repeated.
-   * @param t repetition times.
-   * @return {@code s} repeated {@code t} times. */
-  public static String repeat(String s, int t) {
-    if (t<0) {
-      throw new IllegalArgumentException("A number of repetitions can't be negative: "+t+".");
+  /**
+   * This code was partially taken from Google Guava.
+   * @param s text to be repeated.
+   * @param r repetition times.
+   * @return {@code s} repeated {@code r} times.
+   */
+  public static String repeat(String s, int r) {
+    if (r<0) {
+      throw new IllegalArgumentException("A number of repetitions can't be negative: "+r+".");
     }
-    String r = "";
-    for (int i=0; i<=t; i++) {
-      r+=s;
+    final int len = s.length();
+    final int size = len * r;
+    final char[] array = new char[size];
+    s.getChars(0, len, array, 0);
+    int n;
+    for (n = len; n < size - n; n <<= 1) {
+      System.arraycopy(array, 0, array, n, n);
     }
-    return r;
+    System.arraycopy(array, 0, array, n, size - n);
+    return new String(array);
   }
 
   public static String getStackTrace() {
@@ -461,8 +537,10 @@ public final class Util {
     return font;
   }*/
 
-  /** Draws a rectangle tiled with {@link TextureRegion} with an offset.
-   * FIXME: unfinished. */
+  /**
+   * Draws a rectangle tiled with {@link TextureRegion} with an offset.
+   * FIXME: unfinished.
+   */
   public static void drawTiledRect(Batch batch, TextureRegion region, float x, float y,
       float ofsX, float ofsY, float width, float height) {
     float regionWidth = region.getRegionWidth(), regionHeight = region.getRegionHeight();
@@ -553,26 +631,34 @@ public final class Util {
     return group.getChildren().contains(actor, true);
   }
 
-  /** Turns actor visible. */
+  /**
+   * Turns actor visible.
+   */
   public static Actor showActor(Actor actor) {
     actor.setVisible(true);
     return actor;
   }
 
-  /** Turns actors visible. */
+  /**
+   * Turns actors visible.
+   */
   public static void showActors(Actor... actors) {
     for (Actor actor : actors) {
       showActor(actor);
     }
   }
 
-  /** Turns actor invisible. */
+  /**
+   * Turns actor invisible.
+   */
   public static Actor hideActor(Actor actor) {
     actor.setVisible(false);
     return actor;
   }
 
-  /** Turns actors invisible. */
+  /**
+   * Turns actors invisible.
+   */
   public static void hideActors(Actor... actors) {
     for (Actor actor : actors) {
       hideActor(actor);
@@ -604,26 +690,34 @@ public final class Util {
     }
   }
 
-  /** Sets alpha to 0. */
+  /**
+   * Sets alpha to 0.
+   */
   public static Actor resetAlpha(Actor actor) {
     actor.getColor().a = 0;
     return actor;
   }
 
-  /** Sets alpha to 0. */
+  /**
+   * Sets alpha to 0.
+   */
   public static Sprite resetAlpha(Sprite sprite) {
     sprite.setAlpha(0);
     return sprite;
   }
 
-  /** Sets alpha to 0. */
+  /**
+   * Sets alpha to 0.
+   */
   public static void resetAlpha(Actor... actors) {
     for (Actor actor : actors) {
       resetAlpha(actor);
     }
   }
 
-  /** Sets alpha to 0. */
+  /**
+   * Sets alpha to 0.
+   */
   public static void resetAlpha(Sprite... sprites) {
     for (Sprite sprite : sprites) {
       resetAlpha(sprite);
@@ -650,32 +744,44 @@ public final class Util {
     return sprite;
   }
 
-  /** @return a {@link ImageButton} with the specified image and background. */
+  /**
+   * @return a {@link ImageButton} with the specified image and background.
+   */
   public static ImageButton simpleImageButton(Drawable image, Drawable bg) {
     return new ImageButton(new ImageButtonStyle(bg, null, null, image, null, null));
   }
 
-  /** @return a {@link ImageButton} with the specified image without background. */
+  /**
+   * @return a {@link ImageButton} with the specified image without background.
+   */
   public static ImageButton simpleImageButton(Drawable image) {
     return simpleImageButton(image, drawable("btn_bg"));
   }
 
-  /** @return a {@link ImageButton} with the specified image and background skin drawable names. */
+  /**
+   * @return a {@link ImageButton} with the specified image and background skin drawable names.
+   */
   public static ImageButton simpleImageButton(String image, String bg) {
     return simpleImageButton(drawable(image), drawable(bg));
   }
 
-  /** @return a {@link ImageButton} with the specified image skin drawable name without background. */
+  /**
+   * @return a {@link ImageButton} with the specified image skin drawable name without background.
+   */
   public static ImageButton simpleImageButton(String image) {
     return simpleImageButton(drawable(image));
   }
 
-  /** Sets the {@link ImageButton} {@link ImageButtonStyle#imageUp}. */
+  /**
+   * Sets the {@link ImageButton} {@link ImageButtonStyle#imageUp}.
+   */
   public static void setImageButtonImage(ImageButton btn, Drawable image) {
     btn.getStyle().imageUp = image;
   }
 
-  /** @return {@code null} if nothing found. */
+  /**
+   * @return {@code null} if nothing found.
+   */
   public static ParticleEmitter getPfxEmitterByName(ParticleEffect pfx, String name) {
     for (ParticleEmitter emitter : pfx.getEmitters()) {
       if (emitter.getName().equals(name)) {
@@ -695,17 +801,23 @@ public final class Util {
 
   /************* Box2D utilities ************/
 
-  /** @return {@link Filter#categoryBits} of a Box2D {@link Fixture}. */
+  /**
+   * @return {@link Filter#categoryBits} of a Box2D {@link Fixture}.
+   */
   public static short categoryBits(Fixture fix) {
     return fix.getFilterData().categoryBits;
   }
 
-  /** @return {@link maskBits} of a Box2D {@link Fixture}. */
+  /**
+   * @return {@link maskBits} of a Box2D {@link Fixture}.
+   */
   public static short maskBits(Fixture fix) {
     return fix.getFilterData().maskBits;
   }
 
-  /** @return {@link groupIndex} of a Box2D {@link Fixture}. */
+  /**
+   * @return {@link groupIndex} of a Box2D {@link Fixture}.
+   */
   public static short groupIndex(Fixture fix) {
     return fix.getFilterData().groupIndex;
   }
@@ -768,18 +880,24 @@ public final class Util {
     clr.a = a;
   }
 
-  /** @return HSL hue of a color. */
+  /**
+   * @return HSL hue of a color.
+   */
   public static float getHue(Color clr) {
     return atan2f((float)(SQRT3 * (clr.g-clr.b)), 2*clr.r - clr.g - clr.b);
   }
 
-  /** @return HSL hue of a color. */
+  /**
+   * @return HSL hue of a color.
+   */
   public static float getSat(Color clr) {
     float min = tmin(clr.r, clr.g, clr.b), max = tmax(clr.r, clr.g, clr.b);
     return (max - min) / max;
   }
 
-  /** @return HSL hue of a color. */
+  /**
+   * @return HSL hue of a color.
+   */
   public static float getLgt(Color clr) {
     return tmax(clr.r, clr.g, clr.b);
   }
@@ -788,7 +906,9 @@ public final class Util {
     return tmpv3.set(getHue(clr), getSat(clr), getLgt(clr));
   }
 
-  /** Sets HSL hue. */
+  /**
+   * Sets HSL hue.
+   */
   public static Color setHue(Color clr, float h) {
     float r = clr.r, g = clr.g, b = clr.b, u = (float)cos(h * DEGREE), w = (float)sin(h * DEGREE);
     return clr.set((.299f + .701f * u+.168f*w)*r + (.587f-.587f*u+.330f*w)*g + (.114f-.114f*u-.497f*w)*b,
@@ -797,7 +917,9 @@ public final class Util {
         clr.a);
   }
 
-  /** Sets HSL saturation. */
+  /**
+   * Sets HSL saturation.
+   */
   public static Color setSat(Color clr, float s) {
     float r = clr.r, g = clr.g, b = clr.b,
         min = tmin(clr.r, clr.g, clr.b), max = tmax(clr.r, clr.g, clr.b), amin = (1-s)*max;
@@ -807,7 +929,9 @@ public final class Util {
         clr.a);
   }
 
-  /** Sets HSL lightness. */
+  /**
+   * Sets HSL lightness.
+   */
   public static Color setLgt(Color clr, float l) {
     return clr.mul(l / getLgt(clr));
   }
@@ -877,156 +1001,216 @@ public final class Util {
   public static float hypotf(float x, float y)    {return (float)hypot(x,y);}
   public static float hypotf(double x, double y)  {return (float)hypot(x,y);}
 
-  /** @return if {@code flag} intersects {@code flags}. {@code flag} has to be one single bit. */
+  /**
+   * @return if {@code flag} intersects {@code flags}. {@code flag} has to be one single bit.
+   */
   public static boolean hasFlag(int flags, int flag) {
     return (flags&flag)!=0;
   }
 
-  /** @return if {@code flag} intersects {@code flags}. {@code flag} has to be one single bit. */
+  /**
+   * @return if {@code flag} intersects {@code flags}. {@code flag} has to be one single bit.
+   */
   public static boolean hasFlag(long flags, long flag) {
     return (flags&flag)!=0;
   }
 
-  /** @return a union of all flags preceding {@code flag}.
-   * @author Nayuki */
+  /**
+   * @return a union of all flags preceding {@code flag}.
+   * @author Nayuki
+   */
   public static int sumFlags(int flag) {
     return flag*2-1;
   }
 
-  /** @return a union of all flags preceding {@code flag}.
-   * @author Nayuki */
+  /**
+   * @return a union of all flags preceding {@code flag}.
+   * @author Nayuki
+   */
   public static long sumFlags(long flag) {
     return flag*2-1;
   }
 
-  /** @return binary shift of {@code a}. */
+  /**
+   * @return binary shift of {@code a}.
+   */
   public static int getShift(int a) {
     return (int)(log(a)/LOG2);
   }
 
-  /** @return binary shift of {@code a}. */
+  /**
+   * @return binary shift of {@code a}.
+   */
   public static long getShift(long a) {
     return (long)(log(a)/LOG2);
   }
 
-  /** @return random double in range from 0 to 1. */
+  /**
+   * @return random double in range from 0 to 1.
+   */
   public static double rand() {
     return random();
   }
 
-  /** @return random double in a range from 0 to {@code a}. */
+  /**
+   * @return random double in a range from 0 to {@code a}.
+   */
   public static double rand(double a) {
     return a*rand();
   }
 
-  /** @return random double in a range from {@code a} to {@code b}. */
+  /**
+   * @return random double in a range from {@code a} to {@code b}.
+   */
   public static double rand(double a, double b) {
     return a+(b-a)*rand();
   }
 
-  /** @return random float in range from 0 to 1. */
+  /**
+   * @return random float in range from 0 to 1.
+   */
   public static float randf() {
     return (float)random();
   }
 
-  /** @return random float in a range from 0 to {@code a}. */
+  /**
+   * @return random float in a range from 0 to {@code a}.
+   */
   public static float randf(float a) {
     return a*randf();
   }
 
-  /** @return random float in a range from {@code a} to {@code b}. */
+  /**
+   * @return random float in a range from {@code a} to {@code b}.
+   */
   public static float randf(float a, float b) {
     return a+(b-a)*randf();
   }
 
-  /** @return random int in a range from 0 to {@code a}. */
+  /**
+   * @return random int in a range from 0 to {@code a}.
+   */
   public static int randi(int a) {
     return round(randf(a));
   }
 
-  /** @return random int in a range from {@code a} to {@code b}. */
+  /**
+   * @return random int in a range from {@code a} to {@code b}.
+   */
   public static int randi(int a, int b) {
     return round(randf(a,b));
   }
 
-  /** @return random bool, either true or false. */
+  /**
+   * @return random bool, either true or false.
+   */
   public static boolean randb() {
     return randi(1) > 0;
   }
 
-  /** @return is {@code a} even.
-   * @author Nayuki */
+  /**
+   * @return is {@code a} even.
+   * @author Nayuki
+   */
   public static boolean isEven(int a) {
     return (a&1)==0;
   }
 
-  /** @return is {@code a} even.
-   * @author Nayuki */
+  /**
+   * @return is {@code a} even.
+   * @author Nayuki
+   */
   public static boolean isEven(long a) {
     return (a&1)==0;
   }
 
-  /** @return is {@code a} even. */
+  /**
+   * @return is {@code a} even.
+   */
   public static boolean isEven(float a) {
     return (dec(a)%2)==0;
   }
 
-  /** @return is {@code a} even. */
+  /**
+   * @return is {@code a} even.
+   */
   public static boolean isEven(double a) {
     return (dec(a)%2)==0;
   }
 
-  /** @return is {@code a} decimal. */
+  /**
+   * @return is {@code a} decimal.
+   */
   public static boolean isDec(float a) {
     return fract(a)==0;
   }
 
-  /** @return is {@code a} decimal. */
+  /**
+   * @return is {@code a} decimal.
+   */
   public static boolean isDec(double a) {
     return fract(a)==0;
   }
 
-  /** @return the fraction of {@code a}. */
+  /**
+   * @return the fraction of {@code a}.
+   */
   public static float fract(float a) {
     return a%1;
   }
 
-  /** @return the fraction of {@code a}. */
+  /**
+   * @return the fraction of {@code a}.
+   */
   public static double fract(double a) {
     return a%1;
   }
 
-  /** @return the fraction of a vector. */
+  /**
+   * @return the fraction of a vector.
+   */
   public static Vector2 fract(Vector2 v2) {
     return tmpv2.set(fract(v2.x), fract(v2.y));
   }
 
-  /** @return the fraction of a vector. */
+  /**
+   * @return the fraction of a vector.
+   */
   public static Vector3 fract(Vector3 v3) {
     return tmpv3.set(fract(v3.x), fract(v3.y), fract(v3.z));
   }
 
-  /** @return the decimal part of {@code a}. */
+  /**
+   * @return the decimal part of {@code a}.
+   */
   public static float dec(float a) {
     return a-fract(a);
   }
 
-  /** @return the decimal part of {@code a}. */
+  /**
+   * @return the decimal part of {@code a}.
+   */
   public static double dec(double a) {
     return a-fract(a);
   }
 
-  /** @return float floor of a vector. */
+  /**
+   * @return float floor of a vector.
+   */
   public static Vector2 ffloor(Vector2 v2) {
     return tmpv2.set(floorf(v2.x), floorf(v2.y));
   }
 
-  /** @return float floor of a vector. */
+  /**
+   * @return float floor of a vector.
+   */
   public static Vector3 ffloor(Vector3 v3) {
     return tmpv3.set(floorf(v3.x), floorf(v3.y), floorf(v3.z));
   }
 
-  /** @return {@code a} bounded between {@code min} and {@code max}. */
+  /**
+   * @return {@code a} bounded between {@code min} and {@code max}.
+   */
   public static int clamp(int a, int min, int max) {
     if (min>max) {
       int t = min;
@@ -1036,7 +1220,9 @@ public final class Util {
     return a<min ? min : a>max?max:a;
   }
 
-  /** @return {@code a} bounded between {@code min} and {@code max}. */
+  /**
+   * @return {@code a} bounded between {@code min} and {@code max}.
+   */
   public static long clamp(long a, long min, long max) {
     if (min>max) {
       long t = min;
@@ -1046,7 +1232,9 @@ public final class Util {
     return a<min ? min : a>max?max:a;
   }
 
-  /** @return {@code a} bounded between {@code min} and {@code max}. */
+  /**
+   * @return {@code a} bounded between {@code min} and {@code max}.
+   */
   public static float clamp(float a, float min, float max) {
     if (min>max) {
       float t = min;
@@ -1056,7 +1244,9 @@ public final class Util {
     return a<min ? min : a>max?max:a;
   }
 
-  /** @return {@code a} bounded between {@code min} and {@code max}. */
+  /**
+   * @return {@code a} bounded between {@code min} and {@code max}.
+   */
   public static double clamp(double a, double min, double max) {
     if (min>max) {
       double t = min;
@@ -1066,148 +1256,202 @@ public final class Util {
     return a<min ? min : a>max?max:a;
   }
 
-  /** @return the greatest of the three arguments. */
+  /**
+   * @return the greatest of the three arguments.
+   */
   public static int tmax(int a, int b, int c) {
     return max(a, max(b, c));
   }
 
-  /** @return the greatest of the three arguments. */
+  /**
+   * @return the greatest of the three arguments.
+   */
   public static long tmax(long a, long b, long c) {
     return max(a, max(b, c));
   }
 
-  /** @return the greatest of the three arguments. */
+  /**
+   * @return the greatest of the three arguments.
+   */
   public static float tmax(float a, float b, float c) {
     return max(a, max(b, c));
   }
 
-  /** @return the greatest of the three arguments. */
+  /**
+   * @return the greatest of the three arguments.
+   */
   public static double tmax(double a, double b, double c) {
     return max(a, max(b, c));
   }
 
-  /** @return the smallest of the three arguments. */
+  /**
+   * @return the smallest of the three arguments.
+   */
   public static int tmin(int a, int b, int c) {
     return min(a, min(b, c));
   }
 
-  /** @return the smallest of the three arguments. */
+  /**
+   * @return the smallest of the three arguments.
+   */
   public static long tmin(long a, long b, long c) {
     return min(a, min(b, c));
   }
 
-  /** @return the smallest of the three arguments. */
+  /**
+   * @return the smallest of the three arguments.
+   */
   public static float tmin(float a, float b, float c) {
     return min(a, min(b, c));
   }
 
-  /** @return the smallest of the three arguments. */
+  /**
+   * @return the smallest of the three arguments.
+   */
   public static double tmin(double a, double b, double c) {
     return min(a, min(b, c));
   }
 
-  /** @return the absolute values. */
+  /**
+   * @return the absolute values.
+   */
   public static Vector2 abs(Vector2 v2) {
     return tmpv2.set(Math.abs(v2.x), Math.abs(v2.y));
   }
 
-  /** @return the absolute values. */
+  /**
+   * @return the absolute values.
+   */
   public static Vector3 abs(Vector3 v3) {
     return v3.set(Math.abs(v3.x), Math.abs(v3.y), Math.abs(v3.z));
   }
 
-  /** @return sine of {@code a} multiplied by {@code m}. */
+  /**
+   * @return sine of {@code a} multiplied by {@code m}.
+   */
   public static double msin(double a, double m) {
     return sin(a)*m;
   }
 
-  /** @return cosine of {@code a} multiplied by {@code m}. */
+  /**
+   * @return cosine of {@code a} multiplied by {@code m}.
+   */
   public static double mcos(double a, double m) {
     return cos(a)*m;
   }
 
-  /** @return sine of {@code a} multiplied by {@code m}. */
+  /**
+   * @return sine of {@code a} multiplied by {@code m}.
+   */
   public static float msin(double a, float m) {
     return (float)sin(a)*m;
   }
 
-  /** @return cosine of {@code a} multiplied by {@code m}. */
+  /**
+   * @return cosine of {@code a} multiplied by {@code m}.
+   */
   public static float mcos(double a, float m) {
     return (float)cos(a)*m;
   }
 
-  /** @return multiplication of {@code a} by {@code n} divided by {@code d}. */
+  /**
+   * @return multiplication of {@code a} by {@code n} divided by {@code d}.
+   */
   public static float div(float a, float n, float d) {
     return a*(n/d);
   }
 
-  /** @return multiplication of {@code a} by {@code n} divided by {@code d}. */
+  /**
+   * @return multiplication of {@code a} by {@code n} divided by {@code d}.
+   */
   public static double div(double a, double n, double d) {
     return a*(n/d);
   }
 
-  /** @return is {@code a} divisible by {@code b}. */
+  /**
+   * @return is {@code a} divisible by {@code b}.
+   */
   public static boolean isDivBy(int a, int b) {
     return a%b==0;
   }
 
-  /** @return is {@code a} divisible by {@code b}. */
+  /**
+   * @return is {@code a} divisible by {@code b}.
+   */
   public static boolean isDivBy(float a, float b) {
     return a%b==0;
   }
 
-  /** @return is {@code a} divisible by {@code b}. */
+  /**
+   * @return is {@code a} divisible by {@code b}.
+   */
   public static boolean isDivBy(double a, double b) {
     return a%b==0;
   }
 
-  /** @return distance between two given points. */
+  /**
+   * @return distance between two given points.
+   */
   public static float dist(float x1, float y1, float x2, float y2) {
     return hypotf(x2-x1, y2-y1);
   }
 
-  /** @return distance between two given points. */
+  /**
+   * @return distance between two given points.
+   */
   public static float dist(Vector2 p1, Vector2 p2) {
     return dist(p1.x, p1.y, p2.x, p2.y);
   }
 
-  /** @param r radius
-   * @return side of a circumscribed square. */
+  /**
+   * @param r radius
+   * @return side of a circumscribed square.
+   */
   public static float circSqrSide(float r) {
     return (float)(r*SQRT2)/2;
   }
 
-  /** @param p power
+  /**
+   * @param p power
    * @param a 0 to 1 value
-   * @return exponential interpolation of {@code a} based on {@code p}. */
+   * @return exponential interpolation of {@code a} based on {@code p}.
+   */
   public static float easeIn(float p, float a) {
     return powf(a,p);
   }
 
-  /** @param a 0 to 1 value
-   * @return quartic exponential interpolation of {@code a}. */
+  /**
+   * @param a 0 to 1 value
+   * @return quartic exponential interpolation of {@code a}.
+   */
   public static float easeIn(float a) {
     return easeIn(4, a);
   }
 
-  /** @param p power
+  /**
+   * @param p power
    * @param a 0 to 1 value
-   * @return exponential interpolation of {@code a} based on {@code p}. */
+   * @return exponential interpolation of {@code a} based on {@code p}.
+   */
   public static float easeOut(float p, float a) {
     float m = powf(-1,floorf(p)-1);
     boolean c = p > 2;
     return m * ((a-=(c?1:0)) * (c?powf(a,p-1):(a-2)) + (c?m:0));
   }
 
-  /** @param a 0 to 1 value
-   * @return quartic exponential interpolation of {@code a}. */
+  /**
+   * @param a 0 to 1 value
+   * @return quartic exponential interpolation of {@code a}.
+   */
   public static float easeOut(float a) {
     return easeOut(4, a);
   }
 
-  /** @param p power
+  /**
+   * @param p power
    * @param a 0 to 1 value
-   * @return exponential interpolation of {@code a} based on {@code p}. */
+   * @return exponential interpolation of {@code a} based on {@code p}.
+   */
   public static float easeInOut(float p, float a) {
     float m = powf(-1,floorf(p)-1), b = p>2?2:1;
     if ((a*=2) < 1) {
@@ -1216,43 +1460,55 @@ public final class Util {
     return m*.5f * ((a-=b) * (p>2?powf(a,p-1):a-2) + m*b);
   }
 
-  /** @param a 0 to 1 value
-   * @return quartic exponential interpolation of {@code a}. */
+  /**
+   * @param a 0 to 1 value
+   * @return quartic exponential interpolation of {@code a}.
+   */
   public static float easeInOut(float a) {
     return easeInOut(4, a);
   }
 
-  /** @param p power
+  /**
+   * @param p power
    * @param a 0 to 1 value
-   * @return exponential interpolation of {@code a} based on {@code p}. */
+   * @return exponential interpolation of {@code a} based on {@code p}.
+   */
   public static double easeIn(double p, double a) {
     return pow(a,p);
   }
 
-  /** @param a 0 to 1 value
-   * @return quartic exponential interpolation of {@code a}. */
+  /**
+   * @param a 0 to 1 value
+   * @return quartic exponential interpolation of {@code a}.
+   */
   public static double easeIn(double a) {
     return easeIn(4, a);
   }
 
-  /** @param p power
+  /**
+   * @param p power
    * @param a 0 to 1 value
-   * @return exponential interpolation of {@code a} based on {@code p}. */
+   * @return exponential interpolation of {@code a} based on {@code p}.
+   */
   public static double easeOut(double p, double a) {
     double m = pow(-1,floor(p)-1);
     boolean c = p > 2;
     return m * ((a-=(c?1:0)) * (c?pow(a,p-1):(a-2)) + (c?m:0));
   }
 
-  /** @param a 0 to 1 value
-   * @return quartic exponential interpolation of {@code a}. */
+  /**
+   * @param a 0 to 1 value
+   * @return quartic exponential interpolation of {@code a}.
+   */
   public static double easeOut(double a) {
     return easeOut(4, a);
   }
 
-  /** @param p power
+  /**
+   * @param p power
    * @param a 0 to 1 value
-   * @return exponential interpolation of {@code a} based on {@code p}. */
+   * @return exponential interpolation of {@code a} based on {@code p}.
+   */
   public static double easeInOut(double p, double a) {
     double m = pow(-1,floor(p)-1), b = p>2?2:1;
     if ((a*=2) < 1) {
@@ -1261,8 +1517,10 @@ public final class Util {
     return m*.5 * ((a-=b) * (p>2?pow(a,p-1):a-2) + m*b);
   }
 
-  /** @param a 0 to 1 value
-   * @return quartic exponential interpolation of {@code a}. */
+  /**
+   * @param a 0 to 1 value
+   * @return quartic exponential interpolation of {@code a}.
+   */
   public static double easeInOut(double a) {
     return easeInOut(4, a);
   }

@@ -32,7 +32,9 @@ public class HoldInputListener extends InputListener implements Updatable {
   private long      startTime, treshold;
   private Callback  callback;
 
-  /** @param treshold time in milliseconds */
+  /**
+   * @param treshold time in milliseconds
+   */
   public HoldInputListener(long treshold, Callback cb) {
     this.treshold = treshold;
     setCallback(cb);
@@ -40,7 +42,7 @@ public class HoldInputListener extends InputListener implements Updatable {
   }
 
   public HoldInputListener(Callback cb) {
-    this(3000, cb);
+    this(2000, cb);
   }
 
   public void setCallback(Callback cb) {

@@ -36,8 +36,10 @@ public class MutableProperties extends Properties {
   private final Map<String, Float>  floats    = new HashMap<>();    // the entries pre-interpreted as float
   private FileHandle                file;
 
-  /** Loads the specified properties.
-   * @deprecated Not used anymore due to the introduced ability to change properties during runtime. */
+  /**
+   * Loads the specified properties.
+   * @deprecated Not used anymore due to the introduced ability to change properties during runtime.
+   */
   @Deprecated public void loadAll(FileHandle... files) {
     Properties tmp = new Properties();
     try {
@@ -52,7 +54,9 @@ public class MutableProperties extends Properties {
     initFloats();
   }
 
-  /** Loads the specified properties. The file type depends on the platform. */
+  /**
+   * Loads the specified properties. The file type depends on the platform.
+   */
   public void load(String path) {
     file = Gdx.app.getType() == ApplicationType.Desktop ? localFile(path) : internalFile(path);
     try {
@@ -65,7 +69,9 @@ public class MutableProperties extends Properties {
     initFloats();
   }
 
-  /** Interprets properties as {@code float} and stores them in {@link #floats}. */
+  /**
+   * Interprets properties as {@code float} and stores them in {@link #floats}.
+   */
   private void initFloats() {
     String key;
     for (Map.Entry<Object, Object> entry : entrySet()) {
@@ -76,8 +82,10 @@ public class MutableProperties extends Properties {
     }
   }
 
-  /** @return properties entry.
-   * @throws IllegalArgumentException if no entry is found. */
+  /**
+   * @return properties entry.
+   * @throws IllegalArgumentException if no entry is found.
+   */
   public String get(String key) throws IllegalArgumentException {
   String value = getProperty(key);
     if (value == null) {
@@ -86,18 +94,24 @@ public class MutableProperties extends Properties {
     return value;
   }
 
-  /** @return entry interpreted as {@code int}. */
+  /**
+   * @return entry interpreted as {@code int}.
+   */
   public int getInt(String key) {
     return Integer.parseInt(get(key));
   }
 
-  /** @return entry interpreted as {@code long}. */
+  /**
+   * @return entry interpreted as {@code long}.
+   */
   public long getLong(String key) {
     return Long.parseLong(get(key));
   }
 
-  /** @return entry interpreted as {@code float}.
-   * @throws IllegalArgumentException if no entry is found. */
+  /**
+   * @return entry interpreted as {@code float}.
+   * @throws IllegalArgumentException if no entry is found.
+   */
   public float getFloat(String key) throws IllegalArgumentException {
     Float value = floats.get(key);
     if (value == null) {
@@ -106,18 +120,24 @@ public class MutableProperties extends Properties {
     return value.floatValue();
   }
 
-  /** @return entry interpreted as {@code double}. */
+  /**
+   * @return entry interpreted as {@code double}.
+   */
   public double getDouble(String key) {
     return Double.parseDouble(get(key));
   }
 
-  /** @return entry interpreted as {@code boolean}. */
+  /**
+   * @return entry interpreted as {@code boolean}.
+   */
   public boolean getBool(String key) {
     return Boolean.parseBoolean(get(key));
   }
 
-  /** Changes an existing property.
-   * @return the previous value of the specified key. */
+  /**
+   * Changes an existing property.
+   * @return the previous value of the specified key.
+   */
   public Object set(String key, String value) throws NullPointerException, IllegalArgumentException {
     if (key == null) {
       throw new NullPointerException("Key can't be null.");
@@ -132,46 +152,62 @@ public class MutableProperties extends Properties {
     return setProperty(key, value);
   }
 
-  /** Changes an existing property to an {@code int} value. */
+  /**
+   * Changes an existing property to an {@code int} value.
+   */
   public void setInt(String key, int value) {
     set(key, Integer.toString(value));
   }
 
-  /** Changes an existing property to a {@code long} value. */
+  /**
+   * Changes an existing property to a {@code long} value.
+   */
   public void setLong(String key, long value) {
     set(key, Long.toString(value));
   }
 
-  /** Changes an existing property to a {@code float} value. */
+  /**
+   * Changes an existing property to a {@code float} value.
+   */
   public void setFloat(String key, float value) {
     if (set(key, Float.toString(value)) != null) {
       floats.put(key, value);
     }
   }
 
-  /** Changes an existing property to a {@code double} value. */
+  /**
+   * Changes an existing property to a {@code double} value.
+   */
   public void setDouble(String key, double value) {
     set(key, Double.toString(value));
   }
 
-  /** Changes an existing property to a {@code boolean} value. */
+  /**
+   * Changes an existing property to a {@code boolean} value.
+   */
   public void setBool(String key, boolean value) {
     set(key, Boolean.toString(value));
   }
 
-  /** Resets a property to the default value. */
+  /**
+   * Resets a property to the default value.
+   */
   public void reset(String key) {
     set(key, original.getProperty(key));
   }
 
-  /** Resets all property to the default values. */
+  /**
+   * Resets all property to the default values.
+   */
   public void resetAll() {
     clear();
     putAll(original);
     flushed.clear();
   }
 
-  /** Saves the specified property to the file. */
+  /**
+   * Saves the specified property to the file.
+   */
   public void flush(String key) throws IllegalArgumentException, RuntimeException {
     if (containsKey(key)) {
       key.trim();
@@ -203,7 +239,9 @@ public class MutableProperties extends Properties {
     }
   }
 
-  /** Saves properties to the file. */
+  /**
+   * Saves properties to the file.
+   */
   public void flushAll() throws IllegalArgumentException, RuntimeException {
     flushed.clear();
     String output = "";

@@ -12,7 +12,8 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+
+   */
 
 package adflixit.shared;
 
@@ -68,7 +69,9 @@ public class AnimatedWidget extends Widget {
     setSize(width, height);
   }
 
-  /** @return current playtime mark. */
+  /**
+   * @return current playtime mark.
+   */
   public float time() {
     return time.floatValue();
   }
@@ -77,58 +80,74 @@ public class AnimatedWidget extends Widget {
     time.setValue(value);
   }
 
-  /** Sets current playtime mark to zero. */
+  /**
+   * Sets current playtime mark to zero.
+   */
   public void resetTime() {
     setTime(0);
   }
 
-  /** Tweens the playtime mark.
+  /**
+   * Tweens the playtime mark.
    * @param v value
    * @param d duration
-   * @param eq tween equation */
+   * @param eq tween equation
+   */
   public void tween(float v, float d, TweenEquation eq) {
     $tween(v, d, eq).start(uiTweenMgr);
   }
 
-  /** Tweens the playtime mark with predetermined tween equation.
+  /**
+   * Tweens the playtime mark with predetermined tween equation.
    * @param v value
-   * @param d duration */
+   * @param d duration
+   */
   public void tween(float v, float d) {
     $tween(v, d).start(uiTweenMgr);
   }
 
-  /** Tweens the playtime mark with predetermined duration and tween equation.
-   * @param v value */
+  /**
+   * Tweens the playtime mark with predetermined duration and tween equation.
+   * @param v value
+   */
   public void tween(float v) {
     tween(v, C_D);
   }
 
-  /** Creates a handle to tween the playtime mark.
+  /**
+   * Creates a handle to tween the playtime mark.
    * @param v value
    * @param d duration
    * @param eq tween equation
-   * @return tween handle */
+   * @return tween handle
+   */
   public Tween $tween(float v, float d, TweenEquation eq) {
     killTweenTarget(time);
     return Tween.to(time, 0, d).target(v).ease(eq);
   }
 
-  /** Creates a handle to tween the playtime mark.
+  /**
+   * Creates a handle to tween the playtime mark.
    * @param v value
    * @param d duration
-   * @return tween handle */
+   * @return tween handle
+   */
   public Tween $tween(float v, float d) {
     return $tween(v, d, Soft.INOUT);
   }
 
-  /** Creates a tween handle to tween the playtime mark.
+  /**
+   * Creates a tween handle to tween the playtime mark.
    * @param v value
-   * @return tween handle */
+   * @return tween handle
+   */
   public Tween $tween(float v) {
     return $tween(v, C_D);
   }
 
-  /** Creates the playtime tween handle. */
+  /**
+   * Creates the playtime tween handle.
+   */
   private void initTween() {
     if (tween == null) {
       tween = Tween.to(time, 0, duration).target(duration).ease(Linear.INOUT);

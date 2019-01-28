@@ -67,7 +67,9 @@ public class SplashPool extends Pool<SplashAnim> {
     }
   }
 
-  /** Plays animation once at this point. */
+  /**
+   * Plays animation once at this point.
+   */
   public void fire(float x, float y) {
     SplashAnim anim = nextFree();
     if (anim != null) {
@@ -75,12 +77,16 @@ public class SplashPool extends Pool<SplashAnim> {
     }
   }
 
-  /** Plays animation once at this point. */
+  /**
+   * Plays animation once at this point.
+   */
   public void fire(Vector2 pos) {
     fire(pos.x, pos.y);
   }
 
-  /** Plays animation once at this point. */
+  /**
+   * Plays animation once at this point.
+   */
   public void fire(float x, float y, float scale) {
     SplashAnim anim = nextFree();
     if (anim != null) {
@@ -88,7 +94,9 @@ public class SplashPool extends Pool<SplashAnim> {
     }
   }
 
-  /** Plays animation once at this point. */
+  /**
+   * Plays animation once at this point.
+   */
   public void fire(Vector2 pos, float scale) {
     fire(pos.x, pos.y, scale);
   }

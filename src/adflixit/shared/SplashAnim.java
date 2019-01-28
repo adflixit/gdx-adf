@@ -38,7 +38,9 @@ public class SplashAnim extends Animation<TextureRegion> {
     baseScale = scale;
   }
 
-  /** Plays animation once at this point. */
+  /**
+   * Plays animation once at this point.
+   */
   public void fire(float x, float y, float scale) {
     time.set();
     this.x = x;
@@ -46,7 +48,9 @@ public class SplashAnim extends Animation<TextureRegion> {
     this.scale = scale;
   }
 
-  /** Plays animation once at this point. */
+  /**
+   * Plays animation once at this point.
+   */
   public void fire(float x, float y) {
     fire(x, y, 1);
   }

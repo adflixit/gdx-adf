@@ -101,20 +101,26 @@ public class Arc extends Widget {
     set(0);
   }
 
-  /** @param v value
+  /**
+   * @param v value
    * @param d duration
-   * @param eq equation */
+   * @param eq equation
+   */
   public void tween(float v, float d, TweenEquation eq) {
     $tween(v, d, eq).start(uiTweenMgr);
   }
 
-  /** @param v value
-   * @param d duration */
+  /**
+   * @param v value
+   * @param d duration
+   */
   public void tween(float v, float d) {
     $tween(v, d).start(uiTweenMgr);
   }
 
-  /** @param v value */
+  /**
+   * @param v value
+   */
   public void tween(float v) {
     $tween(v).start(uiTweenMgr);
   }
@@ -123,21 +129,27 @@ public class Arc extends Widget {
     $tween().start(uiTweenMgr);
   }
 
-  /** @param v value
+  /**
+   * @param v value
    * @param d duration
-   * @param eq equation */
+   * @param eq equation
+   */
   public Tween $tween(float v, float d, TweenEquation eq) {
     killTweenTarget(progress);
     return Tween.to(progress, 0, d).target(v).ease(eq);
   }
 
-  /** @param v value
-   * @param d duration */
+  /**
+   * @param v value
+   * @param d duration
+   */
   public Tween $tween(float v, float d) {
     return $tween(v, d, Soft.INOUT);
   }
 
-  /** @param v value */
+  /**
+   * @param v value
+   */
   public Tween $tween(float v) {
     return $tween(v, C_ID);
   }
@@ -146,7 +158,9 @@ public class Arc extends Widget {
     return $tween(1);
   }
 
-  /** @param v value */
+  /**
+   * @param v value
+   */
   public Tween $set(float v) {
     return $tween(v, 0);
   }

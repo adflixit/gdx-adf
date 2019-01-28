@@ -51,7 +51,7 @@ public class Console {
     thread.start();
     registerCommand("print", args -> print(arrayToStringf("%s ", args)));
     registerCommand("reset", args -> var(args[0]).reset());
-    registerCommand("help", args -> print(arrayToStringf("%s\n", cmds.keySet())));
+    registerCommand("help", args -> print(cmds.keySet().toString()));
   }
 
   public Console() {
@@ -82,7 +82,9 @@ public class Console {
     return vars.get(name);
   }
 
-  /** Evaluates a given text as a command sequence. */
+  /**
+   * Evaluates a given text as a command sequence.
+   */
   public void load(String data) {
     Matcher m = Pattern.compile("\\r?\\n").matcher(data);
     while (m.find()) {
@@ -90,8 +92,10 @@ public class Console {
     }
   }
 
-  /** Loads a file and evaluates it's contents as a command sequence.
-   * @see {@link #eval(String)} */
+  /**
+   * Loads a file and evaluates it's contents as a command sequence.
+   * @see {@link #eval(String)}
+   */
   public void parse(FileHandle file) {
     try {
       load(file.readString());
@@ -100,13 +104,15 @@ public class Console {
     }
   }
 
-  /** Interprets given text as a command.
+  /**
+   * Interprets given text as a command.
    * Reads the first word (a sequence of characters between the beginning of the line and a whitespace)
    * as a command or variable name.
    * The rest of of the words or sentences (text bound by two quotation marks)
    * are used as arguments to the specified command.
    * If no command found with the given name, if a variable with the specified name exists
-   * it will be set to the first argument. */
+   * it will be set to the first argument.
+   */
   public synchronized void eval(String line) {
     if (line == null) {
       throw new IllegalArgumentException("An evaluated line cannot be null.");
@@ -133,7 +139,9 @@ public class Console {
     }
   }
 
-  /** Reads the input from {@link #in}. */
+  /**
+   * Reads the input from {@link #in}.
+   */
   private void read() {
     while (active) {
       if (!scanner.hasNextLine()) {

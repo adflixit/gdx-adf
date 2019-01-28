@@ -49,264 +49,348 @@ public final class TweenUtils {
   public static Tween     delayTween(float d) {return Tween.to(null, -1, d);}
   public static Timeline  emptyTimeline()     {return Timeline.createSequence();}
 
-  /** Removes {@code target} from all trackers. */
+  /**
+   * Removes {@code target} from all trackers.
+   */
   public static void killTweenTarget(Object target) {
     tweenMgr.killTarget(target);
     uiTweenMgr.killTarget(target);
     tscTweenMgr.killTarget(target);
   }
 
-  /** Removes {@code targets} from all trackers. */
+  /**
+   * Removes {@code targets} from all trackers.
+   */
   public static void killTweenTargets(Object... targets) {
     for (Object target : targets) {
       killTweenTarget(target);
     }
   }
 
-  /** Removes the specified type of tween of {@code target} from all trackers. */
+  /**
+   * Removes the specified type of tween of {@code target} from all trackers.
+   */
   public static void killTweenTarget(Object target, int tweenType) {
     tweenMgr.killTarget(target, tweenType);
     uiTweenMgr.killTarget(target, tweenType);
     tscTweenMgr.killTarget(target, tweenType);
   }
 
-  /** Tweens the actor's opacity.
+  /**
+   * Tweens the actor's opacity.
    * @param a alpha
-   * @param d duration */
+   * @param d duration
+   */
   public static void fadeActor(Actor target, float a, float d) {
     $fadeActor(target, a, d).start(tweenMgr);
   }
 
-  /** Tweens the actor's opacity.
-   * @param a alpha */
+  /**
+   * Tweens the actor's opacity.
+   * @param a alpha
+   */
   public static void fadeActor(Actor target, float a) {
     $fadeActor(target, a).start(tweenMgr);
   }
 
-  /** Tweens the actor's opacity to 1.
-   * @param d duration */
+  /**
+   * Tweens the actor's opacity to 1.
+   * @param d duration
+   */
   public static void fadeActorIn(Actor target, float d) {
     $fadeActorIn(target, d).start(tweenMgr);
   }
 
-  /** Tweens the actor's opacity to 1. */
+  /**
+   * Tweens the actor's opacity to 1.
+   */
   public static void fadeActorIn(Actor target) {
     $fadeActorIn(target).start(tweenMgr);
   }
 
-  /** Tweens the actor's opacity to 0.
-   * @param d duration */
+  /**
+   * Tweens the actor's opacity to 0.
+   * @param d duration
+   */
   public static void fadeActorOut(Actor target, float d) {
     $fadeActorIn(target, d).start(tweenMgr);
   }
 
-  /** Tweens the actor's opacity to 0. */
+  /**
+   * Tweens the actor's opacity to 0.
+   */
   public static void fadeActorOut(Actor target) {
     $fadeActorOut(target).start(tweenMgr);
   }
 
-  /** Tweens the label's opacity.
+  /**
+   * Tweens the label's opacity.
    * @param a alpha
-   * @param d duration */
+   * @param d duration
+   */
   public static void fadeLabel(Label target, float a, float d) {
     $fadeLabel(target, a, d).start(tweenMgr);
   }
 
-  /** Tweens the label's opacity.
-   * @param a alpha */
+  /**
+   * Tweens the label's opacity.
+   * @param a alpha
+   */
   public static void fadeLabel(Label target, float a) {
     $fadeLabel(target, a).start(tweenMgr);
   }
 
-  /** Tweens the label's opacity to 1.
-   * @param d duration */
+  /**
+   * Tweens the label's opacity to 1.
+   * @param d duration
+   */
   public static void fadeLabelIn(Label target, float d) {
     $fadeLabelIn(target, d).start(tweenMgr);
   }
 
-  /** Tweens the label's opacity to 1. */
+  /**
+   * Tweens the label's opacity to 1.
+   */
   public static void fadeLabelIn(Label target) {
     $fadeLabelIn(target).start(tweenMgr);
   }
 
-  /** Tweens the label's opacity to 0.
-   * @param d duration */
+  /**
+   * Tweens the label's opacity to 0.
+   * @param d duration
+   */
   public static void fadeLabelOut(Label target, float d) {
     $fadeLabelOut(target, d).start(tweenMgr);
   }
 
-  /** Tweens the label's opacity to 0. */
+  /**
+   * Tweens the label's opacity to 0.
+   */
   public static void fadeLabelOut(Label target) {
     $fadeLabelOut(target).start(tweenMgr);
   }
 
-  /** Tweens the actor's color.
+  /**
+   * Tweens the actor's color.
    * @param clr color
-   * @param d duration */
+   * @param d duration
+   */
   public static void tweenActorColor(Actor target, Color clr, float d) {
     $tweenActorColor(target, clr, d).start(tweenMgr);
   }
 
-  /** Tweens the actor's color.
-   * @param clr color */
+  /**
+   * Tweens the actor's color.
+   * @param clr color
+   */
   public static void tweenActorColor(Actor target, Color clr) {
     $tweenActorColor(target, clr).start(tweenMgr);
   }
 
-  /** Tweens the label's color.
+  /**
+   * Tweens the label's color.
    * @param clr color
-   * @param d duration */
+   * @param d duration
+   */
   public static void tweenLabelColor(Label target, Color clr, float d) {
     $tweenLabelColor(target, clr, d).start(tweenMgr);
   }
 
-  /** Tweens the label's color.
-   * @param clr color */
+  /**
+   * Tweens the label's color.
+   * @param clr color
+   */
   public static void tweenLabelColor(Label target, Color clr) {
     $tweenLabelColor(target, clr).start(tweenMgr);
   }
 
-  /** Tweens the actor's color.
+  /**
+   * Tweens the actor's color.
    * @param clr color name
-   * @param d duration */
+   * @param d duration
+   */
   public static void tweenActorColor(Actor target, String clr, float d) {
     $tweenActorColor(target, clr, d).start(tweenMgr);
   }
 
-  /** Tweens the label's color.
+  /**
+   * Tweens the label's color.
    * @param clr color name
-   * @param d duration */
+   * @param d duration
+   */
   public static void tweenLabelColor(Label target, String clr, float d) {
     $tweenLabelColor(target, clr, d).start(tweenMgr);
   }
 
-  /** @param a alpha
+  /**
+   * @param a alpha
    * @param d duration
-   * @return handle to tween the actor's opacity. */
+   * @return handle to tween the actor's opacity.
+   */
   public static Tween $fadeActor(Actor target, float a, float d) {
     killTweenTarget(target, ActorAccessor.A);
     return Tween.to(target, ActorAccessor.A, d).target(a).ease(Soft.INOUT);
   }
 
-  /** @param a alpha
-   * @return handle to tween the actor's opacity. */
+  /**
+   * @param a alpha
+   * @return handle to tween the actor's opacity.
+   */
   public static Tween $fadeActor(Actor target, float a) {
     return $fadeActor(target, a, C_D);
   }
 
-  /** @param d duration
-   * @return handle to tween the actor's opacity to 1. */
+  /**
+   * @param d duration
+   * @return handle to tween the actor's opacity to 1.
+   */
   public static Tween $fadeActorIn(Actor target, float d) {
     return $fadeActor(target, 1, d);
   }
 
-  /** @return handle to tween the actor's opacity to 1. */
+  /**
+   * @return handle to tween the actor's opacity to 1.
+   */
   public static Tween $fadeActorIn(Actor target) {
     return $fadeActorIn(target, C_D);
   }
 
-  /** @return handle to tween the actor's opacity to 0.
-   * @param d duration */
+  /**
+   * @return handle to tween the actor's opacity to 0.
+   * @param d duration
+   */
   public static Tween $fadeActorOut(Actor target, float d) {
     return $fadeActor(target, 0, d);
   }
 
-  /** @return handle to tween the actor's opacity to 1. */
+  /**
+   * @return handle to tween the actor's opacity to 1.
+   */
   public static Tween $fadeActorOut(Actor target) {
     return $fadeActorOut(target, C_D);
   }
 
-  /** @param a alpha
+  /**
+   * @param a alpha
    * @param d duration
-   * @return handle to tween the label's opacity. */
+   * @return handle to tween the label's opacity.
+   */
   public static Tween $fadeLabel(Label target, float a, float d) {
     killTweenTarget(target, LabelAccessor.A);
     return Tween.to(target, LabelAccessor.A, d).target(a).ease(Soft.INOUT);
   }
 
-  /** @return handle to tween the label's opacity.
-   * @param a alpha */
+  /**
+   * @return handle to tween the label's opacity.
+   * @param a alpha
+   */
   public static Tween $fadeLabel(Label target, float a) {
     return $fadeLabel(target, a, C_D);
   }
 
-  /** @return handle to tween the label's opacity to 1.
-   * @param d duration */
+  /**
+   * @return handle to tween the label's opacity to 1.
+   * @param d duration
+   */
   public static Tween $fadeLabelIn(Label target, float d) {
     return $fadeLabel(target, 1, d);
   }
 
-  /** @return handle to tween the label's opacity to 1. */
+  /**
+   * @return handle to tween the label's opacity to 1.
+   */
   public static Tween $fadeLabelIn(Label target) {
     return $fadeLabelIn(target, C_D);
   }
 
-  /** @param d duration
-   * @return handle to tween the label's opacity to 0. */
+  /**
+   * @param d duration
+   * @return handle to tween the label's opacity to 0.
+   */
   public static Tween $fadeLabelOut(Label target, float d) {
     return $fadeLabel(target, 0, d);
   }
 
-  /** @return handle to tween the label's opacity to 0. */
+  /**
+   * @return handle to tween the label's opacity to 0.
+   */
   public static Tween $fadeLabelOut(Label target) {
     return $fadeLabelOut(target, C_D);
   }
 
-  /** @param clr color
+  /**
+   * @param clr color
    * @param d duration
-   * @return handle to tween the actor's color. */
+   * @return handle to tween the actor's color.
+   */
   public static Tween $tweenActorColor(Actor target, Color clr, float d) {
     killTweenTarget(target, ActorAccessor.RGB);
     return Tween.to(target, ActorAccessor.RGB, d).target(clr.r, clr.g, clr.b).ease(Soft.INOUT);
   }
 
-  /** @param clr color
-   * @return handle to tween the actor's color. */
+  /**
+   * @param clr color
+   * @return handle to tween the actor's color.
+   */
   public static Tween $tweenActorColor(Actor target, Color clr) {
     return $tweenActorColor(target, clr, C_D);
   }
 
-  /** @param clr color
+  /**
+   * @param clr color
    * @param d duration
-   * @return handle to tween the label's color. */
+   * @return handle to tween the label's color.
+   */
   public static Tween $tweenLabelColor(Label target, Color clr, float d) {
     killTweenTarget(target, LabelAccessor.RGB);
     return Tween.to(target, LabelAccessor.RGB, d).target(clr.r, clr.g, clr.b).ease(Soft.INOUT);
   }
 
-  /** @param clr color
-   * @return handle to tween the label's color. */
+  /**
+   * @param clr color
+   * @return handle to tween the label's color.
+   */
   public static Tween $tweenLabelColor(Label target, Color clr) {
     return $tweenLabelColor(target, clr, C_D);
   }
 
-  /** @param clr color name
+  /**
+   * @param clr color name
    * @param d duration
-   * @return handle to tween the actor's color. */
+   * @return handle to tween the actor's color.
+   */
   public static Tween $tweenActorColor(Actor target, String clr, float d) {
     return $tweenActorColor(target, color(clr), d);
   }
 
-  /** @param clr color name
-   * @return handle to tween the actor's color. */
+  /**
+   * @param clr color name
+   * @return handle to tween the actor's color.
+   */
   public static Tween $tweenActorColor(Actor target, String clr) {
     return $tweenActorColor(target, clr, C_D);
   }
 
-  /** @param clr color name
+  /**
+   * @param clr color name
    * @param d duration
-   * @return handle to tween the label's color. */
+   * @return handle to tween the label's color.
+   */
   public static Tween $tweenLabelColor(Label target, String clr, float d) {
     return $tweenLabelColor(target, color(clr), d);
   }
 
-  /** @param clr color name
-   * @return handle to tween the label's color. */
+  /**
+   * @param clr color name
+   * @return handle to tween the label's color.
+   */
   public static Tween $tweenLabelColor(Label target, String clr) {
     return $tweenLabelColor(target, clr, C_D);
   }
 
-  /** @return multiple {@link TweenCallback} stacked into one. */
+  /**
+   * @return multiple {@link TweenCallback} stacked into one.
+   */
   public static TweenCallback multiplexCallbacks(final TweenCallback... callbacks) {
     return (type, source) -> {
       if (type == BEGIN) {
@@ -321,7 +405,9 @@ public final class TweenUtils {
     };
   }
 
-  /** @return {@link TweenCallback} that shows actor(s) in the beginning of an animation and hides it in the end. */
+  /**
+   * @return {@link TweenCallback} that shows actor(s) in the beginning of an animation and hides it in the end.
+   */
   public static TweenCallback visibilityCallback(final Actor... targets) {
     return (type, source) -> {
       if (type == BEGIN) {
@@ -332,7 +418,9 @@ public final class TweenUtils {
     };
   }
 
-  /** @return {@link TweenCallback} that removes the target from all trackers. */
+  /**
+   * @return {@link TweenCallback} that removes the target from all trackers.
+   */
   public static TweenCallback killTargetCallback(final Object target) {
     return (type, source) -> {
       if (type == BEGIN || type == COMPLETE) {
@@ -897,10 +985,12 @@ public final class TweenUtils {
     }
   }
 
-  /** {@link #VEL}: velocity, 
+  /**
+   * {@link #VEL}: velocity, 
    * {@link #VX}: velocity x, 
    * {@link #VY}: velocity y, 
-   * {@link #ANG}: angle. */
+   * {@link #ANG}: angle.
+   */
   public static class Box2DBodyAccessor implements TweenAccessor<Body> {
     public static final int VEL = 0, VX = 1, VY = 2, ANG = 3;
 
@@ -942,14 +1032,16 @@ public final class TweenUtils {
     }
   }
 
-  /** {@link #POS_C}: centered position, 
+  /**
+   * {@link #POS_C}: centered position, 
    * {@link #X_C}: centered x, 
    * {@link #Y_C}: centered y,
    * {@link #PVT_X}: pivot x, 
    * {@link #PVT_Y}: pivot y, 
    * {@link #SCL_X}: scale x, 
    * {@link #SCL_Y}: scale y, 
-   * {@link #ROT}: rotation. */
+   * {@link #ROT}: rotation.
+   */
   public static class AndViewAccessor implements TweenAccessor<View> {
     public static final int POS = 0, X = 1, Y = 2, POS_C = 3, X_C = 4, Y_C = 5,
                             PIVOT = 6, PVT_X = 7, PVT_Y = 8,
@@ -1148,13 +1240,15 @@ public final class TweenUtils {
     }
   }
 
-  /** {@link #R}: red,
+  /**
+   * {@link #R}: red,
    * {@link #G}: green, 
    * {@link #B}: blue, 
    * {@link #A}: alpha, 
    * {@link #H}: hue, 
    * {@link #S}: saturation, 
-   * {@link #L}: lightness. */
+   * {@link #L}: lightness.
+   */
   public static class ColorAccessor implements TweenAccessor<Color> {
     public static final int RGB = 0, R = 1, G = 2, B = 3, A = 4, H = 5, S = 6, L = 7;
 

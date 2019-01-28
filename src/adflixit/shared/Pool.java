@@ -19,7 +19,7 @@ package adflixit.shared;
 import java.util.ArrayList;
 import java.util.List;
 
-/** 
+/**
  * {@link ArrayList} of reusable items.
  * All items are obligated to have an explicit indicator of their availability to be recycled.
  * On an allocation request, the first free item is returned.
@@ -61,7 +61,9 @@ public abstract class Pool<E> extends ArrayList<E> implements List<E> {
     }
   }
 
-  /** Resizes the list to the initial size. */
+  /**
+   * Resizes the list to the initial size.
+   */
   public void resetSize() {
     resize(initialSize);
   }
@@ -74,7 +76,9 @@ public abstract class Pool<E> extends ArrayList<E> implements List<E> {
     resize(size() - amount);
   }
 
-  /** Clears the list and renews it. */
+  /**
+   * Clears the list and renews it.
+   */
   public void refresh(int cap) {
     clear();
     resize(cap);
@@ -88,7 +92,9 @@ public abstract class Pool<E> extends ArrayList<E> implements List<E> {
     return get(size() - 1);
   }
 
-  /** @return the first found free item. If there are none, returns null. */
+  /**
+   * @return the first found free item. If there are none, returns null.
+   */
   public E nextFree() {
     for (E e : this) {
       if (isFree(e)) {
@@ -98,7 +104,9 @@ public abstract class Pool<E> extends ArrayList<E> implements List<E> {
     return null;
   }
 
-  /** @return the first found free item. If there are none, the pool is being expanded. */
+  /**
+   * @return the first found free item. If there are none, the pool is being expanded.
+   */
   public E nextFreeExtra() {
     if (nextFree() == null) {
       grow(5);
@@ -106,15 +114,23 @@ public abstract class Pool<E> extends ArrayList<E> implements List<E> {
     return nextFree();
   }
 
-  /** @return the item constructor. */
+  /**
+   * @return the item constructor.
+   */
   public abstract E newObj();
 
-  /** @return is item available to be recycled, i.e. not used. */
+  /**
+   * @return is item available to be recycled, i.e. not used.
+   */
   public abstract boolean isFree(E obj);
 
-  /** Called when item is being added to the list. */
+  /**
+   * Called when item is being added to the list.
+   */
   public void setup(E obj) {}
 
-  /** Called when item is being removed from the list. */
+  /**
+   * Called when item is being removed from the list.
+   */
   public void reset(E obj) {}
 }

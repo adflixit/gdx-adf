@@ -19,21 +19,22 @@ package adflixit.shared.misc;
 import static adflixit.shared.Util.*;
 import static com.badlogic.gdx.utils.Align.*;
 
+import adflixit.shared.BaseGame;
 import adflixit.shared.thirdparty.BlurUtils;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.Pixmap.Format;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.utils.Array;
 
 public class DropShadowLabel extends Label {
   private static final Color        tempColor = new Color();
   private static final FrameBuffer  fb        = new FrameBuffer(Format.RGBA8888, 1024, 1024, false);
   private static final SpriteBatch  batch     = new SpriteBatch();
+
   private Color   color   = new Color(0x000000ff);
   private float   offsetX;
   private float   offsetY = C_SHD_OFS;
@@ -129,12 +130,33 @@ public class DropShadowLabel extends Label {
     setPosition(0, 1024, top);
     fb.begin();
     batch.begin();
-    draw(batch, 1);
+    super.draw(batch, 1);
     batch.end();
     fb.end();
+
+    Pixmap pixmap = new Pixmap(1024, 1024, Format.RGBA8888);
+    BitmapFontCache bfc = getBitmapFontCache();
+    /*Array<TextureRegion> regions = font.getRegions();
+    for (int j = 0, n = pageVertices.length; j < n; j++) {
+      if (idx[j] > 0) { // ignore if this texture has no glyphs
+        float[] vertices = pageVertices[j];
+        spriteBatch.draw(regions.get(j).getTexture(), vertices, 0, idx[j]);
+      }
+    }
+    // BitmapFontCache#draw(Batch)
+    int j=0;
+    while (bfc.getVertices(j) != null) {
+      int idx = bfc.getVertexCount(j);
+      if (idx > 0) { // ignore if this texture has no glyphs
+        spriteBatch.draw(regions.get(j).getTexture(), bfc.getVertices(j), 0, idx);
+
+      }
+      j++;
+    }*/
+
     setPosition(x, y);
     // trimming
-    Pixmap pixmap = fb.getColorBufferTexture().getTextureData().consumePixmap();
+
     // finding the boundaries
     int i, j, w=0, h=0;
     int pixel=0;
