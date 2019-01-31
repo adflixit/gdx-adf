@@ -40,6 +40,7 @@ vec4 blur(vec4 color) {
 void main() {
   vec2 uv = v_texCoords;
   vec4 color = vec4(0.);
+
   if (u_blur + u_tiltshiftY + u_tiltshiftX > 0.) {
     float a = u_tiltshiftX + u_tiltshiftY > 0. ? u_blur + 
         (clamp(u_tiltshiftY - u_blur, 0., 1.)*tsyp) + 

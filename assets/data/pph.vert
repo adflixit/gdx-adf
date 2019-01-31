@@ -38,6 +38,7 @@ void main() {
   v_texCoords = a_texCoord0;
   gl_Position =  u_projTrans * a_position;
   vec2 uv = v_texCoords;
+
   if (u_blur + u_tiltshiftY + u_tiltshiftX != 0.) {
     blur(u_tiltshiftY + u_tiltshiftX > 0. ? u_blur + 
         (clamp(u_tiltshiftY - u_blur, 0., 1.)*tsyp) + 
