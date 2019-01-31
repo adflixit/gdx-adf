@@ -49,14 +49,17 @@ public class TbClickListener extends ClickListener {
     super();
     btn = button;
     label = button.getLabel();
+
     this.initBgClr = initBgClr != null ? initBgClr : WHITE;
     if (initBgClr != null) {
       button.setColor(initBgClr);
     }
+
     this.initFontClr = initFontClr != null ? initFontClr : WHITE;
     if (initFontClr != null) {
       label.setColor(initFontClr);
     }
+
     this.bgClr = bgClr;
     this.fontClr = fontClr;
     setCallback(cb);

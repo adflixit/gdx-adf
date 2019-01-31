@@ -116,11 +116,13 @@ public class Blur extends ScreenComponent<BaseScreen<?>> {
     for (int i=0; i < passes; i++) {
       pass(i, x, y);
     }
+
     bat.setShader(null);
     bat.begin();
       tex = vfb.getColorBufferTexture();
       bat.draw(tex, x, y, scr.screenWidth(), scr.screenHeight(), 0,0,1,1);
     bat.end();
+
     if (scheduled) {
       unschedule();
     }
@@ -157,6 +159,7 @@ public class Blur extends ScreenComponent<BaseScreen<?>> {
       bat.draw(tex, x, y, scr.screenWidth(), scr.screenHeight());
     bat.end();
     hfb.end();
+
     // vertical pass
     bat.setShader(vpass);
     vfb.begin();

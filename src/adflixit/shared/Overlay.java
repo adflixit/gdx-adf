@@ -487,6 +487,7 @@ public class Overlay extends ScreenComponent<BaseScreen<?>> {
     tint.setPosition(-5, -5);
     dim.setPosition(-5, -5);
     vignette.setSize(-5, -5);
+
     sheers.setSize(scr.screenWidth() + 10, scr.screenHeight() + 10);
     blackouts.setSize(scr.screenWidth() + 10, scr.screenHeight() + 10);
     tint.setSize(scr.screenWidth() + 10, scr.screenHeight() + 10);

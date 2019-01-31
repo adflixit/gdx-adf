@@ -113,12 +113,14 @@ public class Postprocessor extends ScreenComponent<BaseScreen<?>> {
   public void draw() {
     Texture tex = inputTex();
     float x = scr.cameraX0(), y = scr.cameraY0();
+
     // if the processed area is not full, the original texture has to be drawn first
     if (!isFull()) {
       bat.begin();
         bat.draw(tex, x, y, scr.screenWidth(), scr.screenHeight(), 0,0,1,1);
       bat.end();
     }
+
     // horizontal pass
     bat.setShader(firstPass);
     firstFb.begin();
@@ -132,6 +134,7 @@ public class Postprocessor extends ScreenComponent<BaseScreen<?>> {
       bat.draw(tex, x, y, scr.screenWidth(), scr.screenHeight(), 0,0,1,1);
     bat.end();
     firstFb.end();
+
     // vertical pass
     bat.setShader(lastPass);
     lastFb.begin();
@@ -150,6 +153,7 @@ public class Postprocessor extends ScreenComponent<BaseScreen<?>> {
       bat.draw(tex, x, y, scr.screenWidth(), scr.screenHeight(), 0,0,1,1);
     bat.end();
     lastFb.end();
+
     bat.setShader(null);
     bat.begin();
       tex = lastFb.getColorBufferTexture();
@@ -158,7 +162,7 @@ public class Postprocessor extends ScreenComponent<BaseScreen<?>> {
   }
 
   public boolean isActive() {
-    return value(BLUR)+value(TSY)+value(TSX) > 0;
+    return value(BLUR) + value(TSY) + value(TSX) > 0;
   }
 
   /**

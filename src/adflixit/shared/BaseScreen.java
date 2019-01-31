@@ -536,6 +536,7 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
     shakeCamera();
     batch.setProjectionMatrix(camera.combined);
     doPostprocess = doPostprocess();
+
     prepareDraw();
     clearScreen();
     if (drawToFrameBuffer) {
@@ -576,11 +577,13 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
       oddLastScreenSize.set(screenWidth(), screenHeight());
     }
     lastScreenSizeJunc = !lastScreenSizeJunc;
+
     viewport.update(screenWidth(), screenHeight(), outputWidth(), outputHeight());
     uiViewport.update(screenWidth(), screenHeight(), outputWidth(), outputHeight(), true);
     overlay.resize();
     tapper.resize();
     blur.resize();
+
     // frame buffer has to be created here to avoid creating it twice every time
     if (firstResize) {
       firstResize = false;

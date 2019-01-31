@@ -43,6 +43,7 @@ public class Tapper extends ScreenComponent<BaseScreen<?>> {
     // set position to the absolute zero
     updatePos();
     area.setZIndex(z);
+
     if (down) {
       area.addListener(listener = new InputListener() {
         @Override public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -69,6 +70,7 @@ public class Tapper extends ScreenComponent<BaseScreen<?>> {
     // set position to the absolute zero
     updatePos();
     area.setZIndex(z);
+
     if (down) {
       area.addListener(listener = new InputListener() {
         @Override public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {

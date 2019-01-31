@@ -213,6 +213,7 @@ public class MutableProperties extends Properties {
       key.trim();
       flushed.add(key);
       String output = "";
+
       // was line altered
       boolean altered = false;
       // going through the lines of the file

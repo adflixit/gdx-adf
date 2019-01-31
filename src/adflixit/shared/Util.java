@@ -506,9 +506,11 @@ public final class Util {
     if (r<0) {
       throw new IllegalArgumentException("A number of repetitions can't be negative: "+r+".");
     }
+
     final int len = s.length();
     final int size = len * r;
     final char[] array = new char[size];
+
     s.getChars(0, len, array, 0);
     int n;
     for (n = len; n < size - n; n <<= 1) {
@@ -556,11 +558,13 @@ public final class Util {
     if (ofsY < 0) {
       ofsY += regionHeight;
     }
+
     int fullX = (int)(width/regionWidth), fullY = (int)(height/regionHeight);
     float fullWidth = regionWidth*fullX, fullHeight = regionHeight*fullY;
     float remainingX = width - fullWidth - ofsX, remainingY = height - fullHeight - ofsY;
     float startX = x, startY = y;
     float endX = x + width - remainingX, endY = y + height - remainingY;
+
     for (int i=0; i < fullX; i++) {
       y = startY + ofsY;
       for (int j=0; j < fullY; j++) {
@@ -569,9 +573,11 @@ public final class Util {
       }
       x+=regionWidth;
     }
+
     Texture texture = region.getTexture();
     float u = region.getU();
     float v2 = region.getV2();
+
     if (ofsX > 0) {
       float u2 = u + ofsX / texture.getWidth();
       float v = region.getV();
@@ -585,6 +591,7 @@ public final class Util {
         batch.draw(texture, x, y, remainingX, remainingY, u, v2, u2, v);
       }
     }
+
     if (ofsY > 0) {
       float u2 = region.getU2();
       float v = v2 - ofsY / texture.getHeight();
@@ -594,6 +601,7 @@ public final class Util {
         x+=regionWidth;
       }
     }
+
     if (remainingX > 0) {
       float u2 = u + remainingX / texture.getWidth();
       float v = region.getV();
@@ -607,6 +615,7 @@ public final class Util {
         batch.draw(texture, x, y, remainingX, remainingY, u, v2, u2, v);
       }
     }
+
     if (remainingY > 0) {
       float u2 = region.getU2();
       float v = v2 - remainingY / texture.getHeight();
@@ -1535,15 +1544,15 @@ public final class Util {
 
   /************** JSON utilities ************/
 
-  public static String toJson(Object obj) {return (new Json()).toJson(obj);}
+  public static String toJson(Object obj)                                 {return (new Json()).toJson(obj);}
   public static <T extends Object> T readJson(Class<T> type, String data) {return (new Json()).fromJson(type, data);}
-  public static int JsonInt(JSONObject obj, String key)  {return ((Long)obj.get(key)).intValue();}
-  public static short JsonShort(JSONObject obj, String key) {return ((Long)obj.get(key)).shortValue();}
-  public static long JsonLong(JSONObject obj, String key) {return ((Long)obj.get(key)).longValue();}
-  public static float JsonFloat(JSONObject obj, String key) {return ((Double)obj.get(key)).floatValue();}
-  public static double JsonDouble(JSONObject obj, String key) {return ((Double)obj.get(key)).doubleValue();}
-  public static boolean JsonBool(JSONObject obj, String key) {return ((Boolean)obj.get(key)).booleanValue();}
-  public static String JsonString(JSONObject obj, String key) {return (String)obj.get(key);}
-  public static JSONObject JsonObject(JSONObject obj, String key) {return (JSONObject)obj.get(key);}
-  public static JSONArray JsonArray(JSONObject obj, String key) {return (JSONArray)obj.get(key);}
+  public static int JsonInt(JSONObject obj, String key)                   {return ((Long)obj.get(key)).intValue();}
+  public static short JsonShort(JSONObject obj, String key)               {return ((Long)obj.get(key)).shortValue();}
+  public static long JsonLong(JSONObject obj, String key)                 {return ((Long)obj.get(key)).longValue();}
+  public static float JsonFloat(JSONObject obj, String key)               {return ((Double)obj.get(key)).floatValue();}
+  public static double JsonDouble(JSONObject obj, String key)             {return ((Double)obj.get(key)).doubleValue();}
+  public static boolean JsonBool(JSONObject obj, String key)              {return ((Boolean)obj.get(key)).booleanValue();}
+  public static String JsonString(JSONObject obj, String key)             {return (String)obj.get(key);}
+  public static JSONObject JsonObject(JSONObject obj, String key)         {return (JSONObject)obj.get(key);}
+  public static JSONArray JsonArray(JSONObject obj, String key)           {return (JSONArray)obj.get(key);}
 }

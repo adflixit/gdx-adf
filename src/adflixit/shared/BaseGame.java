@@ -103,6 +103,7 @@ public abstract class BaseGame extends Logger implements ApplicationListener {
   @Override public void create() {
     currentInstance = this;
     ShaderProgram.pedantic = false;
+
     Tween.setWaypointsLimit(10);
     Tween.registerAccessor(Actor.class,               new ActorAccessor());
     Tween.registerAccessor(actorClassDescendants,     new ActorAccessor());
@@ -117,6 +118,7 @@ public abstract class BaseGame extends Logger implements ApplicationListener {
     Tween.registerAccessor(Color.class,               new ColorAccessor());
     Tween.registerAccessor(MutableInteger.class,      new MutableInteger(0));
     Tween.registerAccessor(MutableFloat.class,        new MutableFloat(0));
+
     // default console commands
     ConCmd("prop", args -> {
       try {
@@ -701,7 +703,7 @@ public abstract class BaseGame extends Logger implements ApplicationListener {
   }
 
   public static void quit() {
-    glog("Quitting app");
+    glog("Closing app");
     xApi.quit();
   }
 

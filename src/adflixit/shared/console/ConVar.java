@@ -19,24 +19,16 @@ package adflixit.shared.console;
 public class ConVar {
   private final String  defValue;
   private String        rawValue;
-  private int           intValue;
-  private long          longValue;
-  private double        doubleValue;
-  private float         floatValue;
-  private boolean       boolValue;
+  private double        value;  // numerical data is stored as double
 
   public ConVar(String def) {
     defValue = def;
   }
 
-  public ConVar set(String value) {
-    rawValue = value;
+  public ConVar set(String val) {
+    rawValue = val;
     try {
-      intValue = Integer.parseInt(rawValue);
-      longValue = Long.parseLong(rawValue);
-      floatValue = Float.parseFloat(rawValue);
-      doubleValue = Double.parseDouble(rawValue);
-      boolValue = Boolean.parseBoolean(rawValue);
+      value = Double.parseDouble(rawValue);
     } catch (Exception e) {}
     return this;
   }
@@ -47,11 +39,11 @@ public class ConVar {
 
   public String def()         {return defValue;}
   public String raw()         {return rawValue;}
-  public int intValue()       {return intValue;}
-  public long longValue()     {return longValue;}
-  public float floatValue()   {return floatValue;}
-  public double doubleValue() {return doubleValue;}
-  public boolean boolValue()  {return boolValue;}
+  public int intValue()       {return (int)value;}
+  public long longValue()     {return (long)value;}
+  public float floatValue()   {return (float)value;}
+  public double doubleValue() {return value;}
+  public boolean boolValue()  {return (int)value != 0;}
 
   @Override public String toString() {
     return rawValue;

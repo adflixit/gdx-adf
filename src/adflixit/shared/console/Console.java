@@ -43,12 +43,14 @@ public class Console {
     in = sin;
     out = sout;
     scanner = new Scanner(in);
+
     thread = new Thread("Console") {
       @Override public void run() {
         read();
       }
     };
     thread.start();
+
     registerCommand("print", args -> print(arrayToStringf("%s ", args)));
     registerCommand("reset", args -> var(args[0]).reset());
     registerCommand("help", args -> print(cmds.keySet().toString()));
@@ -85,10 +87,10 @@ public class Console {
   /**
    * Evaluates a given text as a command sequence.
    */
-  public void load(String data) {
-    Matcher m = Pattern.compile("\\r?\\n").matcher(data);
-    while (m.find()) {
-      eval(m.group(1));
+  public void parse(String data) {
+    String[] spl = data.split("\\r?\\n|;");
+    for (String s : spl) {
+      eval(s.trim());
     }
   }
 
@@ -96,9 +98,9 @@ public class Console {
    * Loads a file and evaluates it's contents as a command sequence.
    * @see {@link #eval(String)}
    */
-  public void parse(FileHandle file) {
+  public void load(FileHandle file) {
     try {
-      load(file.readString());
+      parse(file.readString());
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -117,6 +119,7 @@ public class Console {
     if (line == null) {
       throw new IllegalArgumentException("An evaluated line cannot be null.");
     }
+
     // parsing the input into either whole words or text bounded by quotation marks
     parsed.clear();
     Matcher m = Pattern.compile("([^\"']\\S*|[\"'].+?[\"'])\\s*").matcher(line);
@@ -124,9 +127,11 @@ public class Console {
     while (m.find()) {
       parsed.add(m.group(1).replaceAll("[\"']", ""));
     }
+
     // searching for a command or a variable matching the name
     ConCmd cmd = cmds.get(parsed.get(0));
     ConVar var = vars.get(parsed.get(0));
+
     if (cmd == null && var == null) {
       // if nothing found
       print("Unknown command: "+parsed.get(0));
@@ -140,7 +145,7 @@ public class Console {
   }
 
   /**
-   * Reads the input from {@link #in}.
+   * Reads input from {@link #in}.
    */
   private void read() {
     while (active) {
@@ -151,7 +156,7 @@ public class Console {
       if (line.equals("")) {
         continue;
       }
-      eval(line);
+      parse(line);
     }
   }
 

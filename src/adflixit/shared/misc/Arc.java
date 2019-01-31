@@ -175,6 +175,10 @@ public class Arc extends Widget {
     batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
     float x = getX();
     float y = getY();
+    float width = getWidth();
+    float height = getHeight();
+    float rotation = getRotation();
+
     // nested position
     float nx = x;
     float ny = y;
@@ -184,9 +188,7 @@ public class Arc extends Widget {
       ny += parent.getY();
       parent = parent.getParent();
     }
-    float width = getWidth();
-    float height = getHeight();
-    float rotation = getRotation();
+
     batch.end();
     Gdx.gl.glClearDepthf(1.0f);
     Gdx.gl.glClear(GL20.GL_DEPTH_BUFFER_BIT);
@@ -194,6 +196,7 @@ public class Arc extends Widget {
     Gdx.gl.glDepthFunc(GL20.GL_LESS);
     Gdx.gl.glEnable(GL20.GL_DEPTH_TEST);
     Gdx.gl.glDepthMask(true);
+
     shr.begin(ShapeType.Filled);
       shr.setColor(1f, 1f, 1f, 0.5f);
       if (clockwise) {
@@ -203,12 +206,15 @@ public class Arc extends Widget {
         shr.arc(nx + radius, ny + radius, radius + 10, rotation + 90, degrees());
       }
     shr.end();
+
     Gdx.gl.glColorMask(true, true, true, true);
     Gdx.gl.glDepthMask(true);
     Gdx.gl.glDepthFunc(GL20.GL_EQUAL);
+
     batch.begin();
       drawable.draw(batch, x, y, width, height);
     batch.end();
+
     Gdx.gl.glDisable(GL20.GL_DEPTH_TEST);
     batch.begin();
   }

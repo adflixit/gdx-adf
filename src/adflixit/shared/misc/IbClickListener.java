@@ -49,14 +49,17 @@ public class IbClickListener extends ClickListener {
     super();
     btn = button;
     image = button.getImage();
+
     this.initBgClr = initBgClr != null ? initBgClr : WHITE;
     if (initBgClr != null) {
       button.setColor(initBgClr);
     }
+
     this.initImageClr = initImageClr != null ? initImageClr : WHITE;
     if (initImageClr != null) {
       image.setColor(initImageClr);
     }
+
     this.bgClr = bgClr;
     this.imageClr = imageClr;
     setCallback(cb);

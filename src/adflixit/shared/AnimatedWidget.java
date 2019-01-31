@@ -59,14 +59,32 @@ public class AnimatedWidget extends Widget {
     }
     this.anim = anim;
     duration = anim.getAnimationDuration();
+
     float width = 0, height = 0;
     for (TextureRegion region : anim.getKeyFrames()) {
       width = max(width, region.getRegionWidth());
     }
+
     for (TextureRegion region : anim.getKeyFrames()) {
       height = max(height, region.getRegionHeight());
     }
     setSize(width, height);
+  }
+
+  @Override public void draw(Batch batch, float parentAlpha) {
+    validate();
+    Color color = getColor();
+    batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
+    float x = getX();
+    float y = getY();
+    float originX = getOriginX();
+    float originY = getOriginY();
+    float width = getWidth();
+    float height = getHeight();
+    float scaleX = getScaleX();
+    float scaleY = getScaleY();
+    float rotation = getRotation();
+    batch.draw(anim.getKeyFrame(time(), false), x, y, originX, originY, width, height, scaleX, scaleY, rotation);
   }
 
   /**
@@ -185,21 +203,5 @@ public class AnimatedWidget extends Widget {
 
   public void stop() {
     tween.kill();
-  }
-
-  @Override public void draw(Batch batch, float parentAlpha) {
-    validate();
-    Color color = getColor();
-    batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
-    float x = getX();
-    float y = getY();
-    float originX = getOriginX();
-    float originY = getOriginY();
-    float width = getWidth();
-    float height = getHeight();
-    float scaleX = getScaleX();
-    float scaleY = getScaleY();
-    float rotation = getRotation();
-    batch.draw(anim.getKeyFrame(time(), false), x, y, originX, originY, width, height, scaleX, scaleY, rotation);
   }
 }

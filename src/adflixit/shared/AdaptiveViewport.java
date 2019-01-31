@@ -45,12 +45,14 @@ public class AdaptiveViewport extends Viewport {
       float toViewportSpace = viewportHeight / worldHeight;
       float toWorldSpace = worldHeight / viewportHeight;
       float lengthen = (screenWidth - viewportWidth) * toWorldSpace;
+
       worldWidth += lengthen;
       viewportWidth += round(lengthen * toViewportSpace);
     } else if (viewportHeight < screenHeight) {
       float toViewportSpace = viewportWidth / worldWidth;
       float toWorldSpace = worldWidth / viewportWidth;
       float lengthen = (screenHeight - viewportHeight) * toWorldSpace;
+
       worldHeight += lengthen;
       viewportHeight += round(lengthen * toViewportSpace);
     }
