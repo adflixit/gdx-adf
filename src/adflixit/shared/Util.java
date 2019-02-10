@@ -525,9 +525,13 @@ public final class Util {
   }
 
   public static void printStackTrace() {
+    System.out.print("\u001B[31m");
+    int c = 0;
     for (StackTraceElement i : Thread.currentThread().getStackTrace()) {
-      System.out.println(i);
+      System.out.println((c>0?"    ":"")+i);
+      c++;
     }
+    System.out.print("\u001B[0m");
   }
 
   /*public static BitmapFont createFont(FileHandle file, int size) {
@@ -541,7 +545,7 @@ public final class Util {
 
   /**
    * Draws a rectangle tiled with {@link TextureRegion} with an offset.
-   * FIXME: unfinished.
+   * TODO: unfinished.
    */
   public static void drawTiledRect(Batch batch, TextureRegion region, float x, float y,
       float ofsX, float ofsY, float width, float height) {
@@ -756,29 +760,29 @@ public final class Util {
   /**
    * @return a {@link ImageButton} with the specified image and background.
    */
-  public static ImageButton simpleImageButton(Drawable image, Drawable bg) {
+  public static ImageButton createImageButton(Drawable image, Drawable bg) {
     return new ImageButton(new ImageButtonStyle(bg, null, null, image, null, null));
   }
 
   /**
    * @return a {@link ImageButton} with the specified image without background.
    */
-  public static ImageButton simpleImageButton(Drawable image) {
-    return simpleImageButton(image, drawable("btn_bg"));
+  public static ImageButton createImageButton(Drawable image) {
+    return createImageButton(image, drawable("btn_bg"));
   }
 
   /**
    * @return a {@link ImageButton} with the specified image and background skin drawable names.
    */
-  public static ImageButton simpleImageButton(String image, String bg) {
-    return simpleImageButton(drawable(image), drawable(bg));
+  public static ImageButton createImageButton(String image, String bg) {
+    return createImageButton(drawable(image), drawable(bg));
   }
 
   /**
    * @return a {@link ImageButton} with the specified image skin drawable name without background.
    */
-  public static ImageButton simpleImageButton(String image) {
-    return simpleImageButton(drawable(image));
+  public static ImageButton createImageButton(String image) {
+    return createImageButton(drawable(image));
   }
 
   /**

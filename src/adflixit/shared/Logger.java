@@ -23,7 +23,7 @@ import com.badlogic.gdx.Gdx;
  * An abstract class that holds the basic logging functionality, such as printing debug info with the current class signature.
  */
 public abstract class Logger {
-  public static final void glog(String msg) {
+  public static final void log(String msg) {
     if (Gdx.app.getType() == ApplicationType.Android) {
       Gdx.app.log("App", msg);
     } else {
@@ -31,7 +31,7 @@ public abstract class Logger {
     }
   }
 
-  public static final void glogSetup(String msg) {
+  public static final void logSetup(String msg) {
     if (Gdx.app.getType() == ApplicationType.Android) {
       Gdx.app.log("App", msg);
     } else {
@@ -39,7 +39,7 @@ public abstract class Logger {
     }
   }
 
-  public static final void glogDone() {
+  public static final void logDone() {
     if (Gdx.app.getType() == ApplicationType.Android) {
       Gdx.app.log("App", "Done");
     } else {
@@ -47,27 +47,7 @@ public abstract class Logger {
     }
   }
 
-  public final void log(String msg) {
-    if (Gdx.app.getType() == ApplicationType.Android) {
-      Gdx.app.log("App", getClass().getSimpleName()+": "+msg);
-    } else {
-      System.out.println(getClass().getSimpleName()+": "+msg);
-    }
-  }
-
-  public final void logSetup(String msg) {
-    if (Gdx.app.getType() == ApplicationType.Android) {
-      Gdx.app.log("App", getClass().getSimpleName()+": "+msg);
-    } else {
-      System.out.print(getClass().getSimpleName()+": "+msg);
-    }
-  }
-
-  public final void logDone() {
-    if (Gdx.app.getType() == ApplicationType.Android) {
-      Gdx.app.log("App", getClass().getSimpleName()+": Done");
-    } else {
-      System.out.print(" -> done\n");
-    }
+  public static final void warning(String msg) {
+    log("\u001B[31m"+msg+"\u001B[0m");
   }
 }

@@ -60,7 +60,7 @@ public class Console {
     this(System.in, System.out);
   }
 
-  public synchronized void registerCommand(String name, ConCmd cmd) {
+  public void registerCommand(String name, ConCmd cmd) {
     if (cmds.get(name) != null) {
       throw new RuntimeException("Command '"+name+"' already exists.");
     } else {
@@ -68,7 +68,7 @@ public class Console {
     }
   }
 
-  public synchronized void registerVariable(String name, ConVar var) {
+  public void registerVariable(String name, ConVar var) {
     if (vars.get(name) != null) {
       throw new RuntimeException("Variable '"+name+"' already exists.");
     } else {
@@ -82,16 +82,6 @@ public class Console {
 
   public ConVar var(String name) {
     return vars.get(name);
-  }
-
-  /**
-   * Evaluates a given text as a command sequence.
-   */
-  public void parse(String data) {
-    String[] spl = data.split("\\r?\\n|;");
-    for (String s : spl) {
-      eval(s.trim());
-    }
   }
 
   /**
@@ -115,7 +105,7 @@ public class Console {
    * If no command found with the given name, if a variable with the specified name exists
    * it will be set to the first argument.
    */
-  public synchronized void eval(String line) {
+  private synchronized void eval(String line) {
     if (line == null) {
       throw new IllegalArgumentException("An evaluated line cannot be null.");
     }
@@ -145,17 +135,29 @@ public class Console {
   }
 
   /**
+   * Evaluates given text as a command sequence.
+   */
+  public synchronized void parse(String data) {
+    String[] spl = data.split("\\r?\\n|;");
+    for (String s : spl) {
+      eval(s.trim());
+    }
+  }
+
+  /**
    * Reads input from {@link #in}.
    */
-  private void read() {
+  private synchronized void read() {
     while (active) {
       if (!scanner.hasNextLine()) {
         continue;
       }
+
       String line = scanner.nextLine();
       if (line.equals("")) {
         continue;
       }
+
       parse(line);
     }
   }

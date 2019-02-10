@@ -18,6 +18,7 @@
 package adflixit.shared;
 
 import static adflixit.shared.BaseGame.*;
+import static adflixit.shared.Logger.*;
 import static adflixit.shared.TweenUtils.*;
 import static adflixit.shared.Util.*;
 import static aurelienribon.tweenengine.TweenCallback.*;
@@ -66,7 +67,7 @@ import java.util.List;
  * </ul>
  * @param <G> a {@link BaseGame} instance.
  */
-public abstract class BaseScreen<G extends BaseGame> extends Logger implements InputProcessor, GestureListener {
+public abstract class BaseScreen<G extends BaseGame> implements InputProcessor, GestureListener {
   public static final TweenManager    tweenMgr            = new TweenManager();  // general tween manager
   public static final TweenManager    tscTweenMgr         = new TweenManager();  // timescaled tween manager
   public static final TweenManager    uiTweenMgr          = new TweenManager();  // UI tween manager
@@ -91,7 +92,7 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
    */
   public static void setLdm(float v) {
     if (!ldmDeadlock) {
-      glog("Setting the screen lesser dimension to "+v);
+      log("Setting the screen lesser dimension to "+v);
       ldmDeadlock = true;    
       ldm = v;
     }
@@ -148,12 +149,20 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
   // Indicates whether the app has to run without any advanced graphical features, such as both postprocessing and texture filtering other than nearest.
   private static boolean              simpleGraphics;
   private static boolean              advancedPerformance;  // indicates whether the app may use the advanced performance features, such as GPU
-  public static final int             resDenom            = 4;  // resolution denominator used by the postprocessing economy
+
   public static final TextureFilter   textureFilterHq     = TextureFilter.Linear,
                                       textureFilterLq     = TextureFilter.Nearest;
 
+  public boolean simpleGraphics() {
+    return simpleGraphics;
+  }
+
+  public boolean advancedPerformance() {
+    return advancedPerformance;
+  }
+
   private static void setAdvancedPerformance(boolean v) {
-    glog("Advanced performance "+(v?"enabled":"disabled"));
+    log("Advanced performance "+(v?"enabled":"disabled"));
     advancedPerformance = v;
   }
 
@@ -185,6 +194,7 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
   private final List<Music>           musicList           = new ArrayList<>();    // music volume has to be manually update on a transition
   private boolean                     updatingVolume;
   private final TweenCallback         masterVolumeCallback  = (type, source) -> updatingVolume = type == BEGIN;
+  private boolean                     reloadBlur;
 
   // Temporal values
   protected final Vector2             tmpv2               = new Vector2();
@@ -296,7 +306,7 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
    */
   public void toggleDebug() {
     debug = !debug;
-    glog("Debug mode "+(debug?"enabled":"disabled"));
+    log("Debug mode "+(debug?"enabled":"disabled"));
   }
 
   /**
@@ -469,10 +479,14 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
         music.setVolume(musicVolume());
       }
     }
+    if (reloadBlur) {
+      reloadBlur = false;
+      blur.reload();
+    }
   }
 
   public void reloadBlur() {
-    blur.reload();
+    reloadBlur = true;
   }
 
   protected boolean doPostprocess() {
@@ -537,11 +551,11 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
     batch.setProjectionMatrix(camera.combined);
     doPostprocess = doPostprocess();
 
-    prepareDraw();
-    clearScreen();
     if (drawToFrameBuffer) {
       frameBuffer.begin();
     }
+    prepareDraw();
+    clearScreen();
     batch.begin();
     drawPre();
     draw();
@@ -550,10 +564,11 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
       drawDebug();
     }
     batch.end();
+    finalizeDraw();
     if (drawToFrameBuffer) {
       frameBuffer.end();
     }
-    finalizeDraw();
+
     drawUi();
     resetCameraPos();
     updateBenchmark();
@@ -569,7 +584,7 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
   }
 
   public void resize() {
-    logSetup("resizing = "+screenWidth()+" "+screenHeight());
+    logSetup("Resizing screen to "+screenWidth()+" "+screenHeight());
     // record the previous screen size
     if (lastScreenSizeJunc) {
       evenLastScreenSize.set(screenWidth(), screenHeight());
@@ -666,16 +681,16 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
    * Prints the debug info.
    */
   public void printDebug() {
-    log("screen size = "+screenWidth()+" "+screenHeight()+
-        ", fps = "+fps()+
-        ", cam = "+cameraPos().x+" "+cameraPos().y+
-        ", cam at zero = "+cameraX0()+" "+cameraY0()+
-        ", time = "+timestamp.elapsed()+
-        ", cam shake = "+camShake()+
-        ", timescale = "+timescale()+
-        ", ui timescale = "+uiTimescale()+
-        ", master volume = "+masterVolume()+
-        ", sfx volume = "+sfxVolume()+
+    log("screen size = "+screenWidth()+" "+screenHeight() +
+        ", fps = "+fps() +
+        ", cam = "+cameraPos().x+" "+cameraPos().y +
+        ", cam at zero = "+cameraX0()+" "+cameraY0() +
+        ", time = "+timestamp.elapsed() +
+        ", cam shake = "+camShake() +
+        ", timescale = "+timescale() +
+        ", ui timescale = "+uiTimescale() +
+        ", master volume = "+masterVolume() +
+        ", sfx volume = "+sfxVolume() +
         ", music volume = "+musicVolume());
   }
 
@@ -3008,6 +3023,31 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
   }
 
   /**
+   * Smoothly medium dims the screen.
+   * Used to create a slightly dark contrasting background for the UI.
+   * @param d duration
+   */
+  public void dimInM(float d) {
+    $dimInM(d).start(tweenMgr);
+  }
+
+  /**
+   * Smoothly medium dims the screen.
+   * Used to create a slightly dark contrasting background for the UI.
+   */
+  public void dimInM() {
+    $dimInM().start(tweenMgr);
+  }
+
+  /**
+   * Instantly applies the medium screen dim.
+   * Used to create a slightly dark contrasting background for the UI.
+   */
+  public void setDimM() {
+    $setDimM().start(tweenMgr);
+  }
+
+  /**
    * Smoothly lightly dims the screen.
    * Used to create a slightly dark contrasting background for the UI.
    * @param d duration
@@ -4657,6 +4697,31 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
   }
 
   /**
+   * Creates a handle to medium darken the menu background.
+   * @param d duration
+   * @return tween handle
+   */
+  public Tween $dimInM(float d) {
+    return overlay.$dimIn(C_OP_D, d);
+  }
+
+  /**
+   * Creates a handle to medium darken the menu background.
+   * @return tween handle
+   */
+  public Tween $dimInM() {
+    return $dimInM(C_D);
+  }
+
+  /**
+   * Creates a handle to apply the medium background darkening.
+   * @return tween handle
+   */
+  public Tween $setDimM() {
+    return $dimInM(0);
+  }
+
+  /**
    * Creates a handle to lightly darken the menu background.
    * @param d duration
    * @return tween handle
@@ -4674,7 +4739,7 @@ public abstract class BaseScreen<G extends BaseGame> extends Logger implements I
   }
 
   /**
-   * Creates a handle to apply the light background darkening.
+   * Creates a handle to apply a light background darkening.
    * @return tween handle
    */
   public Tween $setDimL() {

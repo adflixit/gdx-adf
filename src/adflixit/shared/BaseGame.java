@@ -17,6 +17,7 @@
 
 package adflixit.shared;
 
+import static adflixit.shared.Logger.*;
 import static adflixit.shared.TweenUtils.*;
 import static adflixit.shared.Util.*;
 
@@ -24,6 +25,8 @@ import adflixit.shared.TweenUtils.SpriteAccessor;
 import adflixit.shared.console.ConCmd;
 import adflixit.shared.console.ConVar;
 import adflixit.shared.console.Console;
+import adflixit.shared.misc.DropShadowDrawable;
+import adflixit.shared.misc.DropShadowLabel;
 import android.view.View;
 import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.primitives.MutableFloat;
@@ -60,7 +63,7 @@ import java.util.Arrays;
  * <li>Preferences handles.</li>
  * </ul>
  */
-public abstract class BaseGame extends Logger implements ApplicationListener {
+public abstract class BaseGame implements ApplicationListener {
   private final XApi noXApi = new XApi() {
     @Override public AdView getAdView() {return null;}
     @Override public void showAd() {}
@@ -81,16 +84,16 @@ public abstract class BaseGame extends Logger implements ApplicationListener {
     @Override public void quit() {Gdx.app.exit();}
   };
 
-  private static BaseGame           currentInstance;
+  private static BaseGame               currentInstance;
 
-  public static Class<? extends Actor> actorClassDescendants; // used as the Actor class signature for the tween engine
-  public static boolean             debug;
-  private static XApi               xApi;
-  public static final Console       console = new Console();
-  private static Skin               skin;
-  private static MutableProperties  props   = new MutableProperties();
-  private static Preferences        prefs;
-  protected BaseScreen<?>           screen; // current screen
+  public static Class<? extends Actor>  actorClassDescendants; // used as the Actor class signature for the tween engine
+  public static boolean                 debug;
+  private static XApi                   xApi;
+  public static final Console           console = new Console();
+  private static Skin                   skin;
+  private static MutableProperties      props   = new MutableProperties();
+  private static Preferences            prefs;
+  protected BaseScreen<?>               screen; // current screen
 
   public BaseGame() {
     setXApi(noXApi);
@@ -108,7 +111,9 @@ public abstract class BaseGame extends Logger implements ApplicationListener {
     Tween.registerAccessor(Actor.class,               new ActorAccessor());
     Tween.registerAccessor(actorClassDescendants,     new ActorAccessor());
     Tween.registerAccessor(Label.class,               new LabelAccessor());
+    Tween.registerAccessor(DropShadowLabel.class,     new DropShadowLabelAccessor());
     Tween.registerAccessor(Sprite.class,              new SpriteAccessor());
+    Tween.registerAccessor(DropShadowDrawable.class,  new DropShadowDrawableAccessor());
     Tween.registerAccessor(Music.class,               new MusicAccessor());
     Tween.registerAccessor(OrthographicCamera.class,  new OrthoCameraAccessor());
     Tween.registerAccessor(Body.class,                new Box2DBodyAccessor());
@@ -122,23 +127,23 @@ public abstract class BaseGame extends Logger implements ApplicationListener {
     // default console commands
     ConCmd("prop", args -> {
       try {
-        glog(prop(args[0]));
+        log(prop(args[0]));
       } catch (Exception e) {
-        glog(e.getLocalizedMessage());
+        log(e.getLocalizedMessage());
       }
     });
     ConCmd("setprop", args -> {
       try {
         setProp(args[0], arrayToStringf("%s ", Arrays.copyOfRange(args, 1, args.length)));
       } catch (Exception e) {
-        glog(e.getLocalizedMessage());
+        log(e.getLocalizedMessage());
       }
     });
     ConCmd("resetprop", args -> {
       try {
         resetProp(args[0]);
       } catch (Exception e) {
-        glog(e.getLocalizedMessage());
+        log(e.getLocalizedMessage());
       }
     });
     ConCmd("resetprops", args -> resetProps());
@@ -146,12 +151,12 @@ public abstract class BaseGame extends Logger implements ApplicationListener {
       try {
         flushProp(args[0]);
       } catch (Exception e) {
-        glog(e.getLocalizedMessage());
+        log(e.getLocalizedMessage());
       }
     });
     ConCmd("flushprops", args -> flushProps());
-    ConCmd("proplist", args -> glog(propList()));
-    ConCmd("pref", args -> glog(pref(args[0])));
+    ConCmd("proplist", args -> log(propList()));
+    ConCmd("pref", args -> log(pref(args[0])));
     ConCmd("setpref", args -> setProp(args[0], arrayToStringf("%s ", Arrays.copyOfRange(args, 1, args.length))));
     ConCmd("flushprefs", args -> flushPrefs());
     ConCmd("quit", args -> quit());
@@ -176,54 +181,54 @@ public abstract class BaseGame extends Logger implements ApplicationListener {
    * @see XApi#showAd()
    */
   public static void showAd() {
-    glogSetup("Showing ad");
+    logSetup("Showing ad");
     xApi.showAd();
-    glogDone();
+    logDone();
   }
 
   /**
    * @see XApi#hideAd()
    */
   public static void hideAd() {
-    glogSetup("Hiding ad");
+    logSetup("Hiding ad");
     xApi.hideAd();
-    glogDone();
+    logDone();
   }
 
   /**
    * @see XApi#refreshAd()
    */
   public static void refreshAd() {
-    glogSetup("Refreshing ad");
+    logSetup("Refreshing ad");
     xApi.refreshAd();
-    glogDone();
+    logDone();
   }
 
   /**
    * @see XApi#showLeaderboard(String)
    */
   public static void showLeaderboard(String id) {
-    glogSetup("Showing leaderboard");
+    logSetup("Showing leaderboard");
     xApi.showLeaderboard(id);
-    glogDone();
+    logDone();
   }
 
   /**
    * @see XApi#showAchievements()
    */
   public static void showAchievements() {
-    glogSetup("Showing achievements");
+    logSetup("Showing achievements");
     xApi.showAchievements();
-    glogDone();
+    logDone();
   }
 
   /**
    * @see XApi#shareText(String)
    */
   public static void shareText(String txt) {
-    glogSetup("Sharing text '"+txt+"'");
+    logSetup("Sharing text '"+txt+"'");
     xApi.shareText(txt);
-    glogDone();
+    logDone();
   }
 
   /**
@@ -237,9 +242,9 @@ public abstract class BaseGame extends Logger implements ApplicationListener {
    * @see XApi#signIn()
    */
   public static void signIn() {
-    glogSetup("Signing in");
+    logSetup("Signing in");
     xApi.signIn();
-    glogDone();
+    logDone();
   }
 
   /**
@@ -253,7 +258,7 @@ public abstract class BaseGame extends Logger implements ApplicationListener {
    * @see XApi#getPersonalBest(String)
    */
   public static long getPersonalBest(String id) {
-    glog("Retrieving personal best from id "+id);
+    log("Retrieving personal best from id "+id);
     return xApi.getPersonalBest(id);
   }
 
@@ -261,7 +266,7 @@ public abstract class BaseGame extends Logger implements ApplicationListener {
    * @see XApi#getAllTimeRecord(String)
    */
   public static long getAllTimeRecord(String id) {
-    glog("Retrieving all time record from id "+id);
+    log("Retrieving all time record from id "+id);
     return xApi.getAllTimeRecord(id);
   }
 
@@ -269,7 +274,7 @@ public abstract class BaseGame extends Logger implements ApplicationListener {
    * @see XApi#getWeeklyRecord(String)
    */
   public static long getWeeklyRecord(String id) {
-    glog("Retrieving weekly record from id "+id);
+    log("Retrieving weekly record from id "+id);
     return xApi.getWeeklyRecord(id);
   }
 
@@ -277,7 +282,7 @@ public abstract class BaseGame extends Logger implements ApplicationListener {
    * @see XApi#getDailyRecord(String)
    */
   public static long getDailyRecord(String id) {
-    glog("Retrieving daily record from id "+id);
+    log("Retrieving daily record from id "+id);
     return xApi.getDailyRecord(id);
   }
 
@@ -285,24 +290,24 @@ public abstract class BaseGame extends Logger implements ApplicationListener {
    * @see XApi#submitScore(String, long)
    */
   public static void submitScore(String id, long score) {
-    glogSetup("Submitting score "+score);
+    logSetup("Submitting score "+score);
     xApi.submitScore(id, score);
-    glogDone();
+    logDone();
   }
 
   /**
    * @see XApi#unlockAchievement(String)
    */
   public static void unlockAchievement(String id) {
-    glogSetup("Unlocking achievement");
+    logSetup("Unlocking achievement");
     xApi.unlockAchievement(id);
-    glogDone();
+    logDone();
   }
 
   public static void loadSkin(FileHandle skinFile, TextureAtlas atlas) {
-    glogSetup("Loading skin '"+skinFile+"'");
+    logSetup("Loading skin '"+skinFile+"'");
     skin = new Skin(skinFile, atlas);
-    glogDone();
+    logDone();
   }
 
   public static void ConCmd(String name, ConCmd cmd) {
@@ -380,18 +385,18 @@ public abstract class BaseGame extends Logger implements ApplicationListener {
    */
   @Deprecated
   public static void loadProps(FileHandle... files) {
-    glogSetup("Loading properties "+arrayToString("'%s'", files));
+    logSetup("Loading properties "+arrayToString("'%s'", files));
     props.loadAll(files);
-    glogDone();
+    logDone();
   }
 
   /**
    * Loads the specified properties.
    */
   public static void loadProps(String path) {
-    glogSetup("Loading properties '"+path+"'");
+    logSetup("Loading properties '"+path+"'");
     props.load(path);
-    glogDone();
+    logDone();
   }
 
   /**
@@ -442,7 +447,7 @@ public abstract class BaseGame extends Logger implements ApplicationListener {
    * @return the previous value of the specified key.
    */
   public static Object setProp(String key, String value) {
-    glog("Changing property '"+key+"' from '"+prop(key)+"' to '"+value+"'");
+    log("Changing property '"+key+"' from '"+prop(key)+"' to '"+value+"'");
     return props.set(key, value);
   }
 
@@ -450,81 +455,81 @@ public abstract class BaseGame extends Logger implements ApplicationListener {
    * Changes the existing property to an {@code int} value.
    */
   public static void setPropInt(String key, int value) {
-    glog("Changing property '"+key+"' from '"+prop(key)+"' to '"+value+"'");
+    log("Changing property '"+key+"' from '"+prop(key)+"' to '"+value+"'");
     props.setInt(key, value);
-    glogDone();
+    logDone();
   }
 
   /**
    * Changes the existing property to an {@code long} value.
    */
   public static void setPropLong(String key, long value) {
-    glog("Changing property '"+key+"' from '"+prop(key)+"' to '"+value+"'");
+    log("Changing property '"+key+"' from '"+prop(key)+"' to '"+value+"'");
     props.setLong(key, value);
-    glogDone();
+    logDone();
   }
 
   /**
    * Changes the existing property to an {@code float} value.
    */
   public static void setPropFloat(String key, float value) {
-    glog("Changing property '"+key+"' from '"+prop(key)+"' to '"+value+"'");
+    log("Changing property '"+key+"' from '"+prop(key)+"' to '"+value+"'");
     props.setFloat(key, value);
-    glogDone();
+    logDone();
   }
 
   /**
    * Changes the existing property to an {@code double} value.
    */
   public static void setPropDouble(String key, double value) {
-    glog("Changing property '"+key+"' from '"+prop(key)+"' to '"+value+"'");
+    log("Changing property '"+key+"' from '"+prop(key)+"' to '"+value+"'");
     props.setDouble(key, value);
-    glogDone();
+    logDone();
   }
 
   /**
    * Changes the existing property to an {@code boolean} value.
    */
   public static void setPropBool(String key, boolean value) {
-    glog("Changing property '"+key+"' from '"+prop(key)+"' to '"+value+"'");
+    log("Changing property '"+key+"' from '"+prop(key)+"' to '"+value+"'");
     props.setBool(key, value);
-    glogDone();
+    logDone();
   }
 
   /**
    * Resets the property to the default value.
    */
   public static void resetProp(String key) {
-    glogSetup("Resetting property '"+key+"'");
+    logSetup("Resetting property '"+key+"'");
     props.reset(key);
-    glogDone();
+    logDone();
   }
 
   /**
    * Resets all property to the default values.
    */
   public static void resetProps() {
-    glogSetup("Resetting properties");
+    logSetup("Resetting properties");
     props.resetAll();
-    glogDone();
+    logDone();
   }
 
   /**
    * Saves the specified property to the file.
    */
   public static void flushProp(String key) {
-    glogSetup("Flushing property '"+key+"'");
+    logSetup("Flushing property '"+key+"'");
     props.flush(key);
-    glogDone();
+    logDone();
   }
 
   /**
    * Saves properties to the file.
    */
   public static void flushProps() {
-    glogSetup("Flushing properties");
+    logSetup("Flushing properties");
     props.flushAll();
-    glogDone();
+    logDone();
   }
 
   public static String propList() {
@@ -532,9 +537,9 @@ public abstract class BaseGame extends Logger implements ApplicationListener {
   }
 
   public static void loadPrefs(String name) {
-    glogSetup("Loading preferences '"+name+"'");
+    logSetup("Loading preferences '"+name+"'");
     prefs = Gdx.app.getPreferences(name);
-    glogDone();
+    logDone();
   }
 
   /**
@@ -583,54 +588,54 @@ public abstract class BaseGame extends Logger implements ApplicationListener {
    * Adds a string entry to the preferences.
    */
   public static void putPref(String key, String value) {
-    glogSetup("Setting preference "+key+" to "+value);
+    logSetup("Setting preference "+key+" to "+value);
     prefs.putString(key, value);
-    glogDone();
+    logDone();
   }
 
   /**
    * Adds an int entry to the preferences.
    */
   public static void putPrefInt(String key, int value) {
-    glogSetup("Setting preference "+key+" to "+value);
+    logSetup("Setting preference "+key+" to "+value);
     prefs.putInteger(key, value);
-    glogDone();
+    logDone();
   }
 
   /**
    * Adds a long entry to the preferences.
    */
   public static void putPrefLong(String key, long value) {
-    glogSetup("Setting preference "+key+" to "+value);
+    logSetup("Setting preference "+key+" to "+value);
     prefs.putLong(key, value);
-    glogDone();
+    logDone();
   }
 
   /**
    * Adds a float entry to the preferences.
    */
   public static void putPrefFloat(String key, float value) {
-    glogSetup("Setting preference "+key+" to "+value);
+    logSetup("Setting preference "+key+" to "+value);
     prefs.putFloat(key, value);
-    glogDone();
+    logDone();
   }
 
   /**
    * Adds a boolean entry to the preferences.
    */
   public static void putPrefBool(String key, boolean value) {
-    glogSetup("Setting preference "+key+" to "+value);
+    logSetup("Setting preference "+key+" to "+value);
     prefs.putBoolean(key, value);
-    glogDone();
+    logDone();
   }
 
   /**
    * Has to be called after every set of preferences is changed.
    */
   public static void flushPrefs() {
-    glogSetup("Flushing preferences");
+    logSetup("Flushing preferences");
     prefs.flush();
-    glogDone();
+    logDone();
   }
 
   public static int fps() {
@@ -703,28 +708,28 @@ public abstract class BaseGame extends Logger implements ApplicationListener {
   }
 
   public static void quit() {
-    glog("Closing app");
+    log("Closing app");
     xApi.quit();
   }
 
   public void startup() {
-    glogSetup("Starting up");
+    logSetup("Starting up");
     screen.startup();
-    glogDone();
+    logDone();
   }
 
   @Override public void dispose() {
-    glogSetup("Disposing of skin");
+    logSetup("Disposing of skin");
     skin.dispose();
-    glogDone();
+    logDone();
     if (screen != null) {
-      glogSetup("Disposing of screen");
+      logSetup("Disposing of screen");
       screen.dispose();
-      glogDone();
+      logDone();
     }
-    glogSetup("Disposing of console");
+    logSetup("Disposing of console");
     console.dispose();
-    glogDone();
+    logDone();
   }
 
   @Override public void pause() {
@@ -754,18 +759,20 @@ public abstract class BaseGame extends Logger implements ApplicationListener {
   public void setScreen(BaseScreen<?> newScreen, boolean dispose) {
     if (screen != null) {
       if (dispose) {
-        glogSetup("Disposing of screen");
+        logSetup("Disposing of screen");
         screen.dispose();
-        glogDone();
+        logDone();
       } else {
-        glogSetup("Hiding screen");
+        logSetup("Hiding screen");
         screen.hide();
-        glogDone();
+        logDone();
       }
     }
+
     screen = newScreen;
+
     if (screen != null) {
-      glog("Setting screen "+newScreen.getClass().getSimpleName());
+      log("Setting screen "+newScreen.getClass().getSimpleName());
       screen.show();
       screen.resize();
     }

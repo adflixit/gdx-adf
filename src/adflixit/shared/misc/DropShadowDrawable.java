@@ -35,8 +35,8 @@ public class DropShadowDrawable extends BaseDrawable implements TransformDrawabl
   private TransformDrawable transDrawable;  // in case it is a TransformDrawable
   private TransformDrawable transShadow;    // ditto
   private float             radius;         // shadow radius, should be specified manually
-  private float             offsetX;        // shadow horizontal offset
-  private float             offsetY;        // shadow vertical offset
+  public float              offsetX;        // shadow horizontal offset
+  public float              offsetY;        // shadow vertical offset
 
   public DropShadowDrawable(Drawable drawable, Drawable shadow, float radius, float offsetX, float offsetY) {
     this.drawable = drawable;
@@ -47,7 +47,7 @@ public class DropShadowDrawable extends BaseDrawable implements TransformDrawabl
   }
 
   public DropShadowDrawable(Drawable drawable, Drawable shadow) {
-    this(drawable, shadow, C_SHD_RAD, C_SHD_OFS, 0);
+    this(drawable, shadow, C_SHD_RAD, 0, C_SHD_OFS);
   }
 
   public DropShadowDrawable(Skin skin, String drawable, String shadow, float radius, float offsetX, float offsetY) {
@@ -55,7 +55,7 @@ public class DropShadowDrawable extends BaseDrawable implements TransformDrawabl
   }
 
   public DropShadowDrawable(Skin skin, String drawable, String shadow) {
-    this(skin, drawable, shadow, C_SHD_RAD, C_SHD_OFS, 0);
+    this(skin, drawable, shadow, C_SHD_RAD, 0, C_SHD_OFS);
   }
 
   public DropShadowDrawable(Skin skin, String drawable, float radius, float offsetX, float offsetY) {
@@ -63,7 +63,7 @@ public class DropShadowDrawable extends BaseDrawable implements TransformDrawabl
   }
 
   public DropShadowDrawable(Skin skin, String drawable) {
-    this(skin, drawable, drawable+"_shd", C_SHD_RAD, C_SHD_OFS, 0);
+    this(skin, drawable, drawable+"_shd", C_SHD_RAD, 0, C_SHD_OFS);
   }
 
   public DropShadowDrawable(String drawable, String shadow, float radius, float offsetX, float offsetY) {

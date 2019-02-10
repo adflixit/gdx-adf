@@ -22,6 +22,8 @@ import static adflixit.shared.Util.*;
 import static aurelienribon.tweenengine.TweenCallback.*;
 import static com.badlogic.gdx.utils.Align.*;
 
+import adflixit.shared.misc.DropShadowDrawable;
+import adflixit.shared.misc.DropShadowLabel;
 import adflixit.shared.misc.Soft;
 import android.view.View;
 import aurelienribon.tweenengine.Timeline;
@@ -615,7 +617,9 @@ public final class TweenUtils {
    * {@link #ORG_Y}: origin y, 
    * {@link #SCL_X}: scale x, 
    * {@link #SCL_Y}: scale y, 
-   * {@link #ROT}: rotation, 
+   * {@link #FSCL_X}: font scale x,
+   * {@link #FSCL_Y}: font scale y,
+   * {@link #ROT}: rotation,
    * {@link #R}: red, 
    * {@link #G}: green, 
    * {@link #B}: blue, 
@@ -627,8 +631,9 @@ public final class TweenUtils {
   public static class LabelAccessor implements TweenAccessor<Label> {
     public static final int POS = 0, X = 1, Y = 2, POS_C = 3, X_C = 4, Y_C = 5,
                             ORIGIN = 6, ORG_X = 7, ORG_Y = 8,
-                            SCALE = 9, SCL_X = 10, SCL_Y = 11, ROT = 12,
-                            RGB = 13, R = 14, G = 15, B = 16, A = 17, H = 18, S = 19, L = 20;
+                            SCALE = 9, SCL_X = 10, SCL_Y = 11,
+                            FONT_SCALE = 12, FSCL_X = 13, FSCL_Y = 14, ROT = 15,
+                            RGB = 16, R = 17, G = 18, B = 19, A = 20, H = 21, S = 23, L = 24;
 
     @Override public int getValues(Label target, int tweenType, float[] returnValues) {
       switch (tweenType) {
@@ -663,13 +668,23 @@ public final class TweenUtils {
         returnValues[0] = target.getOriginY();
         return 1;
       case SCALE:
+        returnValues[0] = target.getScaleX();
+        returnValues[1] = target.getScaleY();
+        return 2;
+      case SCL_X:
+        returnValues[0] = target.getScaleX();
+        return 1;
+      case SCL_Y:
+        returnValues[0] = target.getScaleY();
+        return 1;
+      case FONT_SCALE:
         returnValues[0] = target.getFontScaleX();
         returnValues[1] = target.getFontScaleY();
         return 2;
-      case SCL_X:
+      case FSCL_X:
         returnValues[0] = target.getFontScaleX();
         return 1;
-      case SCL_Y:
+      case FSCL_Y:
         returnValues[0] = target.getFontScaleY();
         return 1;
       case ROT:
@@ -735,12 +750,20 @@ public final class TweenUtils {
         target.setOriginY(newValues[0]);
         break;
       case SCALE:
-        target.setFontScale(newValues[0], newValues[1]);
+        target.setScale(newValues[0], newValues[1]);
         break;
       case SCL_X:
-        target.setFontScale(newValues[0], target.getFontScaleY());
+        target.setScale(newValues[0], target.getScaleY());
         break;
       case SCL_Y:
+        target.setScale(target.getScaleX(), newValues[0]);
+      case FONT_SCALE:
+        target.setFontScale(newValues[0], newValues[1]);
+        break;
+      case FSCL_X:
+        target.setFontScale(newValues[0], target.getFontScaleY());
+        break;
+      case FSCL_Y:
         target.setFontScale(target.getFontScaleX(), newValues[0]);
         break;
       case ROT:
@@ -776,6 +799,220 @@ public final class TweenUtils {
   }
 
   /**
+   * {@link #POS_C}: centered position,
+   * {@link #X_C}: centered x,
+   * {@link #Y_C}: centered y,
+   * {@link #ORG_X}: origin x,
+   * {@link #ORG_Y}: origin y,
+   * {@link #SCL_X}: scale x,
+   * {@link #SCL_Y}: scale y,
+   * {@link #FSCL_X}: font scale x,
+   * {@link #FSCL_Y}: font scale y,
+   * {@link #ROT}: rotation,
+   * {@link #R}: red,
+   * {@link #G}: green,
+   * {@link #B}: blue,
+   * {@link #A}: alpha,
+   * {@link #H}: hue,
+   * {@link #S}: saturation,
+   * {@link #L}: lightness.
+   */
+  public static class DropShadowLabelAccessor implements TweenAccessor<DropShadowLabel> {
+    public static final int POS = 0, X = 1, Y = 2, POS_C = 3, X_C = 4, Y_C = 5,
+                            ORIGIN = 6, ORG_X = 7, ORG_Y = 8,
+                            SCALE = 9, SCL_X = 10, SCL_Y = 11,
+                            FONT_SCALE = 12, FSCL_X = 13, FSCL_Y = 14, ROT = 15,
+                            RGB = 16, R = 17, G = 18, B = 19, A = 20, H = 21, S = 23, L = 24,
+                            OFFSET_X = 25, OFFSET_Y = 26, OPACITY = 27, RADIUS = 28;
+
+    @Override public int getValues(DropShadowLabel target, int tweenType, float[] returnValues) {
+      switch (tweenType) {
+      case POS:
+        returnValues[0] = target.getX();
+        returnValues[1] = target.getY();
+        return 2;
+      case X:
+        returnValues[0] = target.getX();
+        return 1;
+      case Y:
+        returnValues[0] = target.getY();
+        return 1;
+      case POS_C:
+        returnValues[0] = target.getX(center);
+        returnValues[1] = target.getY(center);
+        return 2;
+      case X_C:
+        returnValues[0] = target.getX(center);
+        return 1;
+      case Y_C:
+        returnValues[0] = target.getY(center);
+        return 1;
+      case ORIGIN:
+        returnValues[0] = target.getOriginX();
+        returnValues[1] = target.getOriginY();
+        return 2;
+      case ORG_X:
+        returnValues[0] = target.getOriginX();
+        return 1;
+      case ORG_Y:
+        returnValues[0] = target.getOriginY();
+        return 1;
+      case SCALE:
+        returnValues[0] = target.getScaleX();
+        returnValues[1] = target.getScaleY();
+        return 2;
+      case SCL_X:
+        returnValues[0] = target.getScaleX();
+        return 1;
+      case SCL_Y:
+        returnValues[0] = target.getScaleY();
+        return 1;
+      case FONT_SCALE:
+        returnValues[0] = target.getFontScaleX();
+        returnValues[1] = target.getFontScaleY();
+        return 2;
+      case FSCL_X:
+        returnValues[0] = target.getFontScaleX();
+        return 1;
+      case FSCL_Y:
+        returnValues[0] = target.getFontScaleY();
+        return 1;
+      case ROT:
+        returnValues[0] = target.getRotation();
+        return 1;
+      case RGB:
+        returnValues[0] = target.getColor().r;
+        returnValues[1] = target.getColor().g;
+        returnValues[2] = target.getColor().b;
+        return 3;
+      case R:
+        returnValues[0] = target.getColor().r;
+        return 1;
+      case G:
+        returnValues[0] = target.getColor().g;
+        return 1;
+      case B:
+        returnValues[0] = target.getColor().b;
+        return 1;
+      case A:
+        returnValues[0] = target.getColor().a;
+        return 1;
+      case H:
+        returnValues[0] = getHue(target.getColor());
+        return 1;
+      case S:
+        returnValues[0] = getSat(target.getColor());
+        return 1;
+      case L:
+        returnValues[0] = getLgt(target.getColor());
+        return 1;
+      case OFFSET_X:
+        returnValues[0] = target.offsetX;
+        return 1;
+      case OFFSET_Y:
+        returnValues[0] = target.offsetY;
+        return 1;
+      case OPACITY:
+        returnValues[0] = target.opacity;
+        return 1;
+      case RADIUS:
+        returnValues[0] = target.radius;
+        return 1;
+      default: illegalArgument("tweenType = "+tweenType); return -1;
+      }
+    }
+
+    @Override public void setValues(DropShadowLabel target, int tweenType, float[] newValues) {
+      switch (tweenType) {
+      case POS:
+        target.setPosition(newValues[0], newValues[1]);
+        break;
+      case X:
+        target.setX(newValues[0]);
+        break;
+      case Y:
+        target.setY(newValues[0]);
+        break;
+      case POS_C:
+        target.setPosition(newValues[0] - target.getWidth()/2, newValues[1] - target.getHeight()/2);
+        break;
+      case X_C:
+        target.setX(newValues[0] - target.getWidth()/2);
+        break;
+      case Y_C:
+        target.setY(newValues[0] - target.getHeight()/2);
+        break;
+      case ORIGIN:
+        target.setOrigin(newValues[0], newValues[1]);
+        break;
+      case ORG_X:
+        target.setOriginX(newValues[0]);
+        break;
+      case ORG_Y:
+        target.setOriginY(newValues[0]);
+        break;
+      case SCALE:
+        target.setScale(newValues[0], newValues[1]);
+        break;
+      case SCL_X:
+        target.setScale(newValues[0], target.getScaleY());
+        break;
+      case SCL_Y:
+        target.setScale(target.getScaleX(), newValues[0]);
+      case FONT_SCALE:
+        target.setFontScale(newValues[0], newValues[1]);
+        break;
+      case FSCL_X:
+        target.setFontScale(newValues[0], target.getFontScaleY());
+        break;
+      case FSCL_Y:
+        target.setFontScale(target.getFontScaleX(), newValues[0]);
+        break;
+      case ROT:
+        target.setRotation(newValues[0]);
+        break;
+      case RGB:
+        target.setColor(newValues[0], newValues[1], newValues[2], target.getColor().a);
+        break;
+      case R:
+        target.getColor().r = newValues[0];
+        break;
+      case G:
+        target.getColor().g = newValues[0];
+        break;
+      case B:
+        target.getColor().b = newValues[0];
+        break;
+      case A:
+        target.getColor().a = newValues[0];
+        break;
+      case H:
+        target.setColor(setHue(target.getColor(), newValues[0]));
+        break;
+      case S:
+        target.setColor(setSat(target.getColor(), newValues[0]));
+        break;
+      case L:
+        target.setColor(setLgt(target.getColor(), newValues[0]));
+        break;
+      case OFFSET_X:
+        target.offsetX = newValues[0];
+        break;
+      case OFFSET_Y:
+        target.offsetY = newValues[0];
+        break;
+      case OPACITY:
+        target.opacity = newValues[0];
+        break;
+      case RADIUS:
+        target.radius = (int)newValues[0];
+        break;
+      default: illegalArgument("tweenType = "+tweenType);
+      }
+    }
+  }
+
+  /**
    * {@link #POS_C}: centered position, 
    * {@link #X_C}: centered x, 
    * {@link #Y_C}: centered y,
@@ -802,9 +1039,11 @@ public final class TweenUtils {
         returnValues[1] = target.getY();
         return 2;
       case X:
-        returnValues[0] = target.getX(); return 1;
+        returnValues[0] = target.getX();
+        return 1;
       case Y:
-        returnValues[0] = target.getY(); return 1;
+        returnValues[0] = target.getY();
+        return 1;
       case POS_C:
         returnValues[0] = target.getX() + target.getWidth()/2;
         returnValues[1] = target.getY() + target.getHeight()/2;
@@ -915,6 +1154,34 @@ public final class TweenUtils {
         target.setColor(setLgt(target.getColor(), newValues[0]));
         break;
       default: illegalArgument("tweenType = "+tweenType);
+      }
+    }
+  }
+
+  public static class DropShadowDrawableAccessor implements TweenAccessor<DropShadowDrawable> {
+    public static final int OFFSET_X = 0, OFFSET_Y = 1;
+
+    @Override public int getValues(DropShadowDrawable target, int tweenType, float[] returnValues) {
+      switch (tweenType) {
+        case OFFSET_X:
+          returnValues[0] = target.offsetX;
+          return 1;
+        case OFFSET_Y:
+          returnValues[0] = target.offsetY;
+          return 1;
+        default: illegalArgument("tweenType = "+tweenType); return -1;
+      }
+    }
+
+    @Override public void setValues(DropShadowDrawable target, int tweenType, float[] newValues) {
+      switch (tweenType) {
+        case OFFSET_X:
+          target.offsetX = newValues[0];
+          break;
+        case OFFSET_Y:
+          target.offsetY = newValues[0];
+          break;
+        default: illegalArgument("tweenType = "+tweenType);
       }
     }
   }

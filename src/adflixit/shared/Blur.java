@@ -17,6 +17,7 @@
 package adflixit.shared;
 
 import static adflixit.shared.BaseGame.*;
+import static adflixit.shared.DefaultBlur.*;
 import static adflixit.shared.TweenUtils.*;
 import static aurelienribon.tweenengine.TweenCallback.*;
 
@@ -35,9 +36,9 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 public class Blur extends ScreenComponent<BaseScreen<?>> {
   static {
     ConCmd("reloadblur", args -> {
-      glogSetup("Reloading blur");
+      logSetup("Reloading blur");
       BaseGame.getInstance().getScreen().reloadBlur();
-      glogDone();
+      logDone();
     });
   }
 
@@ -53,7 +54,7 @@ public class Blur extends ScreenComponent<BaseScreen<?>> {
   private FrameBuffer         hfb;
   private FrameBuffer         vfb;
 
-  private int                 passes  = 1;  // number of blurring cycles
+  private int                 iters   = 1;  // number of blur cycles
   private final MutableFloat  amount  = new MutableFloat(0);
   private boolean             pass;       // update route permit
   private boolean             scheduled;  // one-time update route permit
@@ -62,35 +63,41 @@ public class Blur extends ScreenComponent<BaseScreen<?>> {
     super(screen);
   }
 
-  public Blur(BaseScreen<?> screen, int passes) {
+  public Blur(BaseScreen<?> screen, int iters) {
     super(screen);
-    setPasses(passes);
+    setIters(iters);
   }
 
   public Blur(BaseScreen<?> screen, FileHandle hvert, FileHandle hfrag, FileHandle vvert, FileHandle vfrag) {
     super(screen);
     load(hvert, hfrag, vvert, vfrag);
-    isFileBased = true;
-    files[0] = hvert;
-    files[1] = hfrag;
-    files[2] = vvert;
-    files[3] = vfrag;
   }
 
   public Blur(BaseScreen<?> screen, String hvert, String hfrag, String vvert, String vfrag) {
     super(screen);
     load(hvert, hfrag, vvert, vfrag);
-    isFileBased = false;
   }
 
   public void load(FileHandle hvert, FileHandle hfrag, FileHandle vvert, FileHandle vfrag) {
     hpass = new ShaderProgram(hvert, hfrag);
     vpass = new ShaderProgram(vvert, vfrag);
+    if (!isFileBased) {
+      isFileBased = true;
+      files[0] = hvert;
+      files[1] = hfrag;
+      files[2] = vvert;
+      files[3] = vfrag;
+    }
   }
 
   public void load(String hvert, String hfrag, String vvert, String vfrag) {
     hpass = new ShaderProgram(hvert, hfrag);
     vpass = new ShaderProgram(vvert, vfrag);
+  }
+
+  public Blur loadDefault() {
+    load(BLURH_VERT, BLUR_FRAG, BLURV_VERT, BLUR_FRAG);
+    return this;
   }
 
   public void reload() {
@@ -99,8 +106,8 @@ public class Blur extends ScreenComponent<BaseScreen<?>> {
     }
   }
 
-  public Blur setPasses(int i) {
-    passes = i;
+  public Blur setIters(int i) {
+    iters = i;
     return this;
   }
 
@@ -111,16 +118,14 @@ public class Blur extends ScreenComponent<BaseScreen<?>> {
   }
 
   public void draw() {
-    Texture tex;
     float x = scr.cameraX0(), y = scr.cameraY0();
-    for (int i=0; i < passes; i++) {
+    for (int i=0; i < iters; i++) {
       pass(i, x, y);
     }
 
     bat.setShader(null);
     bat.begin();
-      tex = vfb.getColorBufferTexture();
-      bat.draw(tex, x, y, scr.screenWidth(), scr.screenHeight(), 0,0,1,1);
+      bat.draw(vfb.getColorBufferTexture(), x, y, scr.screenWidth(), scr.screenHeight(), 0,0,1,1);
     bat.end();
 
     if (scheduled) {
@@ -141,7 +146,7 @@ public class Blur extends ScreenComponent<BaseScreen<?>> {
   }
 
   /**
-   * Performs the blurring routine.
+   * Performs a blurring routine.
    * @param i iterations
    * @param x result drawing x
    * @param y result drawing y
@@ -271,7 +276,7 @@ public class Blur extends ScreenComponent<BaseScreen<?>> {
       vfb.dispose();
     }
     fb = new FrameBuffer(Format.RGB888, scr.fbWidth() / RES_DENOM, scr.fbHeight() / RES_DENOM, false);
-    hfb = new FrameBuffer(Format.RGB888, scr.fbWidth(), scr.fbHeight(), false);
-    vfb = new FrameBuffer(Format.RGB888, scr.fbWidth(), scr.fbHeight(), false);
+    hfb = new FrameBuffer(Format.RGB888, scr.fbWidth() / RES_DENOM, scr.fbHeight() / RES_DENOM, false);
+    vfb = new FrameBuffer(Format.RGB888, scr.fbWidth() / RES_DENOM, scr.fbHeight() / RES_DENOM, false);
   }
 }
