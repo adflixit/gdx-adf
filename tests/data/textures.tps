@@ -181,19 +181,6 @@
         </struct>
         <key>individualSpriteSettings</key>
         <map type="IndividualSpriteSettingsMap">
-            <key type="filename">arc_deg.png</key>
-            <struct type="IndividualSpriteSettings">
-                <key>pivotPoint</key>
-                <point_f>0.5,0.5</point_f>
-                <key>scale9Enabled</key>
-                <false/>
-                <key>scale9Borders</key>
-                <rect>1,25,2,50</rect>
-                <key>scale9Paddings</key>
-                <rect>1,25,2,50</rect>
-                <key>scale9FromFile</key>
-                <false/>
-            </struct>
             <key type="filename">r-32.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
@@ -253,7 +240,7 @@
                 <key>scale9Enabled</key>
                 <true/>
                 <key>scale9Borders</key>
-                <rect>75,75,8,8</rect>
+                <rect>152,152,8,8</rect>
                 <key>scale9Paddings</key>
                 <rect>40,40,79,79</rect>
                 <key>scale9FromFile</key>
@@ -280,7 +267,6 @@
             <filename>white-o.png</filename>
             <filename>slider-bg-v.png</filename>
             <filename>slider-knob.png</filename>
-            <filename>arc_deg.png</filename>
             <filename>slider-bg-h.png</filename>
             <filename>vignette.png</filename>
             <filename>r-32.png</filename>

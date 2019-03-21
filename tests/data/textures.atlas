@@ -1,25 +1,18 @@
 textures.png
-size: 752, 256
+size: 902, 312
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
-arc_deg
+r-32
   rotate: false
   xy: 0, 0
-  size: 4, 100
-  orig: 4, 100
-  offset: 0, 0
-  index: -1
-l-32
-  rotate: false
-  xy: 4, 0
   size: 512, 256
   orig: 512, 256
   offset: 0, 0
   index: -1
 slider-bg-h
   rotate: false
-  xy: 516, 0
+  xy: 512, 0
   size: 16, 8
   split: 4, 4, 0, 0
   pad: 4, 4, 2, 2
@@ -28,7 +21,7 @@ slider-bg-h
   index: -1
 slider-bg-v
   rotate: false
-  xy: 532, 0
+  xy: 528, 0
   size: 8, 16
   split: 0, 0, 4, 4
   pad: 2, 2, 4, 4
@@ -37,23 +30,23 @@ slider-bg-v
   index: -1
 slider-knob
   rotate: false
-  xy: 540, 0
+  xy: 536, 0
   size: 48, 56
   orig: 48, 56
   offset: 0, 0
   index: -1
 vignette
   rotate: false
-  xy: 588, 0
-  size: 158, 158
-  split: 75, 75, 75, 75
-  pad: 40, 39, 40, 39
-  orig: 158, 158
+  xy: 584, 0
+  size: 312, 312
+  split: 152, 152, 152, 152
+  pad: 40, 193, 40, 193
+  orig: 312, 312
   offset: 0, 0
   index: -1
 white-o
   rotate: false
-  xy: 746, 0
+  xy: 896, 0
   size: 3, 3
   split: 1, 1, 1, 1
   orig: 3, 3
@@ -61,7 +54,7 @@ white-o
   index: -1
 white
   rotate: false
-  xy: 749, 0
+  xy: 899, 0
   size: 3, 3
   split: 1, 1, 1, 1
   orig: 3, 3
