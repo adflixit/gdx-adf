@@ -22,13 +22,10 @@ import static aurelienribon.tweenengine.TweenCallback.*;
 
 import adflixit.shared.misc.Soft;
 import aurelienribon.tweenengine.Tween;
-import aurelienribon.tweenengine.TweenCallback;
-import aurelienribon.tweenengine.equations.Quart;
 import aurelienribon.tweenengine.primitives.MutableFloat;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import java.util.ArrayList;
@@ -38,7 +35,7 @@ import java.util.List;
  * Draws the specified texture (usually the frame buffer output) with a shader filter.
  * TODO: tilt shift shader doesn't work correctly.
  */
-public class Postprocessor extends ScreenComponent<BaseScreen<?>> {
+public class Postprocessor extends ScreenComponent<BaseContext<?>> {
   public static final int           RES_DENOM = 4;
   
   public static final int           BLUR      = 0,
@@ -63,19 +60,19 @@ public class Postprocessor extends ScreenComponent<BaseScreen<?>> {
   private int                       locks;      // update route permits
   private int                       schedules;  // one-time update route permits
 
-  public Postprocessor(BaseScreen<?> screen) {
+  public Postprocessor(BaseContext<?> screen) {
     super(screen);
     for (int i=0; i < uniLength; i++) {
       values.add(new MutableFloat(0));
     }
   }
 
-  public Postprocessor(BaseScreen<?> screen, FileHandle hvert, FileHandle hfrag, FileHandle vvert, FileHandle vfrag) {
+  public Postprocessor(BaseContext<?> screen, FileHandle hvert, FileHandle hfrag, FileHandle vvert, FileHandle vfrag) {
     this(screen);
     load(hvert, hfrag, vvert, vfrag);
   }
 
-  public Postprocessor(BaseScreen<?> screen, String hvert, String hfrag, String vvert, String vfrag) {
+  public Postprocessor(BaseContext<?> screen, String hvert, String hfrag, String vvert, String vfrag) {
     this(screen);
     load(hvert, hfrag, vvert, vfrag);
   }

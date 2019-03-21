@@ -34,7 +34,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 public class DropShadowLabel extends Label {
   private static final Color tempColor = new Color();
 
-  private final FillBlur blur    = new FillBlur();
+  private final FillBlur  blur    = new FillBlur();
   private FrameBuffer     fb;
 
   public final Color      color   = new Color(0x000000ff);

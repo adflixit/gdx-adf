@@ -16,7 +16,6 @@
 
 package adflixit.shared;
 
-import static adflixit.shared.BaseGame.*;
 import static adflixit.shared.DefaultBlur.*;
 import static adflixit.shared.TweenUtils.*;
 import static aurelienribon.tweenengine.TweenCallback.*;
@@ -33,15 +32,7 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 /**
  * Performs two-pass Gaussian blur.
  */
-public class Blur extends ScreenComponent<BaseScreen<?>> {
-  static {
-    ConCmd("reloadblur", args -> {
-      logSetup("Reloading blur");
-      BaseGame.getInstance().getScreen().reloadBlur();
-      logDone();
-    });
-  }
-
+public class Blur extends ScreenComponent<BaseContext<?>> {
   private static final int    RES_DENOM = 4;
   private static final String UNI_NAME  = "u_blur";
 
@@ -59,21 +50,21 @@ public class Blur extends ScreenComponent<BaseScreen<?>> {
   private boolean             pass;       // update route permit
   private boolean             scheduled;  // one-time update route permit
 
-  public Blur(BaseScreen<?> screen) {
+  public Blur(BaseContext<?> screen) {
     super(screen);
   }
 
-  public Blur(BaseScreen<?> screen, int iters) {
+  public Blur(BaseContext<?> screen, int iters) {
     super(screen);
     setIters(iters);
   }
 
-  public Blur(BaseScreen<?> screen, FileHandle hvert, FileHandle hfrag, FileHandle vvert, FileHandle vfrag) {
+  public Blur(BaseContext<?> screen, FileHandle hvert, FileHandle hfrag, FileHandle vvert, FileHandle vfrag) {
     super(screen);
     load(hvert, hfrag, vvert, vfrag);
   }
 
-  public Blur(BaseScreen<?> screen, String hvert, String hfrag, String vvert, String vfrag) {
+  public Blur(BaseContext<?> screen, String hvert, String hfrag, String vvert, String vfrag) {
     super(screen);
     load(hvert, hfrag, vvert, vfrag);
   }

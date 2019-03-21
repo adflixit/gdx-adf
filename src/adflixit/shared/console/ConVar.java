@@ -37,8 +37,8 @@ public class ConVar {
     return set(defValue);
   }
 
-  public String def()         {return defValue;}
-  public String raw()         {return rawValue;}
+  public String defValue()    {return defValue;}
+  public String rawValue()    {return rawValue;}
   public int intValue()       {return (int)value;}
   public long longValue()     {return (long)value;}
   public float floatValue()   {return (float)value;}

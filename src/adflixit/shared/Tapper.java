@@ -25,11 +25,11 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
  * Simple widget that utilizes the UI input events handling, preserving the valid UI stage hierarchy.
  * Creates a full-screen layer which receives the input.
  */
-public class Tapper extends ScreenComponent<BaseScreen<?>> {
+public class Tapper extends ScreenComponent<BaseContext<?>> {
   private final Actor   area  = new Actor();
   private InputListener listener;
 
-  public Tapper(BaseScreen<?> screen) {
+  public Tapper(BaseContext<?> screen) {
     super(screen);
   }
 

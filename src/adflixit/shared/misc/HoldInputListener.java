@@ -16,7 +16,7 @@
 
 package adflixit.shared.misc;
 
-import static adflixit.shared.BaseScreen.*;
+import static adflixit.shared.BaseContext.*;
 import static adflixit.shared.Util.*;
 
 import adflixit.shared.Callback;

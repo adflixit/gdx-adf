@@ -84,7 +84,7 @@ public abstract class BaseGame implements ApplicationListener {
     @Override public void quit() {Gdx.app.exit();}
   };
 
-  private static BaseGame               currentInstance;
+  private static BaseGame               instance;
 
   public static Class<? extends Actor>  actorClassDescendants; // used as the Actor class signature for the tween engine
   public static boolean                 debug;
@@ -93,7 +93,7 @@ public abstract class BaseGame implements ApplicationListener {
   private static Skin                   skin;
   private static MutableProperties      props   = new MutableProperties();
   private static Preferences            prefs;
-  protected BaseScreen<?>               screen; // current screen
+  protected BaseContext<?>              context; // current context
 
   public BaseGame() {
     setXApi(noXApi);
@@ -104,7 +104,7 @@ public abstract class BaseGame implements ApplicationListener {
   }
 
   @Override public void create() {
-    currentInstance = this;
+    instance = this;
     ShaderProgram.pedantic = false;
 
     Tween.setWaypointsLimit(10);
@@ -125,45 +125,45 @@ public abstract class BaseGame implements ApplicationListener {
     Tween.registerAccessor(MutableFloat.class,        new MutableFloat(0));
 
     // default console commands
-    ConCmd("prop", args -> {
+    registerCommand("prop", args -> {
       try {
         log(prop(args[0]));
       } catch (Exception e) {
         log(e.getLocalizedMessage());
       }
     });
-    ConCmd("setprop", args -> {
+    registerCommand("setprop", args -> {
       try {
         setProp(args[0], arrayToStringf("%s ", Arrays.copyOfRange(args, 1, args.length)));
       } catch (Exception e) {
         log(e.getLocalizedMessage());
       }
     });
-    ConCmd("resetprop", args -> {
+    registerCommand("resetprop", args -> {
       try {
         resetProp(args[0]);
       } catch (Exception e) {
         log(e.getLocalizedMessage());
       }
     });
-    ConCmd("resetprops", args -> resetProps());
-    ConCmd("flushprop", args -> {
+    registerCommand("resetprops", args -> resetProps());
+    registerCommand("flushprop", args -> {
       try {
         flushProp(args[0]);
       } catch (Exception e) {
         log(e.getLocalizedMessage());
       }
     });
-    ConCmd("flushprops", args -> flushProps());
-    ConCmd("proplist", args -> log(propList()));
-    ConCmd("pref", args -> log(pref(args[0])));
-    ConCmd("setpref", args -> setProp(args[0], arrayToStringf("%s ", Arrays.copyOfRange(args, 1, args.length))));
-    ConCmd("flushprefs", args -> flushPrefs());
-    ConCmd("quit", args -> quit());
+    registerCommand("flushprops", args -> flushProps());
+    registerCommand("proplist", args -> log(propList()));
+    registerCommand("pref", args -> log(pref(args[0])));
+    registerCommand("setpref", args -> setProp(args[0], arrayToStringf("%s ", Arrays.copyOfRange(args, 1, args.length))));
+    registerCommand("flushprefs", args -> flushPrefs());
+    registerCommand("quit", args -> quit());
   }
 
   public static BaseGame getInstance() {
-    return currentInstance;
+    return instance;
   }
 
   private static void setXApi(XApi api) {
@@ -310,7 +310,7 @@ public abstract class BaseGame implements ApplicationListener {
     logDone();
   }
 
-  public static void ConCmd(String name, ConCmd cmd) {
+  public static void registerCommand(String name, ConCmd cmd) {
     try {
       console.registerCommand(name, cmd);
     } catch (Exception e) {
@@ -318,7 +318,7 @@ public abstract class BaseGame implements ApplicationListener {
     }
   }
 
-  public static void ConVar(String name, ConVar var) {
+  public static void registerVariable(String name, ConVar var) {
     try {
       console.registerVariable(name, var);
     } catch (Exception e) {
@@ -340,42 +340,42 @@ public abstract class BaseGame implements ApplicationListener {
   /**
    * @return console variable {@code String} value.
    */
-  public static String cvS(String name) {
-    return conVar(name).raw();
+  public static String cvs(String name) {
+    return conVar(name).rawValue();
   }
 
   /**
    * @return console variable {@code int} value.
    */
-  public static int cvI(String name) {
+  public static int cvi(String name) {
     return conVar(name).intValue();
   }
 
   /**
    * @return console variable {@code long} value.
    */
-  public static long cvL(String name) {
+  public static long cvl(String name) {
     return conVar(name).longValue();
   }
 
   /**
    * @return console variable {@code float} value.
    */
-  public static float cvF(String name) {
+  public static float cvf(String name) {
     return conVar(name).floatValue();
   }
 
   /**
    * @return console variable {@code double} value.
    */
-  public static double cvD(String name) {
+  public static double cvd(String name) {
     return conVar(name).doubleValue();
   }
 
   /**
    * @return console variable {@code boolean} value.
    */
-  public static boolean cvB(String name) {
+  public static boolean cvb(String name) {
     return conVar(name).boolValue();
   }
 
@@ -714,7 +714,7 @@ public abstract class BaseGame implements ApplicationListener {
 
   public void startup() {
     logSetup("Starting up");
-    screen.startup();
+    context.startup();
     logDone();
   }
 
@@ -722,9 +722,9 @@ public abstract class BaseGame implements ApplicationListener {
     logSetup("Disposing of skin");
     skin.dispose();
     logDone();
-    if (screen != null) {
-      logSetup("Disposing of screen");
-      screen.dispose();
+    if (context != null) {
+      logSetup("Disposing of context");
+      context.dispose();
       logDone();
     }
     logSetup("Disposing of console");
@@ -733,56 +733,56 @@ public abstract class BaseGame implements ApplicationListener {
   }
 
   @Override public void pause() {
-    if (screen != null) {
-      screen.pause();
+    if (context != null) {
+      context.pause();
     }
   }
 
   @Override public void resume() {
-    if (screen != null) {
-      screen.resume();
+    if (context != null) {
+      context.resume();
     }
   }
 
   @Override public void render() {
-    if (screen != null) {
-      screen.render();
+    if (context != null) {
+      context.render();
     }
   }
 
   @Override public void resize(int width, int height) {
-    if (screen != null) {
-      screen.resize();
+    if (context != null) {
+      context.resize();
     }
   }
 
-  public void setScreen(BaseScreen<?> newScreen, boolean dispose) {
-    if (screen != null) {
+  public void setContext(BaseContext<?> newContext, boolean dispose) {
+    if (context != null) {
       if (dispose) {
-        logSetup("Disposing of screen");
-        screen.dispose();
+        logSetup("Disposing of context");
+        context.dispose();
         logDone();
       } else {
-        logSetup("Hiding screen");
-        screen.hide();
+        logSetup("Hiding context");
+        context.hide();
         logDone();
       }
     }
 
-    screen = newScreen;
+    context = newContext;
 
-    if (screen != null) {
-      log("Setting screen "+newScreen.getClass().getSimpleName());
-      screen.show();
-      screen.resize();
+    if (context != null) {
+      log("Setting context "+newContext.getClass().getSimpleName());
+      context.show();
+      context.resize();
     }
   }
 
-  public void setScreen(BaseScreen<?> screen) {
-    setScreen(screen, true);
+  public void setContext(BaseContext<?> context) {
+    setContext(context, true);
   }
 
-  public BaseScreen<?> getScreen() {
-    return screen;
+  public BaseContext<?> getScreen() {
+    return context;
   }
 }

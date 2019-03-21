@@ -2,6 +2,7 @@ package adflixit.shared;
 
 /**
  * Built-in xissburg's shader for {@link FillBlur}.
+ * TODO: not tested.
  */
 public class FillBlurShader {
   public static final String BLUR_FRAG = "#ifdef GL_ES\n" +

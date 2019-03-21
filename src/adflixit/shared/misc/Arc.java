@@ -18,28 +18,22 @@ package adflixit.shared.misc;
 
 import static com.badlogic.gdx.utils.Align.*;
 import static adflixit.shared.BaseGame.*;
-import static adflixit.shared.BaseScreen.*;
+import static adflixit.shared.BaseContext.*;
 import static adflixit.shared.TweenUtils.*;
 import static adflixit.shared.Util.*;
 
-import adflixit.shared.BaseGame;
-import adflixit.shared.BaseScreen;
 import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenEquation;
-import aurelienribon.tweenengine.equations.Quart;
 import aurelienribon.tweenengine.primitives.MutableFloat;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Widget;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-import com.badlogic.gdx.scenes.scene2d.utils.TransformDrawable;
 
 /**
  * Widget that draws an arc. This can also be called radial progress bar, which it is.

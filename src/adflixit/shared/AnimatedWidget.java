@@ -17,7 +17,7 @@
 
 package adflixit.shared;
 
-import static adflixit.shared.BaseScreen.*;
+import static adflixit.shared.BaseContext.*;
 import static adflixit.shared.TweenUtils.*;
 import static adflixit.shared.Util.*;
 import static java.lang.Math.*;
@@ -26,7 +26,6 @@ import adflixit.shared.misc.Soft;
 import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenEquation;
 import aurelienribon.tweenengine.equations.Linear;
-import aurelienribon.tweenengine.equations.Quart;
 import aurelienribon.tweenengine.primitives.MutableFloat;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;

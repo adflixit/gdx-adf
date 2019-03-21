@@ -152,12 +152,10 @@ public class Console {
       if (!scanner.hasNextLine()) {
         continue;
       }
-
       String line = scanner.nextLine();
       if (line.equals("")) {
         continue;
       }
-
       parse(line);
     }
   }

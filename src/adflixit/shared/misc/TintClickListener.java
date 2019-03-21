@@ -17,7 +17,6 @@
 package adflixit.shared.misc;
 
 import static adflixit.shared.BaseGame.*;
-import static adflixit.shared.BaseScreen.tweenMgr;
 import static adflixit.shared.TweenUtils.*;
 import static adflixit.shared.Util.*;
 import static com.badlogic.gdx.graphics.Color.*;
@@ -28,7 +27,6 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 import adflixit.shared.ClickCallback;
-import aurelienribon.tweenengine.Timeline;
 
 public class TintClickListener extends ClickListener {
   private Actor         actor;

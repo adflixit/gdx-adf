@@ -682,24 +682,23 @@ public final class Util {
     return actor.getColor().a;
   }
 
-  public static float getAlpha(Sprite sprite) {
-    return sprite.getColor().a;
-  }
-  
   public static Actor setAlpha(Actor actor, float a) {
     actor.getColor().a = a;
     return actor;
   }
-  
+
   public static void setAlpha(float a, Actor... actors) {
     for (Actor actor : actors) {
       setAlpha(actor, a);
     }
   }
 
-  public static void setAlpha(float a, Sprite... sprites) {
-    for (Sprite sprite : sprites) {
-      sprite.setAlpha(a);
+  /**
+   * Sets alpha to 1.
+   */
+  public static void setAlpha(Actor... actors) {
+    for (Actor actor : actors) {
+      setAlpha(actor, 1);
     }
   }
 
@@ -714,26 +713,9 @@ public final class Util {
   /**
    * Sets alpha to 0.
    */
-  public static Sprite resetAlpha(Sprite sprite) {
-    sprite.setAlpha(0);
-    return sprite;
-  }
-
-  /**
-   * Sets alpha to 0.
-   */
   public static void resetAlpha(Actor... actors) {
     for (Actor actor : actors) {
       resetAlpha(actor);
-    }
-  }
-
-  /**
-   * Sets alpha to 0.
-   */
-  public static void resetAlpha(Sprite... sprites) {
-    for (Sprite sprite : sprites) {
-      resetAlpha(sprite);
     }
   }
 
@@ -745,6 +727,42 @@ public final class Util {
   public static Actor setRgb(Actor actor, Color clr) {
     setRgb(actor, clr.r, clr.g, clr.b);
     return actor;
+  }
+
+  public static float getAlpha(Sprite sprite) {
+    return sprite.getColor().a;
+  }
+
+  public static void setAlpha(float a, Sprite... sprites) {
+    for (Sprite sprite : sprites) {
+      sprite.setAlpha(a);
+    }
+  }
+
+  /**
+   * Sets alpha to 1.
+   */
+  public static void setAlpha(Sprite... sprites) {
+    for (Sprite sprite : sprites) {
+      sprite.setAlpha(1);
+    }
+  }
+
+  /**
+   * Sets alpha to 0.
+   */
+  public static Sprite resetAlpha(Sprite sprite) {
+    sprite.setAlpha(0);
+    return sprite;
+  }
+
+  /**
+   * Sets alpha to 0.
+   */
+  public static void resetAlpha(Sprite... sprites) {
+    for (Sprite sprite : sprites) {
+      resetAlpha(sprite);
+    }
   }
 
   public static Sprite setRgb(Sprite sprite, float r, float g, float b) {
@@ -864,15 +882,15 @@ public final class Util {
   }
 
   public static boolean checkUnorderedContactByCategory(Fixture fixa, Fixture fixb, short cba, short cbb) {
-    return (categoryBits(fixa) == cba && categoryBits(fixb) == cbb) || (categoryBits(fixa) == cbb && categoryBits(fixb) == cba);
+    return checkContactByCategory(fixa, fixb, cba, cbb) || checkContactByCategory(fixa, fixb, cbb, cba);
   }
 
   public static boolean checkUnorderedContactByMask(Fixture fixa, Fixture fixb, short mba, short mbb) {
-    return (maskBits(fixa) == mba && maskBits(fixb) == mbb) || (maskBits(fixa) == mbb && maskBits(fixb) == mba);
+    return checkContactByMask(fixa, fixb, mba, mbb) || checkContactByMask(fixa, fixb, mbb, mba);
   }
 
   public static boolean checkUnorderedContactByGroup(Fixture fixa, Fixture fixb, short gia, short gib) {
-    return (groupIndex(fixa) == gia && groupIndex(fixb) == gib) || (maskBits(fixa) == gib && maskBits(fixb) == gia);
+    return checkContactByGroup(fixa, fixb, gia, gib) || checkContactByMask(fixa, fixb, gib, gia);
   }
 
   public static boolean checkUnorderedContactByCategory(Contact contact, short cba, short cbb) {
@@ -1126,7 +1144,7 @@ public final class Util {
    * @author Nayuki
    */
   public static boolean isEven(int a) {
-    return (a&1)==0;
+    return (a&1) == 0;
   }
 
   /**
@@ -1134,35 +1152,35 @@ public final class Util {
    * @author Nayuki
    */
   public static boolean isEven(long a) {
-    return (a&1)==0;
+    return (a&1) == 0;
   }
 
   /**
    * @return is {@code a} even.
    */
   public static boolean isEven(float a) {
-    return (dec(a)%2)==0;
+    return (dec(a) % 2) == 0;
   }
 
   /**
    * @return is {@code a} even.
    */
   public static boolean isEven(double a) {
-    return (dec(a)%2)==0;
+    return (dec(a) % 2) == 0;
   }
 
   /**
    * @return is {@code a} decimal.
    */
   public static boolean isDec(float a) {
-    return fract(a)==0;
+    return fract(a) == 0;
   }
 
   /**
    * @return is {@code a} decimal.
    */
   public static boolean isDec(double a) {
-    return fract(a)==0;
+    return fract(a) == 0;
   }
 
   /**
