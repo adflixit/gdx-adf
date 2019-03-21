@@ -29,8 +29,8 @@ public class Tapper extends ScreenComponent<BaseContext<?>> {
   private final Actor   area  = new Actor();
   private InputListener listener;
 
-  public Tapper(BaseContext<?> screen) {
-    super(screen);
+  public Tapper(BaseContext<?> context) {
+    super(context);
   }
 
   public void reset() {

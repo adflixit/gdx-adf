@@ -37,8 +37,8 @@ public class Overlay extends ScreenComponent<BaseContext<?>> {
   private final Image dim       = new Image(drawable("white")); // used to add contrast to focus out the menus
   private final Image vignette  = new Image(drawable("vignette"));
 
-  public Overlay(BaseContext<?> screen) {
-    super(screen);
+  public Overlay(BaseContext<?> context) {
+    super(context);
     scr.addToUiLayer(UIL_OVERLAY, root);
     addActors(root, sheers, blackouts, tint, dim, vignette);
     init();

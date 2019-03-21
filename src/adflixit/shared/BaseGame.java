@@ -782,7 +782,7 @@ public abstract class BaseGame implements ApplicationListener {
     setContext(context, true);
   }
 
-  public BaseContext<?> getScreen() {
+  public BaseContext<?> getContext() {
     return context;
   }
 }

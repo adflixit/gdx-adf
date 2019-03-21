@@ -60,20 +60,20 @@ public class Postprocessor extends ScreenComponent<BaseContext<?>> {
   private int                       locks;      // update route permits
   private int                       schedules;  // one-time update route permits
 
-  public Postprocessor(BaseContext<?> screen) {
-    super(screen);
+  public Postprocessor(BaseContext<?> context) {
+    super(context);
     for (int i=0; i < uniLength; i++) {
       values.add(new MutableFloat(0));
     }
   }
 
-  public Postprocessor(BaseContext<?> screen, FileHandle hvert, FileHandle hfrag, FileHandle vvert, FileHandle vfrag) {
-    this(screen);
+  public Postprocessor(BaseContext<?> context, FileHandle hvert, FileHandle hfrag, FileHandle vvert, FileHandle vfrag) {
+    this(context);
     load(hvert, hfrag, vvert, vfrag);
   }
 
-  public Postprocessor(BaseContext<?> screen, String hvert, String hfrag, String vvert, String vfrag) {
-    this(screen);
+  public Postprocessor(BaseContext<?> context, String hvert, String hfrag, String vvert, String vfrag) {
+    this(context);
     load(hvert, hfrag, vvert, vfrag);
   }
 

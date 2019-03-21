@@ -335,15 +335,15 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
   }
 
   /**
-   * Changes this screen to another.
-   * @param dispose should this screen be disposed.
+   * Changes this context to another.
+   * @param dispose should this context be disposed.
    */
-  public void gotoContext(BaseContext<?> screen, boolean dispose) {
-    game.setContext(screen, dispose);
+  public void gotoContext(BaseContext<?> context, boolean dispose) {
+    game.setContext(context, dispose);
   }
 
-  public void gotoContext(BaseContext<?> screen) {
-    game.setContext(screen, true);
+  public void gotoContext(BaseContext<?> context) {
+    game.setContext(context, true);
   }
 
   public float screenWidth() {

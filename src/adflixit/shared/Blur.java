@@ -50,22 +50,22 @@ public class Blur extends ScreenComponent<BaseContext<?>> {
   private boolean             pass;       // update route permit
   private boolean             scheduled;  // one-time update route permit
 
-  public Blur(BaseContext<?> screen) {
-    super(screen);
+  public Blur(BaseContext<?> context) {
+    super(context);
   }
 
-  public Blur(BaseContext<?> screen, int iters) {
-    super(screen);
+  public Blur(BaseContext<?> context, int iters) {
+    super(context);
     setIters(iters);
   }
 
-  public Blur(BaseContext<?> screen, FileHandle hvert, FileHandle hfrag, FileHandle vvert, FileHandle vfrag) {
-    super(screen);
+  public Blur(BaseContext<?> context, FileHandle hvert, FileHandle hfrag, FileHandle vvert, FileHandle vfrag) {
+    super(context);
     load(hvert, hfrag, vvert, vfrag);
   }
 
-  public Blur(BaseContext<?> screen, String hvert, String hfrag, String vvert, String vfrag) {
-    super(screen);
+  public Blur(BaseContext<?> context, String hvert, String hfrag, String vvert, String vfrag) {
+    super(context);
     load(hvert, hfrag, vvert, vfrag);
   }
 
