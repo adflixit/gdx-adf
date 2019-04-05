@@ -469,7 +469,7 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
   protected void update() {
     tweenMgr.update(dt());
     tscTweenMgr.update(dtm());
-    uiTweenMgr.update(uiMdt());
+    uiTweenMgr.update(uiDtm());
     updater.update();
 
     shapeRenderer.setProjectionMatrix(camera.combined);
@@ -969,7 +969,7 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
   /**
    * @return time delta multiplied by the UI timescale.
    */
-  public float uiMdt() {
+  public float uiDtm() {
     return dt() * uiTimescale();
   }
 
@@ -1037,7 +1037,6 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
 
   /**
    * Loads {@link Sound} instances from a file and adds it to the list.
-   * All music has to be registered.
    */
   public void loadSounds(FileHandle... files) {
     for (FileHandle file : files) {
@@ -1047,7 +1046,6 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
 
   /**
    * Loads {@link Sound} instances into the list from an internal file path.
-   * All music has to be registered.
    */
   public void loadSounds(String... paths) {
     FileHandle[] files = new FileHandle[paths.length];
@@ -1055,6 +1053,20 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
       files[i] = internalFile(paths[i]);
     }
     loadSounds(files);
+  }
+
+  /**
+   * Loads {@link Sound} instances into the list from a list of file paths.
+   */
+  public void loadSounds(String list) {
+    loadSounds(list.split("\\s"));
+  }
+
+  /**
+   * Loads {@link Sound} instances into the list from a list from an internal text file.
+   */
+  public void loadSounds(FileHandle file) {
+    loadSounds(file.readString());
   }
 
   /**
@@ -1089,6 +1101,22 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
       files[i] = internalFile(paths[i]);
     }
     loadMusic(files);
+  }
+
+  /**
+   * Loads {@link Music} instances into the list from a list of file paths.
+   * All music has to be registered.
+   */
+  public void loadMusic(String list) {
+    loadMusic(list.split("\\s"));
+  }
+
+  /**
+   * Loads {@link Music} instances into the list from a list from an internal text file.
+   * All music has to be registered.
+   */
+  public void loadMusic(FileHandle file) {
+    loadMusic(file.readString());
   }
 
   /**
