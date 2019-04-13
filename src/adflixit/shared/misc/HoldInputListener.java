@@ -25,7 +25,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 
 /**
- * {@link InputListener} that fires after it is been held for a certain amount of time.
+ * {@link InputListener} that fires after it has been held for a certain amount of time.
  */
 public class HoldInputListener extends InputListener implements Updatable {
   private boolean   pressed, locked;
@@ -61,7 +61,7 @@ public class HoldInputListener extends InputListener implements Updatable {
   }
 
   @Override public void update() {
-    if (pressed && currentTime() - startTime >= treshold && !lock) {
+    if (pressed && currentTime() - startTime >= treshold && !locked) {
       locked = true;
       callback.call();
     }
