@@ -29,14 +29,14 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
  */
 public class HoldInputListener extends InputListener implements Updatable {
   private boolean   pressed, locked;
-  private long      startTime, treshold;
+  private long      startTime, threshold;
   private Callback  callback;
 
   /**
-   * @param treshold time in milliseconds
+   * @param threshold time in milliseconds
    */
-  public HoldInputListener(long treshold, Callback cb) {
-    this.treshold = treshold;
+  public HoldInputListener(long threshold, Callback cb) {
+    this.threshold = threshold;
     setCallback(cb);
     addUpdatable(this);
   }
@@ -61,7 +61,7 @@ public class HoldInputListener extends InputListener implements Updatable {
   }
 
   @Override public void update() {
-    if (pressed && currentTime() - startTime >= treshold && !locked) {
+    if (pressed && currentTime() - startTime >= threshold && !locked) {
       locked = true;
       callback.call();
     }
