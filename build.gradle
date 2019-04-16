@@ -12,7 +12,6 @@ compileJava {
     targetCompatibility = '1.8'
 }
 
-version = '1.0'
 ext {
     gdxVersion = '1.9.8'
     roboVMVersion = '2.3.1'
@@ -55,13 +54,11 @@ dependencies {
     }
     implementation "com.googlecode.json-simple:json-simple:1.1.1"
     implementation "com.google.protobuf:protobuf-java:3.6.1"
-    implementation "org.mini2Dx:universal-tween-engine:6.3.3"
-    implementation "org.mini2Dx:universal-tween-engine:6.3.3:sources"
     implementation "com.google.android:android:4.1.1.4"
     implementation fileTree(dir: 'E:/libs', include: '*.jar')
     testImplementation "junit:junit:4.12"
 }
 
 eclipse.project {
-    name = "gdx-adflixit"
+    name = "Shared"
 }
