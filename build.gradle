@@ -60,5 +60,5 @@ dependencies {
 }
 
 eclipse.project {
-    name = "Shared"
+    name = "gdx-adflixit"
 }
