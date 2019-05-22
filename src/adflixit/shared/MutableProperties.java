@@ -18,8 +18,6 @@ package adflixit.shared;
 
 import static adflixit.shared.BaseGame.*;
 
-import com.badlogic.gdx.Application.ApplicationType;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -37,28 +35,10 @@ public class MutableProperties extends Properties {
   private FileHandle                file;
 
   /**
-   * Loads the specified properties.
-   * @deprecated Not used anymore due to the introduced ability to change properties during runtime.
-   */
-  @Deprecated public void loadAll(FileHandle... files) {
-    Properties tmp = new Properties();
-    try {
-      for (FileHandle file : files) {
-        // loads all the properties and stacks them
-        tmp.load(file.read());
-        putAll(tmp);
-      }
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-    initFloats();
-  }
-
-  /**
-   * Loads the specified properties. The file type depends on the platform.
+   * Loads the specified properties. The file type depends on platform.
    */
   public void load(String path) {
-    file = Gdx.app.getType() == ApplicationType.Desktop ? localFile(path) : internalFile(path);
+    file = isDesktopApp() ? localFile(path) : internalFile(path);
     try {
       load(file.read());
     } catch (IOException e) {
@@ -67,6 +47,12 @@ public class MutableProperties extends Properties {
     raw.addAll(Arrays.asList(file.readString().split("\\r?\\n")));
     original.putAll(this);
     initFloats();
+  }
+
+  public void reload() {
+    if (file != null) {
+      load(file.path());
+    }
   }
 
   /**
@@ -221,7 +207,7 @@ public class MutableProperties extends Properties {
         // checking if the entry key is on the flushed list, i.e. if the word before '=' matches a key from the list
         for (String j : flushed) {
           if (i.startsWith(j) && !i.startsWith("#") && !i.equals("")) {
-            // if a match found, assemble the key and the new value
+            // if a match is found, assemble the key and the new value
             String split = i.split("=")[0];
             output += split+"="+get(split);
             altered = true;

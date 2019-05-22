@@ -23,7 +23,7 @@ import com.google.android.gms.ads.AdView;
  */
 public interface XApi {
   /**
-   * Loads the ad contents.
+   * Loads ad contents.
    */
   public void refreshAd();
 
@@ -37,7 +37,7 @@ public interface XApi {
   public AdView getAdView();
 
   /**
-   * Calls for an external leaderboard window.
+   * Opens an external leaderboard window.
    * @param id leaderboard ID.
    */
   public void showLeaderboard(String id);
@@ -51,9 +51,6 @@ public interface XApi {
    */
   public boolean isSignedIn();
 
-  /**
-   * Sign into the scoring system account.
-   */
   public void signIn();
 
   /**
@@ -92,13 +89,13 @@ public interface XApi {
   public void submitScore(String id, long score);
 
   /**
-   * Unlocks the specified achievement for the current player.
+   * Unlocks the specified achievement for current player.
    * @param id achievement ID.
    */
   public void unlockAchievement(String id);
 
   /**
-   * Quits app, either fully closes or minimizes.
+   * Quits app, either fully closes or minimizes it.
    */
   public void quit();
 }

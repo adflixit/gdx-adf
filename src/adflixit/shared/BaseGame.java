@@ -31,6 +31,7 @@ import android.view.View;
 import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.primitives.MutableFloat;
 import aurelienribon.tweenengine.primitives.MutableInteger;
+import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
@@ -125,6 +126,7 @@ public abstract class BaseGame implements ApplicationListener {
     Tween.registerAccessor(MutableFloat.class,        new MutableFloat(0));
 
     // default console commands
+    registerCommand("reloadprops", args -> reloadProps());
     registerCommand("prop", args -> {
       try {
         log(prop(args[0]));
@@ -299,14 +301,14 @@ public abstract class BaseGame implements ApplicationListener {
    * @see XApi#unlockAchievement(String)
    */
   public static void unlockAchievement(String id) {
-    logSetup("Unlocking achievement");
+    logSetup("Unlocking achievement "+id);
     xApi.unlockAchievement(id);
     logDone();
   }
 
-  public static void loadSkin(FileHandle skinFile, TextureAtlas atlas) {
+  public static void loadSkin(FileHandle skinFile, FileHandle atlas) {
     logSetup("Loading skin '"+skinFile+"'");
-    skin = new Skin(skinFile, atlas);
+    skin = new Skin(skinFile, new TextureAtlas(atlas));
     logDone();
   }
 
@@ -381,21 +383,16 @@ public abstract class BaseGame implements ApplicationListener {
 
   /**
    * Loads the specified properties.
-   * @deprecated Not used anymore due to the introduced ability to change properties during runtime.
-   */
-  @Deprecated
-  public static void loadProps(FileHandle... files) {
-    logSetup("Loading properties "+arrayToString("'%s'", files));
-    props.loadAll(files);
-    logDone();
-  }
-
-  /**
-   * Loads the specified properties.
    */
   public static void loadProps(String path) {
     logSetup("Loading properties '"+path+"'");
     props.load(path);
+    logDone();
+  }
+
+  public static void reloadProps() {
+    logSetup("Reloading properties");
+    props.reload();
     logDone();
   }
 
@@ -588,7 +585,7 @@ public abstract class BaseGame implements ApplicationListener {
    * Adds a string entry to the preferences.
    */
   public static void putPref(String key, String value) {
-    logSetup("Setting preference "+key+" to "+value);
+    logSetup("Setting preference '"+key+"' to '"+value+"'");
     prefs.putString(key, value);
     logDone();
   }
@@ -597,7 +594,7 @@ public abstract class BaseGame implements ApplicationListener {
    * Adds an int entry to the preferences.
    */
   public static void putPrefInt(String key, int value) {
-    logSetup("Setting preference "+key+" to "+value);
+    logSetup("Setting preference '"+key+"' to '"+value+"'");
     prefs.putInteger(key, value);
     logDone();
   }
@@ -606,7 +603,7 @@ public abstract class BaseGame implements ApplicationListener {
    * Adds a long entry to the preferences.
    */
   public static void putPrefLong(String key, long value) {
-    logSetup("Setting preference "+key+" to "+value);
+    logSetup("Setting preference '"+key+"' to '"+value+"'");
     prefs.putLong(key, value);
     logDone();
   }
@@ -615,7 +612,7 @@ public abstract class BaseGame implements ApplicationListener {
    * Adds a float entry to the preferences.
    */
   public static void putPrefFloat(String key, float value) {
-    logSetup("Setting preference "+key+" to "+value);
+    logSetup("Setting preference '"+key+"' to '"+value+"'");
     prefs.putFloat(key, value);
     logDone();
   }
@@ -624,7 +621,7 @@ public abstract class BaseGame implements ApplicationListener {
    * Adds a boolean entry to the preferences.
    */
   public static void putPrefBool(String key, boolean value) {
-    logSetup("Setting preference "+key+" to "+value);
+    logSetup("Setting preference '"+key+"' to '"+value+"'");
     prefs.putBoolean(key, value);
     logDone();
   }
@@ -670,6 +667,22 @@ public abstract class BaseGame implements ApplicationListener {
 
   public static FileHandle localFile(String path) {
     return Gdx.files.local(path);
+  }
+
+  public static boolean isAndroidApp() {
+    return Gdx.app.getType() == ApplicationType.Android;
+  }
+
+  public static boolean isIOSApp() {
+    return Gdx.app.getType() == ApplicationType.iOS;
+  }
+
+  public static boolean isDesktopApp() {
+    return Gdx.app.getType() == ApplicationType.Desktop;
+  }
+
+  public static boolean isWebGLApp() {
+    return Gdx.app.getType() == ApplicationType.WebGL;
   }
 
   /**
@@ -745,6 +758,7 @@ public abstract class BaseGame implements ApplicationListener {
   }
 
   @Override public void render() {
+    console.update();
     if (context != null) {
       context.render();
     }

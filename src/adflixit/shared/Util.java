@@ -90,11 +90,9 @@ public final class Util {
                                 C_REPACTION_D     = 10,     // repetitive action delay
                                 OL_FLASH_OP       = .4f,    // overlay flash opacity
                                 PLXBG_FC          = .8f,    // parallax background scrolling factor
-
-                                // Button sizes
-                                BTN_BG            = 150,
-                                BTN_MD            = 100,
-                                BTN_SM            = 80;
+                                BTN_BG            = 150,    // big button
+                                BTN_MD            = 100,    // medium button
+                                BTN_SM            = 80;     // small button
 
   // Common use temporary variables
   public static final Vector2   tmpv2             = new Vector2();
@@ -141,7 +139,7 @@ public final class Util {
   }
 
   /**
-   * A template for calculating the position of one point relative to another in a single dimension.
+   * A template for calculating the position of one point relative to another based on edge points in one dimension.
    * @param p position
    * @param l length
    * @param aln alignment flags
@@ -173,7 +171,7 @@ public final class Util {
   }
 
   /**
-   * A template for undoing the alignment of one point relative to another in a single dimension.
+   * A template for undoing the alignment of one point relative to another based on edge points in one dimension.
    * @param p position
    * @param aln alignment flags
    * @param piv initial pivot
@@ -243,10 +241,6 @@ public final class Util {
    * @param piv initial pivot
    */
   public static Vector2 align(float x, float y, float width, float height, int aln, int piv) {
-    /*if ((aln & right) != 0) x -= width;
-    else if ((aln & left) == 0) x -= width / 2;
-    if ((aln & top) != 0) y -= height;
-    else if ((aln & bottom) == 0) y -= height / 2;*/
     return tmpv2.set(alignX(x, width, aln, piv), alignY(y, height, aln, piv));
   }
 
@@ -358,13 +352,13 @@ public final class Util {
     String s = "";
     boolean v = hasFlag(aln,top) || hasFlag(aln,bottom), h = hasFlag(aln,left) || hasFlag(aln,right);
     if (hasFlag(aln, center)) {
-      s+="center"+(v||h?" ":"");
+      s+="center"+(v||h?"-":"");
     }
     if (hasFlag(aln, top)) {
-      s+="top"+(h?" ":"");
+      s+="top"+(h?"-":"");
     }
     if (hasFlag(aln, bottom)) {
-      s+="bottom"+(h?" ":"");
+      s+="bottom"+(h?"-":"");
     }
     if (hasFlag(aln, left)) {
       s+="left";
@@ -431,17 +425,24 @@ public final class Util {
   }
 
   /**
-   * Uses the standard string formatting pattern, where "%s" marks the placeholder, 
+   * Uses the standard string formatting pattern, where "%s" marks the placeholder,
    * e.g. the pattern "%s, " will format the array {'a', 'b', 'c'} as "a, b, c".
+   * "$|" is optionally used as the terminator which bounds trimming at the last iteration.
    * @return array items ordered by the pattern, represented as text.
    */
   public static <T> String arrayToStringf(String pattern, T... array) {
     String s = "";
-    for (T i : array) {
-      s += String.format(pattern, i);
+    // merging all except the last one
+    for (int i=0; i < array.length-1; i++) {
+      s += String.format(pattern, array[i]);
     }
+    // clearing the tokens
+    s = s.replaceAll("\\$\\|", "");
+    // adding last item with token
+    s += String.format(pattern, array[array.length-1]);
     // trimming
-    return s.substring(0, s.length() - (pattern.length() - (pattern.indexOf("%s")+2)));
+    return s.substring(0, s.length() - (pattern.length() -
+        (pattern.contains("$|") ? pattern.indexOf("$|") : pattern.indexOf("%s") + 2)));
   }
 
   /**
@@ -450,11 +451,17 @@ public final class Util {
    */
   public static String arrayToStringf(String pattern, int... array) {
     String s = "";
-    for (Object i : array) {
-      s += String.format(pattern, i);
+    // merging all except the last one
+    for (int i=0; i < array.length-1; i++) {
+      s += String.format(pattern, array[i]);
     }
+    // clearing the tokens
+    s = s.replaceAll("\\$\\|", "");
+    // adding last item with token
+    s += String.format(pattern, array[array.length-1]);
     // trimming
-    return s.substring(0, s.length() - (pattern.length() - (pattern.indexOf("%s")+2)));
+    return s.substring(0, s.length() - (pattern.length() -
+            (pattern.contains("$|") ? pattern.indexOf("$|") : pattern.indexOf("%s") + 2)));
   }
 
   /**
@@ -463,11 +470,17 @@ public final class Util {
    */
   public static String arrayToStringf(String pattern, long... array) {
     String s = "";
-    for (Object i : array) {
-      s += String.format(pattern, i);
+    // merging all except the last one
+    for (int i=0; i < array.length-1; i++) {
+      s += String.format(pattern, array[i]);
     }
+    // clearing the tokens
+    s = s.replaceAll("\\$\\|", "");
+    // adding last item with token
+    s += String.format(pattern, array[array.length-1]);
     // trimming
-    return s.substring(0, s.length() - (pattern.length() - (pattern.indexOf("%s")+2)));
+    return s.substring(0, s.length() - (pattern.length() -
+            (pattern.contains("$|") ? pattern.indexOf("$|") : pattern.indexOf("%s") + 2)));
   }
 
   /**
@@ -476,11 +489,17 @@ public final class Util {
    */
   public static String arrayToStringf(String pattern, float... array) {
     String s = "";
-    for (Object i : array) {
-      s += String.format(pattern, i);
+    // merging all except the last one
+    for (int i=0; i < array.length-1; i++) {
+      s += String.format(pattern, array[i]);
     }
+    // clearing the tokens
+    s = s.replaceAll("\\$\\|", "");
+    // adding last item with token
+    s += String.format(pattern, array[array.length-1]);
     // trimming
-    return s.substring(0, s.length() - (pattern.length() - (pattern.indexOf("%s")+2)));
+    return s.substring(0, s.length() - (pattern.length() -
+            (pattern.contains("$|") ? pattern.indexOf("$|") : pattern.indexOf("%s") + 2)));
   }
 
   /**
@@ -489,11 +508,17 @@ public final class Util {
    */
   public static String arrayToStringf(String pattern, double... array) {
     String s = "";
-    for (Object i : array) {
-      s += String.format(pattern, i);
+    // merging all except the last one
+    for (int i=0; i < array.length-1; i++) {
+      s += String.format(pattern, array[i]);
     }
+    // clearing the tokens
+    s = s.replaceAll("\\$\\|", "");
+    // adding last item with token
+    s += String.format(pattern, array[array.length-1]);
     // trimming
-    return s.substring(0, s.length() - (pattern.length() - (pattern.indexOf("%s")+2)));
+    return s.substring(0, s.length() - (pattern.length() -
+            (pattern.contains("$|") ? pattern.indexOf("$|") : pattern.indexOf("%s") + 2)));
   }
 
   /**
@@ -533,15 +558,6 @@ public final class Util {
     }
     System.out.print("\u001B[0m");
   }
-
-  /*public static BitmapFont createFont(FileHandle file, int size) {
-    FreeTypeFontGenerator gen = new FreeTypeFontGenerator(file);
-    FreeTypeFontParameter par = new FreeTypeFontParameter();
-    par.size = size;
-    BitmapFont font = gen.generateFont(par);
-    gen.dispose();
-    return font;
-  }*/
 
   /**
    * Draws a rectangle tiled with {@link TextureRegion} with an offset.
@@ -1036,14 +1052,14 @@ public final class Util {
    * @return if {@code flag} intersects {@code flags}. {@code flag} has to be one single bit.
    */
   public static boolean hasFlag(int flags, int flag) {
-    return (flags&flag)!=0;
+    return (flags & flag) != 0;
   }
 
   /**
    * @return if {@code flag} intersects {@code flags}. {@code flag} has to be one single bit.
    */
   public static boolean hasFlag(long flags, long flag) {
-    return (flags&flag)!=0;
+    return (flags & flag) != 0;
   }
 
   /**
@@ -1051,7 +1067,7 @@ public final class Util {
    * @author Nayuki
    */
   public static int sumFlags(int flag) {
-    return flag*2-1;
+    return flag * 2 - 1;
   }
 
   /**
@@ -1059,21 +1075,21 @@ public final class Util {
    * @author Nayuki
    */
   public static long sumFlags(long flag) {
-    return flag*2-1;
+    return flag * 2 - 1;
   }
 
   /**
    * @return binary shift of {@code a}.
    */
   public static int getShift(int a) {
-    return (int)(log(a)/LOG2);
+    return (int)(log(a) / LOG2);
   }
 
   /**
    * @return binary shift of {@code a}.
    */
   public static long getShift(long a) {
-    return (long)(log(a)/LOG2);
+    return (long)(log(a) / LOG2);
   }
 
   /**
@@ -1087,14 +1103,14 @@ public final class Util {
    * @return random double in a range from 0 to {@code a}.
    */
   public static double rand(double a) {
-    return a*rand();
+    return a * rand();
   }
 
   /**
    * @return random double in a range from {@code a} to {@code b}.
    */
   public static double rand(double a, double b) {
-    return a+(b-a)*rand();
+    return a + (b - a) * rand();
   }
 
   /**
@@ -1108,14 +1124,14 @@ public final class Util {
    * @return random float in a range from 0 to {@code a}.
    */
   public static float randf(float a) {
-    return a*randf();
+    return a * randf();
   }
 
   /**
    * @return random float in a range from {@code a} to {@code b}.
    */
   public static float randf(float a, float b) {
-    return a+(b-a)*randf();
+    return a + (b - a) * randf();
   }
 
   /**
@@ -1129,7 +1145,7 @@ public final class Util {
    * @return random int in a range from {@code a} to {@code b}.
    */
   public static int randi(int a, int b) {
-    return round(randf(a,b));
+    return round(randf(a, b));
   }
 
   /**
@@ -1215,27 +1231,27 @@ public final class Util {
    * @return the decimal part of {@code a}.
    */
   public static float dec(float a) {
-    return a-fract(a);
+    return a - fract(a);
   }
 
   /**
    * @return the decimal part of {@code a}.
    */
   public static double dec(double a) {
-    return a-fract(a);
+    return a - fract(a);
   }
 
   /**
    * @return float floor of a vector.
    */
-  public static Vector2 ffloor(Vector2 v2) {
+  public static Vector2 floorf(Vector2 v2) {
     return tmpv2.set(floorf(v2.x), floorf(v2.y));
   }
 
   /**
    * @return float floor of a vector.
    */
-  public static Vector3 ffloor(Vector3 v3) {
+  public static Vector3 floorf(Vector3 v3) {
     return tmpv3.set(floorf(v3.x), floorf(v3.y), floorf(v3.z));
   }
 
@@ -1243,7 +1259,7 @@ public final class Util {
    * @return {@code a} bounded between {@code min} and {@code max}.
    */
   public static int clamp(int a, int min, int max) {
-    if (min>max) {
+    if (min > max) {
       int t = min;
       min = max;
       max = t;
@@ -1255,7 +1271,7 @@ public final class Util {
    * @return {@code a} bounded between {@code min} and {@code max}.
    */
   public static long clamp(long a, long min, long max) {
-    if (min>max) {
+    if (min > max) {
       long t = min;
       min = max;
       max = t;
@@ -1267,7 +1283,7 @@ public final class Util {
    * @return {@code a} bounded between {@code min} and {@code max}.
    */
   public static float clamp(float a, float min, float max) {
-    if (min>max) {
+    if (min > max) {
       float t = min;
       min = max;
       max = t;
@@ -1279,7 +1295,7 @@ public final class Util {
    * @return {@code a} bounded between {@code min} and {@code max}.
    */
   public static double clamp(double a, double min, double max) {
-    if (min>max) {
+    if (min > max) {
       double t = min;
       min = max;
       max = t;
@@ -1288,136 +1304,150 @@ public final class Util {
   }
 
   /**
-   * @return the greatest of the three arguments.
+   * @return the greatest of the three numbers.
    */
   public static int tmax(int a, int b, int c) {
     return max(a, max(b, c));
   }
 
   /**
-   * @return the greatest of the three arguments.
+   * @return the greatest of the three numbers.
    */
   public static long tmax(long a, long b, long c) {
     return max(a, max(b, c));
   }
 
   /**
-   * @return the greatest of the three arguments.
+   * @return the greatest of the three numbers.
    */
   public static float tmax(float a, float b, float c) {
     return max(a, max(b, c));
   }
 
   /**
-   * @return the greatest of the three arguments.
+   * @return the greatest of the three numbers.
    */
   public static double tmax(double a, double b, double c) {
     return max(a, max(b, c));
   }
 
   /**
-   * @return the smallest of the three arguments.
+   * @return the smallest of the three numbers.
    */
   public static int tmin(int a, int b, int c) {
     return min(a, min(b, c));
   }
 
   /**
-   * @return the smallest of the three arguments.
+   * @return the smallest of the three numbers.
    */
   public static long tmin(long a, long b, long c) {
     return min(a, min(b, c));
   }
 
   /**
-   * @return the smallest of the three arguments.
+   * @return the smallest of the three numbers.
    */
   public static float tmin(float a, float b, float c) {
     return min(a, min(b, c));
   }
 
   /**
-   * @return the smallest of the three arguments.
+   * @return the smallest of the three numbers.
    */
   public static double tmin(double a, double b, double c) {
     return min(a, min(b, c));
   }
 
   /**
-   * @return the absolute values.
+   * @return absolute values.
    */
   public static Vector2 abs(Vector2 v2) {
     return tmpv2.set(Math.abs(v2.x), Math.abs(v2.y));
   }
 
   /**
-   * @return the absolute values.
+   * @return absolute values.
    */
   public static Vector3 abs(Vector3 v3) {
     return v3.set(Math.abs(v3.x), Math.abs(v3.y), Math.abs(v3.z));
   }
 
   /**
+   * @return linear interpolation of {@code c} between {@code a} and {@code b}.
+   */
+  public static float lerp(float a, float b, float c) {
+    return (a * (1 - c)) + (b * c);
+  }
+
+  /**
+   * @return linear interpolation of {@code c} between {@code a} and {@code b}.
+   */
+  public static double lerp(double a, double b, double c) {
+    return (a * (1 - c)) + (b * c);
+  }
+
+  /**
    * @return sine of {@code a} multiplied by {@code m}.
    */
   public static double msin(double a, double m) {
-    return sin(a)*m;
+    return sin(a) * m;
   }
 
   /**
    * @return cosine of {@code a} multiplied by {@code m}.
    */
   public static double mcos(double a, double m) {
-    return cos(a)*m;
+    return cos(a) * m;
   }
 
   /**
    * @return sine of {@code a} multiplied by {@code m}.
    */
   public static float msin(double a, float m) {
-    return (float)sin(a)*m;
+    return (float)sin(a) * m;
   }
 
   /**
    * @return cosine of {@code a} multiplied by {@code m}.
    */
   public static float mcos(double a, float m) {
-    return (float)cos(a)*m;
+    return (float)cos(a) * m;
   }
 
   /**
    * @return multiplication of {@code a} by {@code n} divided by {@code d}.
    */
   public static float div(float a, float n, float d) {
-    return a*(n/d);
+    return a * (n / d);
   }
 
   /**
    * @return multiplication of {@code a} by {@code n} divided by {@code d}.
    */
   public static double div(double a, double n, double d) {
-    return a*(n/d);
+    return a * (n / d);
   }
 
   /**
    * @return is {@code a} divisible by {@code b}.
    */
   public static boolean isDivBy(int a, int b) {
-    return a%b==0;
+    return a % b == 0;
   }
 
   /**
    * @return is {@code a} divisible by {@code b}.
    */
   public static boolean isDivBy(float a, float b) {
-    return a%b==0;
+    return a % b == 0;
   }
 
   /**
    * @return is {@code a} divisible by {@code b}.
    */
   public static boolean isDivBy(double a, double b) {
-    return a%b==0;
+    return a % b == 0;
   }
 
   /**
@@ -1439,7 +1469,7 @@ public final class Util {
    * @return side of a circumscribed square.
    */
   public static float circSqrSide(float r) {
-    return (float)(r*SQRT2)/2;
+    return (float)(r * SQRT2) / 2;
   }
 
   /**
@@ -1448,7 +1478,7 @@ public final class Util {
    * @return exponential interpolation of {@code a} based on {@code p}.
    */
   public static float easeIn(float p, float a) {
-    return powf(a,p);
+    return powf(a, p);
   }
 
   /**
@@ -1456,7 +1486,7 @@ public final class Util {
    * @return quartic exponential interpolation of {@code a}.
    */
   public static float easeIn(float a) {
-    return easeIn(4, a);
+    return easeIn(2, a);
   }
 
   /**
@@ -1467,7 +1497,7 @@ public final class Util {
   public static float easeOut(float p, float a) {
     float m = powf(-1,floorf(p)-1);
     boolean c = p > 2;
-    return m * ((a-=(c?1:0)) * (c?powf(a,p-1):(a-2)) + (c?m:0));
+    return m * ((a -= (c?1:0)) * (c?powf(a, p-1):(a-2)) + (c?m:0));
   }
 
   /**
@@ -1475,7 +1505,7 @@ public final class Util {
    * @return quartic exponential interpolation of {@code a}.
    */
   public static float easeOut(float a) {
-    return easeOut(4, a);
+    return easeOut(2, a);
   }
 
   /**
@@ -1488,7 +1518,7 @@ public final class Util {
     if ((a*=2) < 1) {
       return .5f*powf(a,p);
     }
-    return m*.5f * ((a-=b) * (p>2?powf(a,p-1):a-2) + m*b);
+    return m*.5f * ((a-=b) * (p>2?powf(a, p-1):a-2) + m*b);
   }
 
   /**
@@ -1496,7 +1526,7 @@ public final class Util {
    * @return quartic exponential interpolation of {@code a}.
    */
   public static float easeInOut(float a) {
-    return easeInOut(4, a);
+    return easeInOut(2, a);
   }
 
   /**
@@ -1513,7 +1543,7 @@ public final class Util {
    * @return quartic exponential interpolation of {@code a}.
    */
   public static double easeIn(double a) {
-    return easeIn(4, a);
+    return easeIn(2, a);
   }
 
   /**
@@ -1524,7 +1554,7 @@ public final class Util {
   public static double easeOut(double p, double a) {
     double m = pow(-1,floor(p)-1);
     boolean c = p > 2;
-    return m * ((a-=(c?1:0)) * (c?pow(a,p-1):(a-2)) + (c?m:0));
+    return m * ((a-=(c?1:0)) * (c?pow(a, p-1):(a-2)) + (c?m:0));
   }
 
   /**
@@ -1532,7 +1562,7 @@ public final class Util {
    * @return quartic exponential interpolation of {@code a}.
    */
   public static double easeOut(double a) {
-    return easeOut(4, a);
+    return easeOut(2, a);
   }
 
   /**
@@ -1545,7 +1575,7 @@ public final class Util {
     if ((a*=2) < 1) {
       return .5*pow(a,p);
     }
-    return m*.5 * ((a-=b) * (p>2?pow(a,p-1):a-2) + m*b);
+    return m*.5 * ((a-=b) * (p>2?pow(a, p-1):a-2) + m*b);
   }
 
   /**
@@ -1553,7 +1583,7 @@ public final class Util {
    * @return quartic exponential interpolation of {@code a}.
    */
   public static double easeInOut(double a) {
-    return easeInOut(4, a);
+    return easeInOut(2, a);
   }
 
   /************** Type utilities ************/

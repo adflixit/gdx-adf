@@ -109,12 +109,12 @@ public class Postprocessor extends ScreenComponent<BaseContext<?>> {
 
   public void draw() {
     Texture tex = inputTex();
-    float x = scr.cameraX0(), y = scr.cameraY0();
+    float x = ctx.cameraX0(), y = ctx.cameraY0();
 
     // if the processed area is not full, the original texture has to be drawn first
     if (!isFull()) {
       bat.begin();
-        bat.draw(tex, x, y, scr.screenWidth(), scr.screenHeight(), 0,0,1,1);
+        bat.draw(tex, x, y, ctx.screenWidth(), ctx.screenHeight(), 0,0,1,1);
       bat.end();
     }
 
@@ -128,7 +128,7 @@ public class Postprocessor extends ScreenComponent<BaseContext<?>> {
           firstPass.setUniformf(uniNames[i], value(i));
         }
       }
-      bat.draw(tex, x, y, scr.screenWidth(), scr.screenHeight(), 0,0,1,1);
+      bat.draw(tex, x, y, ctx.screenWidth(), ctx.screenHeight(), 0,0,1,1);
     bat.end();
     firstFb.end();
 
@@ -147,14 +147,14 @@ public class Postprocessor extends ScreenComponent<BaseContext<?>> {
         }
       }
       tex = firstFb.getColorBufferTexture();
-      bat.draw(tex, x, y, scr.screenWidth(), scr.screenHeight(), 0,0,1,1);
+      bat.draw(tex, x, y, ctx.screenWidth(), ctx.screenHeight(), 0,0,1,1);
     bat.end();
     lastFb.end();
 
     bat.setShader(null);
     bat.begin();
       tex = lastFb.getColorBufferTexture();
-      bat.draw(tex, x, y, scr.screenWidth(), scr.screenHeight(), 0,0,1,1);
+      bat.draw(tex, x, y, ctx.screenWidth(), ctx.screenHeight(), 0,0,1,1);
     bat.end();
   }
 
@@ -283,8 +283,8 @@ public class Postprocessor extends ScreenComponent<BaseContext<?>> {
       firstFb.dispose();
       lastFb.dispose();
     }
-    fb = new FrameBuffer(Format.RGBA8888, scr.fbWidth() / RES_DENOM, scr.fbHeight() / RES_DENOM, false);
-    firstFb = new FrameBuffer(Format.RGBA8888, scr.fbWidth(), scr.fbHeight(), false);
-    lastFb = new FrameBuffer(Format.RGBA8888, scr.fbWidth(), scr.fbHeight(), false);
+    fb = new FrameBuffer(Format.RGBA8888, ctx.fbWidth() / RES_DENOM, ctx.fbHeight() / RES_DENOM, false);
+    firstFb = new FrameBuffer(Format.RGBA8888, ctx.fbWidth(), ctx.fbHeight(), false);
+    lastFb = new FrameBuffer(Format.RGBA8888, ctx.fbWidth(), ctx.fbHeight(), false);
   }
 }

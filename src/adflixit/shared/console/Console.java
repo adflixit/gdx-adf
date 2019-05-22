@@ -21,11 +21,7 @@ import static adflixit.shared.Util.arrayToStringf;
 import com.badlogic.gdx.files.FileHandle;
 import java.io.InputStream;
 import java.io.PrintStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -35,8 +31,10 @@ public class Console {
   private InputStream               in;
   private PrintStream               out;
   private final Scanner             scanner;
+  private final List<String>        queue   = new Vector<>();
   private final Map<String, ConCmd> cmds    = new HashMap<>();
   private final Map<String, ConVar> vars    = new HashMap<>();
+  private final Map<String, String> aliases = new HashMap<>();
   private final List<String>        parsed  = new ArrayList<>();
 
   public Console(InputStream sin, PrintStream sout) {
@@ -53,6 +51,15 @@ public class Console {
 
     registerCommand("print", args -> print(arrayToStringf("%s ", args)));
     registerCommand("reset", args -> var(args[0]).reset());
+    registerCommand("alias", args -> {
+      try {
+        String[] a = new String[args.length - 1];
+        System.arraycopy(args, 1, a, 0, args.length - 1);
+        addAlias(args[0], arrayToStringf("%s ", a));
+      } catch (Exception e) {
+        print(e.getLocalizedMessage());
+      }
+    });
     registerCommand("help", args -> print(cmds.keySet().toString()));
   }
 
@@ -76,6 +83,14 @@ public class Console {
     }
   }
 
+  public void addAlias(String name, String value) {
+    try {
+      aliases.put(name, value);
+    } catch (Exception e) {
+      print(e.getLocalizedMessage());
+    }
+  }
+
   public ConCmd cmd(String name) {
     return cmds.get(name);
   }
@@ -84,8 +99,21 @@ public class Console {
     return vars.get(name);
   }
 
+  public String als(String name) {
+    return aliases.get(name);
+  }
+
+  public void update() {
+    Iterator<String> iter = queue.iterator();
+    while (iter.hasNext()) {
+      String next = iter.next();
+      parse(next);
+      iter.remove();
+    }
+  }
+
   /**
-   * Loads a file and evaluates it's contents as a command sequence.
+   * Loads a file and evaluates its contents as a command sequence.
    * @see {@link #eval(String)}
    */
   public void load(FileHandle file) {
@@ -105,7 +133,7 @@ public class Console {
    * If no command found with the given name, if a variable with the specified name exists
    * it will be set to the first argument.
    */
-  private synchronized void eval(String line) {
+  private void eval(String line) {
     if (line == null) {
       throw new IllegalArgumentException("An evaluated line cannot be null.");
     }
@@ -117,37 +145,43 @@ public class Console {
     while (m.find()) {
       parsed.add(m.group(1).replaceAll("[\"']", ""));
     }
+    String name = parsed.get(0);
 
     // searching for a command or a variable matching the name
-    ConCmd cmd = cmds.get(parsed.get(0));
-    ConVar var = vars.get(parsed.get(0));
+    ConCmd cmd = cmd(name);
+    ConVar var = var(name);
+    String als = als(name);
 
-    if (cmd == null && var == null) {
+    if (cmd == null && var == null && als == null) {
       // if nothing found
-      print("Unknown command: "+parsed.get(0));
+      print("Unknown command: "+name);
     } else if (cmd != null) {
-      // if a command with this name is found, it will be called
+      // if a command with this name is found, it will be queued to be called on the main thread
       cmd.exec(parsed.subList(1, parsed.size()).toArray(new String[0]));
-    } else {
+    } else if (var != null) {
       // if no command found, it will be used to set a variable
       var.set(parsed.get(1));
+    } else if (als != null) {
+      // checking the aliases, which goes recursively
+      // replacing ';' with '#;' for technical reasons
+      parse(als.replaceAll(";", "#;"));
     }
   }
 
   /**
    * Evaluates given text as a command sequence.
    */
-  public synchronized void parse(String data) {
-    String[] spl = data.split("\\r?\\n|;");
-    for (String s : spl) {
-      eval(s.trim());
+  public void parse(String data) {
+    String[] split = data.split("\\r?\\n|#;");
+    for (String line : split) {
+      eval(line.trim());
     }
   }
 
   /**
    * Reads input from {@link #in}.
    */
-  private synchronized void read() {
+  private void read() {
     while (active) {
       if (!scanner.hasNextLine()) {
         continue;
@@ -156,7 +190,9 @@ public class Console {
       if (line.equals("")) {
         continue;
       }
-      parse(line);
+      synchronized (queue) {
+        queue.add(line);
+      }
     }
   }
 

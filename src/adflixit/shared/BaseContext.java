@@ -84,13 +84,13 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
     updater.remove(a);
   }
 
-  // The screen lesser dimension which determines the larger dimension by scaling it by the aspect ratio.
+  // The lesser screen dimension which determines the larger dimension by scaling it after the aspect ratio.
   // It can only be changed once during lifetime of the app, preferably at the very start.
   private static float                ldm                 = 720;
   private static boolean              ldmDeadlock;
 
   /**
-   * Changes the screen lesser dimension once during the runtime.
+   * Changes the lesser screen dimension once during runtime.
    */
   public static void setLdm(float v) {
     if (!ldmDeadlock) {
@@ -120,7 +120,7 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
                                       UIL_ALL             = sumFlags(UIL_MENUS_F),
                                       UIL_GENERAL         = UIL_GAME_F | UIL_MENUS_F;
 
-  // Benchmark is used to determine whether the device is capable of using the advanced performance features such as postprocessing.
+  // Benchmark is used to determine whether the device is capable of using advanced performance features such as postprocessing.
   public static final String          benchmarkKey        = "benchmark";
   public static final float           benchmarkDuration   = 3;  // duration of benchmark in seconds
   private static boolean              benchmarked;       // assigned whether when the benchmark info is loaded or when benchmark is done
@@ -150,7 +150,7 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
 
   // Indicates whether the app has to run without any advanced graphical features, such as both postprocessing and texture filtering other than nearest.
   private static boolean              simpleGraphics;
-  private static boolean              advancedPerformance;  // indicates whether the app may use the advanced performance features, such as GPU
+  private static boolean              advancedPerformance;  // indicates whether the app may use advanced performance features, such as GPU
 
   public static final TextureFilter   textureFilterHq     = TextureFilter.Linear,
                                       textureFilterLq     = TextureFilter.Nearest;
@@ -187,7 +187,7 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
   protected FrameBuffer               frameBuffer;
   protected boolean                   drawToFrameBuffer;
 
-  private final MutableFloat          camShake            = new MutableFloat(0);  // current camera shake amplitude
+  private final MutableFloat          camShake            = new MutableFloat(0);  // camera shake amplitude
   private final MutableFloat          timescale           = new MutableFloat(1);  // time multiplier
   private final MutableFloat          uiTimescale         = new MutableFloat(1);
   private final MutableFloat          masterVolume        = new MutableFloat(1);  // sound volume
@@ -203,7 +203,7 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
   protected final Vector3             tmpv3               = new Vector3();
   protected final Color               tmpclr              = new Color();
 
-  // Last screen size info is stored in two different fields switching after every other resize
+  // Last screen size info is stored in two different fields switching after each resize
   private boolean                     lastScreenSizeJunc;
   private final Vector2               evenLastScreenSize  = new Vector2();
   private final Vector2               oddLastScreenSize   = new Vector2();
@@ -215,23 +215,24 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
   public BaseContext(G game) {
     this.game = game;
     ui.setViewport(uiViewport);
-    // add all UI layers to the stage
+    // adding all UI layers to the stage
     for (Group layer : uiLayers) {
       ui.addActor(layer);
     }
-    // overlay shouldn't receive input events
+    // overlay shouldn't receive input
     uiLayers[UIL_OVERLAY].setTouchable(Touchable.disabled);
     timestamp.set();
-    // stack all input listeners
+    // stacking all input listeners
     inputMultiplexer.addProcessor(ui);
     inputMultiplexer.addProcessor(this);
     inputMultiplexer.addProcessor(new GestureDetector(this));
+
     evenLastScreenSize.set(screenWidth(), screenHeight());
     oddLastScreenSize.set(screenWidth(), screenHeight());
   }
 
   protected void startBenchmark() {
-    log("Benchmarking");
+    log("Benchmarking...");
     benchmarkTesting = true;
     benchmarkTime = 0;
     benchmarkFrames = 0;
@@ -337,11 +338,11 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
    * Changes this context to another.
    * @param dispose should this context be disposed.
    */
-  public void gotoContext(BaseContext<?> context, boolean dispose) {
+  public void switchToContext(BaseContext<?> context, boolean dispose) {
     game.setContext(context, dispose);
   }
 
-  public void gotoContext(BaseContext<?> context) {
+  public void switchToContext(BaseContext<?> context) {
     game.setContext(context, true);
   }
 
@@ -450,7 +451,7 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
    * Performs the camera shake procedure.
    */
   private void shakeCamera() {
-    // move both camera and UI off their pivots
+    // moving both camera and UI off their pivots
     if (camShake() > 0) {
       double camAngle = rand(CIRCLE), uiAngle = rand(CIRCLE);
       float camRange = camShake(), uiRange = camRange * .5f;
@@ -586,8 +587,8 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
   }
 
   public void resize() {
-    logSetup("Resizing screen to "+screenWidth()+" "+screenHeight());
-    // record the previous screen size
+    logSetup(String.format("Resizing to %.1f %.1f", screenWidth(), screenHeight()));
+    // recording previous screen size
     if (lastScreenSizeJunc) {
       evenLastScreenSize.set(screenWidth(), screenHeight());
     } else {
@@ -634,7 +635,7 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
    * Shows the ad banner with the specified animation duration.
    */
   protected void showAd(float d) {
-    /*if (Gdx.app.getType() == ApplicationType.Android) {
+    /*if (isAndroidApp()) {
       AdView av = getAdView();
       killTarget(av);
       Tween.to(av, AndViewAccessor.Y, d)
@@ -654,7 +655,7 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
    * Hides the ad banner with the specified animation duration.
    */
   protected void hideAd(float d) {
-    /*if (Gdx.app.getType() == ApplicationType.Android) {
+    /*if (isAndroidApp()) {
       AdView av = getAdView();
       killTarget(av);
       Tween.to(av, AndViewAccessor.Y, d)
@@ -683,7 +684,7 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
    * Prints the debug info.
    */
   public void printDebug() {
-    log("Screen size = "+screenWidth()+" "+screenHeight() +
+    log("screen size = "+screenWidth()+" "+screenHeight() +
         ", fps = "+fps() +
         ", cam = "+cameraPos().x+" "+cameraPos().y +
         ", cam at zero = "+cameraX0()+" "+cameraY0() +
@@ -1038,9 +1039,11 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
    * Loads {@link Sound} instances from a file and adds it to the list.
    */
   public void loadSounds(FileHandle... files) {
+    logSetup("Loading sounds "+arrayToStringf("'%s'$|, ", files));
     for (FileHandle file : files) {
       soundList.put(file.nameWithoutExtension(), Gdx.audio.newSound(file));
     }
+    logDone();
   }
 
   /**
@@ -1058,7 +1061,7 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
    * Loads {@link Sound} instances into the list from a list of file paths.
    */
   public void loadSounds(String list) {
-    loadSounds(list.split("\\s"));
+    loadSounds(list.split("\\s*\\r?\\n\\s*"));
   }
 
   /**
@@ -1072,10 +1075,12 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
    * Clears the sound list.
    */
   public void clearSounds() {
+    logSetup("Clearing sound list");
     for (Map.Entry<String, Sound> e : soundList.entrySet()) {
       e.getValue().dispose();
     }
     soundList.clear();
+    logDone();
   }
 
   /**
@@ -1083,11 +1088,13 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
    * All music has to be registered.
    */
   public void loadMusic(FileHandle... files) {
+    logSetup("Loading music "+arrayToStringf("'%s'$|, ", files));
     for (FileHandle file : files) {
       Music music = Gdx.audio.newMusic(file);
       music.setVolume(musicVolume());
       musicList.put(file.nameWithoutExtension(), music);
     }
+    logDone();
   }
 
   /**
@@ -1107,7 +1114,7 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
    * All music has to be registered.
    */
   public void loadMusic(String list) {
-    loadMusic(list.split("\\s"));
+    loadMusic(list.split("\\s*\\r?\\n\\s*"));
   }
 
   /**
@@ -1122,10 +1129,12 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
    * Clears the music list.
    */
   public void clearMusic() {
+    logSetup("Clearing music list");
     for (Map.Entry<String, Music> e : musicList.entrySet()) {
       e.getValue().dispose();
     }
     musicList.clear();
+    logDone();
   }
 
   public Sound getSound(String name) {

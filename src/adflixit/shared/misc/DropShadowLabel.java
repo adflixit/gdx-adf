@@ -44,7 +44,7 @@ public class DropShadowLabel extends Label {
   public int              radius  = (int)C_SHD_OP;
 
   private Texture         shadow;
-  public boolean          dependOnParentAlpha;  // if true, shadow alpha will depend on parent alpha if it's greater than 0
+  public boolean          dependsOnParentAlpha;  // if true, shadow alpha will depend on parent alpha if it's greater than 0
 
   public DropShadowLabel(CharSequence text, Skin skin) {
     super(text, skin);
@@ -89,7 +89,7 @@ public class DropShadowLabel extends Label {
   @Override public void draw(Batch batch, float parentAlpha) {
     validate();
     Color color = tempColor.set(getColor());
-    batch.setColor(color.r, color.g, color.b, color.a * opacity * (dependOnParentAlpha ? parentAlpha : 1));
+    batch.setColor(color.r, color.g, color.b, color.a * opacity * (dependsOnParentAlpha ? parentAlpha : 1));
     batch.draw(shadow, getX() + offsetX, getY() + offsetY,
         shadow.getWidth() * getFontScaleX(), shadow.getHeight() * getFontScaleY());
     color.a *= parentAlpha;

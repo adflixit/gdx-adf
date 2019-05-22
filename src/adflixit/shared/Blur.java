@@ -50,6 +50,9 @@ public class Blur extends ScreenComponent<BaseContext<?>> {
   private boolean             pass;       // update route permit
   private boolean             scheduled;  // one-time update route permit
 
+  public boolean              skipH;      // skip horizontal pass
+  public boolean              skipV;      // skip vertical pass
+
   public Blur(BaseContext<?> context) {
     super(context);
   }
@@ -109,14 +112,18 @@ public class Blur extends ScreenComponent<BaseContext<?>> {
   }
 
   public void draw() {
-    float x = scr.cameraX0(), y = scr.cameraY0();
+    if (skipH && skipV) {
+      return;
+    }
+
+    float x = ctx.cameraX0(), y = ctx.cameraY0();
     for (int i=0; i < iters; i++) {
       pass(i, x, y);
     }
 
     bat.setShader(null);
     bat.begin();
-      bat.draw(vfb.getColorBufferTexture(), x, y, scr.screenWidth(), scr.screenHeight(), 0,0,1,1);
+      bat.draw(vfb.getColorBufferTexture(), x, y, ctx.screenWidth(), ctx.screenHeight(), 0,0,1,1);
     bat.end();
 
     if (scheduled) {
@@ -137,61 +144,66 @@ public class Blur extends ScreenComponent<BaseContext<?>> {
   }
 
   /**
-   * Performs a blurring routine.
+   * Performs blurring routine.
    * @param i iterations
    * @param x result drawing x
    * @param y result drawing y
    */
   private void pass(int i, float x, float y) {
     Texture tex;
+
     // horizontal pass
-    bat.setShader(hpass);
-    hfb.begin();
-    bat.begin();
-      if (pass || scheduled) {
-        hpass.setUniformf(UNI_NAME, amount());
-      }
-      tex = i > 0 ? vfb.getColorBufferTexture() : inputTex();
-      bat.draw(tex, x, y, scr.screenWidth(), scr.screenHeight());
-    bat.end();
-    hfb.end();
+    if (!skipH) {
+      bat.setShader(hpass);
+      hfb.begin();
+      bat.begin();
+        if (pass || scheduled) {
+          hpass.setUniformf(UNI_NAME, amount());
+        }
+        tex = i > 0 ? vfb.getColorBufferTexture() : inputTex();
+        bat.draw(tex, x, y, ctx.screenWidth(), ctx.screenHeight());
+      bat.end();
+      hfb.end();
+    }
 
     // vertical pass
-    bat.setShader(vpass);
-    vfb.begin();
-    bat.begin();
-      if (pass || scheduled) {
-        vpass.setUniformf(UNI_NAME, amount());
-      }
-      tex = hfb.getColorBufferTexture();
-      bat.draw(tex, x, y, scr.screenWidth(), scr.screenHeight());
-    bat.end();
-    vfb.end();
+    if (!skipV) {
+      bat.setShader(vpass);
+      vfb.begin();
+      bat.begin();
+        if (pass || scheduled) {
+          vpass.setUniformf(UNI_NAME, amount());
+        }
+        tex = skipH ? inputTex() : hfb.getColorBufferTexture();
+        bat.draw(tex, x, y, ctx.screenWidth(), ctx.screenHeight());
+      bat.end();
+      vfb.end();
+    }
   }
 
   /**
-   * Locks the shader update route.
+   * Locks shader update route.
    */
   private void lock() {
     pass = false;
   }
 
   /**
-   * Unlocks the shader update route.
+   * Unlocks shader update route.
    */
   private void unlock() {
     pass = true;
   }
 
   /**
-   * Schedules a one-time access to the update route.
+   * Schedules a one-time access to update route.
    */
   private void schedule() {
     scheduled = true;
   }
 
   /**
-   * Resets the one-time access to the update route.
+   * Resets the one-time access to update route.
    */
   private void unschedule() {
     scheduled = false;
@@ -266,8 +278,8 @@ public class Blur extends ScreenComponent<BaseContext<?>> {
       hfb.dispose();
       vfb.dispose();
     }
-    fb = new FrameBuffer(Format.RGB888, scr.fbWidth() / RES_DENOM, scr.fbHeight() / RES_DENOM, false);
-    hfb = new FrameBuffer(Format.RGB888, scr.fbWidth() / RES_DENOM, scr.fbHeight() / RES_DENOM, false);
-    vfb = new FrameBuffer(Format.RGB888, scr.fbWidth() / RES_DENOM, scr.fbHeight() / RES_DENOM, false);
+    fb = new FrameBuffer(Format.RGB888, ctx.fbWidth() / RES_DENOM, ctx.fbHeight() / RES_DENOM, false);
+    hfb = new FrameBuffer(Format.RGB888, ctx.fbWidth() / RES_DENOM, ctx.fbHeight() / RES_DENOM, false);
+    vfb = new FrameBuffer(Format.RGB888, ctx.fbWidth() / RES_DENOM, ctx.fbHeight() / RES_DENOM, false);
   }
 }

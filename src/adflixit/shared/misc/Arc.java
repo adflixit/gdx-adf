@@ -65,12 +65,14 @@ public class Arc extends Widget {
     this(200, shprnd);
   }
 
-  public void setDrawable(Drawable drawable) {
+  public Arc setDrawable(Drawable drawable) {
     this.drawable = drawable;
+    return this;
   }
 
-  public void setRadius(float radius) {
+  public Arc setRadius(float radius) {
     this.radius = radius;
+    return this;
   }
 
   public Arc setClockwise(boolean value) {
@@ -194,8 +196,7 @@ public class Arc extends Widget {
     shr.begin(ShapeType.Filled);
       shr.setColor(1f, 1f, 1f, 0.5f);
       if (clockwise) {
-        shr.arc(nx + radius, ny + radius, radius + 10,
-            rotation - degrees() + 90, degrees());
+        shr.arc(nx + radius, ny + radius, radius + 10, rotation - degrees() + 90, degrees());
       } else {
         shr.arc(nx + radius, ny + radius, radius + 10, rotation + 90, degrees());
       }
@@ -214,10 +215,10 @@ public class Arc extends Widget {
   }
 
   @Override public float getPrefWidth() {
-    return radius*2;
+    return radius * 2;
   }
 
   @Override public float getPrefHeight() {
-    return radius*2;
+    return radius * 2;
   }
 }

@@ -39,7 +39,7 @@ public class Overlay extends ScreenComponent<BaseContext<?>> {
 
   public Overlay(BaseContext<?> context) {
     super(context);
-    scr.addToUiLayer(UIL_OVERLAY, root);
+    ctx.addToUiLayer(UIL_OVERLAY, root);
     addActors(root, sheers, blackouts, tint, dim, vignette);
     init();
   }
@@ -488,10 +488,10 @@ public class Overlay extends ScreenComponent<BaseContext<?>> {
     dim.setPosition(-5, -5);
     vignette.setSize(-5, -5);
 
-    sheers.setSize(scr.screenWidth() + 10, scr.screenHeight() + 10);
-    blackouts.setSize(scr.screenWidth() + 10, scr.screenHeight() + 10);
-    tint.setSize(scr.screenWidth() + 10, scr.screenHeight() + 10);
-    dim.setSize(scr.screenWidth() + 10, scr.screenHeight() + 10);
-    vignette.setSize(scr.screenWidth() + 10, scr.screenHeight() + 10);
+    sheers.setSize(ctx.screenWidth() + 10, ctx.screenHeight() + 10);
+    blackouts.setSize(ctx.screenWidth() + 10, ctx.screenHeight() + 10);
+    tint.setSize(ctx.screenWidth() + 10, ctx.screenHeight() + 10);
+    dim.setSize(ctx.screenWidth() + 10, ctx.screenHeight() + 10);
+    vignette.setSize(ctx.screenWidth() + 10, ctx.screenHeight() + 10);
   }
 }

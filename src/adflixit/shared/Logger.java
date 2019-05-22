@@ -19,10 +19,9 @@ package adflixit.shared;
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 
-/**
- * An abstract class that holds the basic logging functionality, such as printing debug info with the current class signature.
- */
-public abstract class Logger {
+public class Logger {
+  private Logger() {}
+
   public static final void log(String msg) {
     if (Gdx.app.getType() == ApplicationType.Android) {
       Gdx.app.log("App", msg);

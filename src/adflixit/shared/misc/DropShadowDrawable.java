@@ -89,12 +89,12 @@ public class DropShadowDrawable extends BaseDrawable implements TransformDrawabl
   @Override public void draw(Batch batch, float x, float y, float originX, float originY,
       float width, float height, float scaleX, float scaleY, float rotation) {
     if (isTransformable()) {
-      transShadow.draw(batch, x - radius/2 - offsetX, y - radius/2 - offsetY, originX + radius/2, originY + radius/2,
-          width + radius, height + radius, scaleX, scaleY, rotation);
+      transShadow.draw(batch, x - radius - offsetX, y - radius - offsetY, originX + radius, originY + radius,
+          width + radius*2, height + radius*2, scaleX, scaleY, rotation);
       transDrawable.draw(batch, x, y, originX, originY, width, height, scaleX, scaleY, rotation);
     } else {
       if (shadow != null) {
-        shadow.draw(batch, x - radius/2 - offsetX, y - radius/2 - offsetY, width + radius, height + radius);
+        shadow.draw(batch, x - radius - offsetX, y - radius - offsetY, width + radius*2, height + radius*2);
       }
       if (drawable != null) {
         drawable.draw(batch, x, y, width, height);
