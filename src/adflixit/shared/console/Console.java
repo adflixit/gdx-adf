@@ -25,9 +25,11 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Utilizes input and output streams in a thread-safe manner. Works on current thread, has a separate thread to read input.
+ */
 public class Console {
   private boolean                   active  = true;
-  private Thread                    thread;
   private InputStream               in;
   private PrintStream               out;
   private final Scanner             scanner;
@@ -42,12 +44,11 @@ public class Console {
     out = sout;
     scanner = new Scanner(in);
 
-    thread = new Thread("Console") {
+    (new Thread("Console") {
       @Override public void run() {
         read();
       }
-    };
-    thread.start();
+    }).start();
 
     registerCommand("print", args -> print(arrayToStringf("%s ", args)));
     registerCommand("reset", args -> var(args[0]).reset());
@@ -163,8 +164,8 @@ public class Console {
       var.set(parsed.get(1));
     } else if (als != null) {
       // checking the aliases, which goes recursively
-      // replacing ';' with '#;' for technical reasons
-      parse(als.replaceAll(";", "#;"));
+      // replacing ';' with '$|' for technical reasons
+      parse(als.replaceAll(";", "\\$\\|"));
     }
   }
 
@@ -172,7 +173,7 @@ public class Console {
    * Evaluates given text as a command sequence.
    */
   public void parse(String data) {
-    String[] split = data.split("\\r?\\n|#;");
+    String[] split = data.split("\\r?\\n|\\$\\|");
     for (String line : split) {
       eval(line.trim());
     }
@@ -181,7 +182,7 @@ public class Console {
   /**
    * Reads input from {@link #in}.
    */
-  private void read() {
+  private synchronized void read() {
     while (active) {
       if (!scanner.hasNextLine()) {
         continue;
@@ -190,13 +191,11 @@ public class Console {
       if (line.equals("")) {
         continue;
       }
-      synchronized (queue) {
-        queue.add(line);
-      }
+      queue.add(line);
     }
   }
 
-  public void dispose() {
+  public synchronized void dispose() {
     active = false;
   }
 
