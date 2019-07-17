@@ -1,0 +1,31 @@
+{
+  com.badlogic.gdx.graphics.g2d.BitmapFont: {
+    r-small:		{file: r-32.fnt}
+  },
+  com.badlogic.gdx.graphics.Color: {
+    white:		{hex: ffffffff},
+    black:		{hex: 0f1114ff},
+    red:		{hex: f44236ff},
+    green:		{hex: 00d17dff},
+    blue:		{hex: 1c9befff},
+    yellow:		{hex: ffc31eff}
+  },
+  com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable: {
+    white:		{patch: white,    topHeight: 16,  bottomHeight: 16,  leftWidth: 32,  rightWidth: 32},
+    white-o:		{patch: white-o,  topHeight: 16,  bottomHeight: 16,  leftWidth: 32,  rightWidth: 32}
+  },
+  com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
+    default:		{font: r-small,  up: white},
+    o:			{font: r-small,  up: white-o},
+    b:			{font: r-small}
+  },
+  com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
+    default:		{font: r-small},
+    white:		{font: r-small,  background: white},
+    o:			{font: r-small,  background: white-o}
+  },
+  com.badlogic.gdx.scenes.scene2d.ui.Slider$SliderStyle: {
+    default-horizontal:	{background: slider-bg-h,  knob: slider-knob},
+    default-vertical:	{background: slider-bg-v,  knob: slider-knob}
+  }
+}

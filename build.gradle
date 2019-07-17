@@ -49,11 +49,6 @@ dependencies {
     implementation "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
     implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
     implementation "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
-    implementation ("com.googlecode.json-simple:json-simple:1.1.1") {
-        exclude group: 'junit', module: 'junit'
-    }
-    implementation "com.googlecode.json-simple:json-simple:1.1.1"
-    implementation "com.google.protobuf:protobuf-java:3.6.1"
     implementation "com.google.android:android:4.1.1.4"
     implementation fileTree(dir: 'E:/libs', include: '*.jar')
     testImplementation "junit:junit:4.12"

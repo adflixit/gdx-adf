@@ -30,5 +30,5 @@ void main() {
   color += texture2D(u_texture, v_texCoords - (off2 / u_res)) * 0.09447039785044732;
   color += texture2D(u_texture, v_texCoords + (off3 / u_res)) * 0.010381362401148057;
   color += texture2D(u_texture, v_texCoords - (off3 / u_res)) * 0.010381362401148057;
-  gl_FragColor = color;
+  gl_FragColor = color * v_color;
 }
