@@ -14,10 +14,10 @@
 /assets/data/plasma.frag
 /assets/data/pp.frag
 /assets/data/starnest.frag
-colors.txt
-_classpath.xml
-_gitignore
-_project.xml
+/colors.txt
+/_classpath.xml
+/_gitignore
+/_project.xml
 
 ## Java
 
