@@ -26,7 +26,7 @@ public class Logger {
     if (Gdx.app.getType() == ApplicationType.Android) {
       Gdx.app.log("App", "Done");
     } else {
-      System.out.print(" -> done\n");
+      System.out.print(" - done\n");
     }
   }
 

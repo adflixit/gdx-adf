@@ -762,7 +762,8 @@ public abstract class BaseGame implements ApplicationListener {
     context = newContext;
 
     if (context != null) {
-      log("Setting context "+newContext.getClass().getSimpleName());
+      logSetup("Setting context "+newContext.getClass().getSimpleName());
+      context.contextChangeSuccess();
       context.show();
       context.resize();
     }

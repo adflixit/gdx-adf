@@ -593,6 +593,13 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
     logDone();
   }
 
+  /**
+   * Used by {@link BaseGame#setContext(BaseContext, boolean)}.
+   */
+  public void contextChangeSuccess() {
+    logDone();
+  }
+
   public void show() {
     Gdx.input.setInputProcessor(inputMultiplexer);
   }

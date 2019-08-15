@@ -16,6 +16,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -332,7 +333,7 @@ public final class Util {
   }
 
   /**
-   * @return {@link Align} translated to string.
+   * @return {@link com.badlogic.gdx.utils.Align} translated to string.
    */
   public static String alnToStr(int aln) {
     String s = "";
@@ -873,14 +874,14 @@ public final class Util {
   }
 
   /**
-   * @return {@link maskBits} of a Box2D {@link Fixture}.
+   * @return {@link Filter#maskBits} of a Box2D {@link Fixture}.
    */
   public static short maskBits(Fixture fix) {
     return fix.getFilterData().maskBits;
   }
 
   /**
-   * @return {@link groupIndex} of a Box2D {@link Fixture}.
+   * @return {@link Filter#groupIndex} of a Box2D {@link Fixture}.
    */
   public static short groupIndex(Fixture fix) {
     return fix.getFilterData().groupIndex;
