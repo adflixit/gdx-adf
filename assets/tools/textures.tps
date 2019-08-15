@@ -56,7 +56,7 @@
         <key>jxrCompressionLevel</key>
         <uint>0</uint>
         <key>ditherType</key>
-        <enum type="SettingsBase::DitherType">NearestNeighbour</enum>
+        <enum type="SettingsBase::DitherType">PngQuantLow</enum>
         <key>backgroundColor</key>
         <uint>0</uint>
         <key>libGdx</key>
@@ -82,7 +82,7 @@
         <key>atfFormats</key>
         <string></string>
         <key>textureFormat</key>
-        <enum type="SettingsBase::TextureFormat">png</enum>
+        <enum type="SettingsBase::TextureFormat">png8</enum>
         <key>borderPadding</key>
         <uint>0</uint>
         <key>maxTextureSize</key>
@@ -181,7 +181,34 @@
         </struct>
         <key>individualSpriteSettings</key>
         <map type="IndividualSpriteSettingsMap">
-            <key type="filename">r-32.png</key>
+            <key type="filename">bg-r-o.png</key>
+            <key type="filename">bg-r.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <true/>
+                <key>scale9Borders</key>
+                <rect>32,32,8,8</rect>
+                <key>scale9Paddings</key>
+                <rect>18,18,36,36</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">cursor.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>1,8,1,16</rect>
+                <key>scale9Paddings</key>
+                <rect>1,8,1,16</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">l-32.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -194,6 +221,19 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
+            <key type="filename">selection.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <true/>
+                <key>scale9Borders</key>
+                <rect>1,0,1,32</rect>
+                <key>scale9Paddings</key>
+                <rect>1,8,1,16</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
             <key type="filename">slider-bg-h.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
@@ -201,7 +241,7 @@
                 <key>scale9Enabled</key>
                 <true/>
                 <key>scale9Borders</key>
-                <rect>4,0,8,8</rect>
+                <rect>2,0,4,4</rect>
                 <key>scale9Paddings</key>
                 <rect>4,2,8,4</rect>
                 <key>scale9FromFile</key>
@@ -214,7 +254,7 @@
                 <key>scale9Enabled</key>
                 <true/>
                 <key>scale9Borders</key>
-                <rect>0,4,8,8</rect>
+                <rect>0,2,4,4</rect>
                 <key>scale9Paddings</key>
                 <rect>2,4,4,8</rect>
                 <key>scale9FromFile</key>
@@ -233,6 +273,19 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
+            <key type="filename">slider-knob_shd.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>12,12,24,24</rect>
+                <key>scale9Paddings</key>
+                <rect>12,12,24,24</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
             <key type="filename">vignette.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
@@ -240,13 +293,12 @@
                 <key>scale9Enabled</key>
                 <true/>
                 <key>scale9Borders</key>
-                <rect>75,75,8,8</rect>
+                <rect>152,152,8,8</rect>
                 <key>scale9Paddings</key>
-                <rect>40,40,79,79</rect>
+                <rect>78,78,156,156</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">white-o.png</key>
             <key type="filename">white.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
@@ -263,13 +315,17 @@
         </map>
         <key>fileList</key>
         <array>
-            <filename>white.png</filename>
-            <filename>white-o.png</filename>
             <filename>slider-bg-v.png</filename>
             <filename>slider-knob.png</filename>
             <filename>slider-bg-h.png</filename>
+            <filename>bg-r-o.png</filename>
+            <filename>bg-r.png</filename>
+            <filename>white.png</filename>
             <filename>vignette.png</filename>
-            <filename>r-32.png</filename>
+            <filename>selection.png</filename>
+            <filename>cursor.png</filename>
+            <filename>l-32.png</filename>
+            <filename>slider-knob_shd.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>
