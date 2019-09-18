@@ -1,4 +1,4 @@
-package adflixit.gdx.misc;
+package adflixit.gdx.utils;
 
 import static adflixit.gdx.BaseContext.*;
 import static adflixit.gdx.Util.*;

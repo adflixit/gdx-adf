@@ -1,4 +1,4 @@
-package adflixit.gdx.misc;
+package adflixit.gdx.utils;
 
 import static adflixit.gdx.BaseGame.*;
 import static adflixit.gdx.TweenUtils.*;

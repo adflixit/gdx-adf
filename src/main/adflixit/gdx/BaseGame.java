@@ -8,8 +8,8 @@ import adflixit.gdx.TweenUtils.SpriteAccessor;
 import adflixit.gdx.console.ConCmd;
 import adflixit.gdx.console.ConVar;
 import adflixit.gdx.console.Console;
-import adflixit.gdx.misc.DropShadowDrawable;
-import adflixit.gdx.misc.DropShadowLabel;
+import adflixit.gdx.utils.DropShadowDrawable;
+import adflixit.gdx.utils.DropShadowLabel;
 import android.view.View;
 import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.primitives.MutableFloat;
@@ -749,11 +749,11 @@ public abstract class BaseGame implements ApplicationListener {
   public void setContext(BaseContext<?> newContext, boolean dispose) {
     if (context != null) {
       if (dispose) {
-        logSetup("Disposing of context");
+        logSetup("Disposing of context "+newContext.getClass().getSimpleName());
         context.dispose();
         logDone();
       } else {
-        logSetup("Hiding context");
+        logSetup("Hiding context "+newContext.getClass().getSimpleName());
         context.hide();
         logDone();
       }

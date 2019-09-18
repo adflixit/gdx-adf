@@ -1,13 +1,14 @@
 package adflixit.gdx;
 
-import com.badlogic.gdx.Application.ApplicationType;
+import static adflixit.gdx.BaseGame.isAndroidApp;
+
 import com.badlogic.gdx.Gdx;
 
 public class Logger {
   private Logger() {}
 
   public static final void log(String msg) {
-    if (Gdx.app.getType() == ApplicationType.Android) {
+    if (isAndroidApp()) {
       Gdx.app.log("App", msg);
     } else {
       System.out.println(msg);
@@ -15,7 +16,7 @@ public class Logger {
   }
 
   public static final void logSetup(String msg) {
-    if (Gdx.app.getType() == ApplicationType.Android) {
+    if (isAndroidApp()) {
       Gdx.app.log("App", msg);
     } else {
       System.out.print(msg);
@@ -23,7 +24,7 @@ public class Logger {
   }
 
   public static final void logDone() {
-    if (Gdx.app.getType() == ApplicationType.Android) {
+    if (isAndroidApp()) {
       Gdx.app.log("App", "Done");
     } else {
       System.out.print(" - done\n");

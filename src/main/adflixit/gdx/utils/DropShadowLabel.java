@@ -1,14 +1,10 @@
-package adflixit.gdx.misc;
+package adflixit.gdx.utils;
 
 import static adflixit.gdx.Util.*;
-import static com.badlogic.gdx.utils.Align.*;
 
 import adflixit.gdx.FlatBlur;
 import com.badlogic.gdx.graphics.*;
-import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.g2d.*;
-import com.badlogic.gdx.graphics.glutils.FrameBuffer;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.Viewport;

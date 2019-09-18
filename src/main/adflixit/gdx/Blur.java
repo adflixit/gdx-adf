@@ -4,7 +4,7 @@ import static adflixit.gdx.DefaultBlur.*;
 import static adflixit.gdx.TweenUtils.*;
 import static aurelienribon.tweenengine.TweenCallback.*;
 
-import adflixit.gdx.misc.Soft;
+import adflixit.gdx.utils.Soft;
 import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.primitives.MutableFloat;
 import com.badlogic.gdx.files.FileHandle;
@@ -31,6 +31,7 @@ public class Blur extends ScreenComponent<BaseContext<?>> {
 
   private int                 iters     = 1;  // number of blur cycles
   private final MutableFloat  amount    = new MutableFloat(0);
+  private final MutableFloat  disp      = new MutableFloat(0);  // blur disposition, positive adds to h-pass and vice versa
   private boolean             pass;       // update route permit
   private boolean             scheduled;  // one-time update route permit
 
@@ -142,7 +143,7 @@ public class Blur extends ScreenComponent<BaseContext<?>> {
       hfb.begin();
       bat.begin();
         if (pass || scheduled) {
-          hpass.setUniformf(UNI_NAME, amount());
+          hpass.setUniformf(UNI_NAME, amount() + disp());
         }
         tex = i > 0 ? vfb.getColorBufferTexture() : inputTex();
         bat.draw(tex, x, y, ctx.screenWidth(), ctx.screenHeight());
@@ -156,7 +157,7 @@ public class Blur extends ScreenComponent<BaseContext<?>> {
       vfb.begin();
       bat.begin();
         if (pass || scheduled) {
-          vpass.setUniformf(UNI_NAME, amount());
+          vpass.setUniformf(UNI_NAME, amount() - disp());
         }
         tex = skipH ? inputTex() : hfb.getColorBufferTexture();
         bat.draw(tex, x, y, ctx.screenWidth(), ctx.screenHeight());
@@ -211,6 +212,20 @@ public class Blur extends ScreenComponent<BaseContext<?>> {
     setAmount(0);
   }
 
+  public float disp() {
+    return disp.floatValue();
+  }
+
+  public void setDisp(float v) {
+    killTweenTarget(disp);
+    disp.setValue(v);
+    schedule();
+  }
+
+  public void resetDisp() {
+    setDisp(0);
+  }
+
   /**
    * @param v value
    * @param d duration
@@ -247,6 +262,42 @@ public class Blur extends ScreenComponent<BaseContext<?>> {
     return $setAmount(0);
   }
 
+  /**
+   * @param v value
+   * @param d duration
+   */
+  public Tween $tweenDisp(float v, float d) {
+    killTweenTarget(disp);
+    return Tween.to(disp, 0, d).target(v).ease(Soft.INOUT)
+           .setCallback((type, source) -> {
+             if (type == BEGIN) {
+               unlock();
+             } else {
+               lock();
+             }
+           })
+           .setCallbackTriggers(BEGIN|COMPLETE);
+  }
+
+  /**
+   * @param d duration
+   */
+  public Tween $tweenDispOut(float d) {
+    return $tweenDisp(0, d);
+  }
+
+  /**
+   * @param v value
+   */
+  public Tween $setDisp(float v) {
+    killTweenTarget(disp);
+    return Tween.set(disp, 0).target(v).setCallback((type, source) -> schedule());
+  }
+
+  public Tween $resetDisp() {
+    return $setDisp(0);
+  }
+
   public void dispose() {
     hpass.dispose();
     vpass.dispose();
@@ -262,8 +313,8 @@ public class Blur extends ScreenComponent<BaseContext<?>> {
       hfb.dispose();
       vfb.dispose();
     }
-    fb = new FrameBuffer(Format.RGBA8888, ctx.fbWidth() / RES_DENOM, ctx.fbHeight() / RES_DENOM, false);
-    hfb = new FrameBuffer(Format.RGBA8888, ctx.fbWidth() / RES_DENOM, ctx.fbHeight() / RES_DENOM, false);
-    vfb = new FrameBuffer(Format.RGBA8888, ctx.fbWidth() / RES_DENOM, ctx.fbHeight() / RES_DENOM, false);
+    fb = new FrameBuffer(Format.RGB888, ctx.fbWidth() / RES_DENOM, ctx.fbHeight() / RES_DENOM, false);
+    hfb = new FrameBuffer(Format.RGB888, ctx.fbWidth() / RES_DENOM, ctx.fbHeight() / RES_DENOM, false);
+    vfb = new FrameBuffer(Format.RGB888, ctx.fbWidth() / RES_DENOM, ctx.fbHeight() / RES_DENOM, false);
   }
 }

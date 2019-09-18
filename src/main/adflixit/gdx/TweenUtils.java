@@ -6,9 +6,9 @@ import static adflixit.gdx.Util.*;
 import static aurelienribon.tweenengine.TweenCallback.*;
 import static com.badlogic.gdx.utils.Align.*;
 
-import adflixit.gdx.misc.DropShadowDrawable;
-import adflixit.gdx.misc.DropShadowLabel;
-import adflixit.gdx.misc.Soft;
+import adflixit.gdx.utils.DropShadowDrawable;
+import adflixit.gdx.utils.DropShadowLabel;
+import adflixit.gdx.utils.Soft;
 import android.view.View;
 import aurelienribon.tweenengine.Timeline;
 import aurelienribon.tweenengine.Tween;

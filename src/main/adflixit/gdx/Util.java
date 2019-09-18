@@ -4,7 +4,7 @@ import static adflixit.gdx.BaseGame.*;
 import static com.badlogic.gdx.utils.Align.*;
 import static java.lang.Math.*;
 
-import adflixit.gdx.misc.DropShadowDrawable;
+import adflixit.gdx.utils.DropShadowDrawable;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;

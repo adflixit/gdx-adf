@@ -59,9 +59,9 @@ public class FlatBlur {
         hfb.dispose();
         vfb.dispose();
       }
-      fb = new FrameBuffer(Format.RGBA8888, width / RES_DENOM, height / RES_DENOM, false);
-      hfb = new FrameBuffer(Format.RGBA8888, width / RES_DENOM, height / RES_DENOM, false);
-      vfb = new FrameBuffer(Format.RGBA8888, width / RES_DENOM, height / RES_DENOM, false);
+      fb = new FrameBuffer(Format.RGB888, width / RES_DENOM, height / RES_DENOM, false);
+      hfb = new FrameBuffer(Format.RGB888, width / RES_DENOM, height / RES_DENOM, false);
+      vfb = new FrameBuffer(Format.RGB888, width / RES_DENOM, height / RES_DENOM, false);
     }
   }
 

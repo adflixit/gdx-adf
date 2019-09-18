@@ -3,7 +3,7 @@ package adflixit.gdx;
 import static adflixit.gdx.TweenUtils.*;
 import static adflixit.gdx.Util.*;
 
-import adflixit.gdx.misc.Soft;
+import adflixit.gdx.utils.Soft;
 import aurelienribon.tweenengine.Tween;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;

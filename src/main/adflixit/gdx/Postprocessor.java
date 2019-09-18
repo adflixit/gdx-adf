@@ -4,7 +4,7 @@ import static adflixit.gdx.TweenUtils.*;
 import static adflixit.gdx.Util.*;
 import static aurelienribon.tweenengine.TweenCallback.*;
 
-import adflixit.gdx.misc.Soft;
+import adflixit.gdx.utils.Soft;
 import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.primitives.MutableFloat;
 import com.badlogic.gdx.files.FileHandle;

@@ -7,7 +7,7 @@ import static adflixit.gdx.Util.*;
 import static aurelienribon.tweenengine.TweenCallback.*;
 import static com.badlogic.gdx.graphics.Color.WHITE;
 
-import adflixit.gdx.misc.Soft;
+import adflixit.gdx.utils.Soft;
 import aurelienribon.tweenengine.Timeline;
 import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenCallback;
@@ -589,7 +589,7 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
     } else {
       frameBuffer.dispose();
     }
-    frameBuffer = new FrameBuffer(Format.RGBA8888, fbWidth(), fbHeight(), false);
+    frameBuffer = new FrameBuffer(Format.RGB888, fbWidth(), fbHeight(), false);
     logDone();
   }
 

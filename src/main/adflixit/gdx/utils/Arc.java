@@ -1,4 +1,4 @@
-package adflixit.gdx.misc;
+package adflixit.gdx.utils;
 
 import static com.badlogic.gdx.utils.Align.*;
 import static adflixit.gdx.BaseGame.*;

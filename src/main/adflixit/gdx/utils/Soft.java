@@ -1,4 +1,4 @@
-package adflixit.gdx.misc;
+package adflixit.gdx.utils;
 
 import adflixit.gdx.thirdparty.BezierEasing;
 import aurelienribon.tweenengine.TweenEquation;
