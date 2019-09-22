@@ -118,7 +118,7 @@ public abstract class BaseGame implements ApplicationListener {
     });
     registerCommand("setprop", args -> {
       try {
-        setProp(args[0], arrayToStringf("%s ", Arrays.copyOfRange(args, 1, args.length)));
+        setProp(args[0], arrToStrf("%s ", Arrays.copyOfRange(args, 1, args.length)));
       } catch (Exception e) {
         log(e.getLocalizedMessage());
       }
@@ -141,7 +141,7 @@ public abstract class BaseGame implements ApplicationListener {
     registerCommand("flushprops", args -> flushProps());
     registerCommand("proplist", args -> log(propList()));
     registerCommand("pref", args -> log(pref(args[0])));
-    registerCommand("setpref", args -> setProp(args[0], arrayToStringf("%s ", Arrays.copyOfRange(args, 1, args.length))));
+    registerCommand("setpref", args -> setProp(args[0], arrToStrf("%s ", Arrays.copyOfRange(args, 1, args.length))));
     registerCommand("flushprefs", args -> flushPrefs());
     registerCommand("quit", args -> quit());
   }

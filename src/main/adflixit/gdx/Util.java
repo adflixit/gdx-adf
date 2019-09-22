@@ -339,173 +339,78 @@ public final class Util {
     String s = "";
     boolean v = hasFlag(aln,top) || hasFlag(aln,bottom), h = hasFlag(aln,left) || hasFlag(aln,right);
     if (hasFlag(aln, center)) {
-      s+="center"+(v||h?"-":"");
+      s += "center" + (v||h?"-":"");
     }
     if (hasFlag(aln, top)) {
-      s+="top"+(h?"-":"");
+      s += "top" + (h?"-":"");
     }
     if (hasFlag(aln, bottom)) {
-      s+="bottom"+(h?"-":"");
+      s += "bottom" + (h?"-":"");
     }
     if (hasFlag(aln, left)) {
-      s+="left";
+      s += "left";
     }
     if (hasFlag(aln, right)) {
-      s+="right";
+      s += "right";
     }
     return aln != 0 ? s : "n/a";
   }
 
   /**
+   * @return wrapped primitive converted to text.
+   */
+  public static String wrpToStr(Object obj) {
+    if (obj instanceof Boolean) {
+      return String.valueOf(((Boolean)obj).booleanValue());
+    } else if (obj instanceof Character) {
+      return String.valueOf(((Character)obj).charValue());
+    } else if (obj instanceof Byte) {
+      return String.valueOf(((Byte)obj).byteValue());
+    } else if (obj instanceof Short) {
+      return String.valueOf(((Short)obj).shortValue());
+    } else if (obj instanceof Integer) {
+      return String.valueOf(((Integer)obj).intValue());
+    } else if (obj instanceof Long) {
+      return String.valueOf(((Long)obj).longValue());
+    } else if (obj instanceof Float) {
+      return String.valueOf(((Float)obj).floatValue());
+    } else if (obj instanceof Double) {
+      return String.valueOf(((Double)obj).doubleValue());
+    } else {
+      return obj.toString();
+    }
+  }
+
+  /**
    * @return array items represented as text.
    */
-  public static <T> String arrayToString(T... array) {
+  public static <T> String arrToStr(T... array) {
     String s = "";
     for (T i : array) {
-      s += i+", ";
-    }
-    return s.substring(0, s.length() - 2);
-  }
-
-  /**
-   * @return array items represented as text.
-   */
-  public static String arrayToString(int... array) {
-    String s = "";
-    for (Object i : array) {
-      s += i+", ";
-    }
-    return s.substring(0, s.length() - 2);
-  }
-
-  /**
-   * @return array items represented as text.
-   */
-  public static String arrayToString(long... array) {
-    String s = "";
-    for (Object i : array) {
-      s += i+", ";
-    }
-    return s.substring(0, s.length() - 2);
-  }
-
-  /**
-   * @return array items represented as text.
-   */
-  public static String arrayToString(float... array) {
-    String s = "";
-    for (Object i : array) {
-      s += i+", ";
-    }
-    return s.substring(0, s.length() - 2);
-  }
-
-  /**
-   * @return array items represented as text.
-   */
-  public static String arrayToString(double... array) {
-    String s = "";
-    for (Object i : array) {
-      s += i+", ";
+      s += wrpToStr(i) + ", ";
     }
     return s.substring(0, s.length() - 2);
   }
 
   /**
    * Uses the standard string formatting pattern, where "%s" marks the placeholder,
-   * e.g. the pattern "%s, " will format the array {'a', 'b', 'c'} as "a, b, c".
-   * "$|" is optionally used as the terminator which bounds trimming at the last iteration.
+   * e.g. pattern "%s, " will format array {'a', 'b', 'c'} as "a, b, c".
+   * "$|" is the optional terminator that marks trimming at the last iteration.
    * @return array items ordered by the pattern, represented as text.
    */
-  public static <T> String arrayToStringf(String pattern, T... array) {
+  public static <T> String arrToStrf(String pattern, T... array) {
     String s = "";
     // merging all except the last one
     for (int i=0; i < array.length-1; i++) {
-      s += String.format(pattern, array[i]);
+      s += String.format(pattern, wrpToStr(array[i]));
     }
     // clearing the tokens
     s = s.replaceAll("\\$\\|", "");
     // adding last item with token
-    s += String.format(pattern, array[array.length-1]);
+    s += String.format(pattern, wrpToStr(array[array.length-1]));
     // trimming
     return s.substring(0, s.length() - (pattern.length() -
         (pattern.contains("$|") ? pattern.indexOf("$|") : pattern.indexOf("%s") + 2)));
-  }
-
-  /**
-   * @return array items ordered by the pattern, represented as text.
-   * @see #arrayToStringf(String, Object...)
-   */
-  public static String arrayToStringf(String pattern, int... array) {
-    String s = "";
-    // merging all except the last one
-    for (int i=0; i < array.length-1; i++) {
-      s += String.format(pattern, array[i]);
-    }
-    // clearing the tokens
-    s = s.replaceAll("\\$\\|", "");
-    // adding last item with token
-    s += String.format(pattern, array[array.length-1]);
-    // trimming
-    return s.substring(0, s.length() - (pattern.length() -
-            (pattern.contains("$|") ? pattern.indexOf("$|") : pattern.indexOf("%s") + 2)));
-  }
-
-  /**
-   * @return array items ordered by the pattern, represented as text.
-   * @see #arrayToStringf(String, Object...)
-   */
-  public static String arrayToStringf(String pattern, long... array) {
-    String s = "";
-    // merging all except the last one
-    for (int i=0; i < array.length-1; i++) {
-      s += String.format(pattern, array[i]);
-    }
-    // clearing the tokens
-    s = s.replaceAll("\\$\\|", "");
-    // adding last item with token
-    s += String.format(pattern, array[array.length-1]);
-    // trimming
-    return s.substring(0, s.length() - (pattern.length() -
-            (pattern.contains("$|") ? pattern.indexOf("$|") : pattern.indexOf("%s") + 2)));
-  }
-
-  /**
-   * @return array items ordered by the pattern, represented as text.
-   * @see #arrayToStringf(String, Object...)
-   */
-  public static String arrayToStringf(String pattern, float... array) {
-    String s = "";
-    // merging all except the last one
-    for (int i=0; i < array.length-1; i++) {
-      s += String.format(pattern, array[i]);
-    }
-    // clearing the tokens
-    s = s.replaceAll("\\$\\|", "");
-    // adding last item with token
-    s += String.format(pattern, array[array.length-1]);
-    // trimming
-    return s.substring(0, s.length() - (pattern.length() -
-            (pattern.contains("$|") ? pattern.indexOf("$|") : pattern.indexOf("%s") + 2)));
-  }
-
-  /**
-   * @return array items ordered by the pattern, represented as text.
-   * @see #arrayToStringf(String, Object...)
-   */
-  public static String arrayToStringf(String pattern, double... array) {
-    String s = "";
-    // merging all except the last one
-    for (int i=0; i < array.length-1; i++) {
-      s += String.format(pattern, array[i]);
-    }
-    // clearing the tokens
-    s = s.replaceAll("\\$\\|", "");
-    // adding last item with token
-    s += String.format(pattern, array[array.length-1]);
-    // trimming
-    return s.substring(0, s.length() - (pattern.length() -
-            (pattern.contains("$|") ? pattern.indexOf("$|") : pattern.indexOf("%s") + 2)));
   }
 
   /**
@@ -515,7 +420,7 @@ public final class Util {
    * @return {@code s} repeated {@code r} times.
    */
   public static String repeat(String s, int r) {
-    if (r<0) {
+    if (r < 0) {
       throw new IllegalArgumentException("A number of repetitions can't be negative: "+r+".");
     }
 
@@ -533,14 +438,16 @@ public final class Util {
   }
 
   public static String getStackTrace() {
-    return arrayToStringf("%s\n", Thread.currentThread().getStackTrace());
+    return arrToStrf("%s$|\n", Thread.currentThread().getStackTrace());
   }
 
   public static void printStackTrace() {
     System.out.print("\u001B[31m");
     int c = 0;
     for (StackTraceElement i : Thread.currentThread().getStackTrace()) {
-      System.out.println((c>0?"    ":"")+i);
+      if (c != 1) {
+        System.out.println((c > 0 ? "    " : "") + i);
+      }
       c++;
     }
     System.out.print("\u001B[0m");
@@ -949,7 +856,7 @@ public final class Util {
    * @return HSL hue of a color.
    */
   public static float getHue(Color clr) {
-    return atan2f((float)(SQRT3 * (clr.g-clr.b)), 2*clr.r - clr.g - clr.b);
+    return (float)(atan2(SQRT3 * (clr.g - clr.b), 2 * clr.r - clr.g - clr.b) / CIRC);
   }
 
   /**
@@ -1603,12 +1510,4 @@ public final class Util {
   public static double easeInOut(double a) {
     return easeInOut(2, a);
   }
-
-  /********** Type utilities **********/
-
-  public static Integer  wrap(int a)      {return new Integer(a);}
-  public static Long     wrap(long a)     {return new Long(a);}
-  public static Float    wrap(float a)    {return new Float(a);}
-  public static Double   wrap(double a)   {return new Double(a);}
-  public static Boolean  wrap(boolean a)  {return new Boolean(a);}
 }

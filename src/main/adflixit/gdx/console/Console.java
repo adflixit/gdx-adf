@@ -1,6 +1,6 @@
 package adflixit.gdx.console;
 
-import static adflixit.gdx.Util.arrayToStringf;
+import static adflixit.gdx.Util.arrToStrf;
 
 import com.badlogic.gdx.files.FileHandle;
 import java.io.InputStream;
@@ -34,13 +34,13 @@ public class Console {
       }
     }).start();
 
-    registerCommand("print", args -> print(arrayToStringf("%s ", args)));
+    registerCommand("print", args -> print(arrToStrf("%s ", args)));
     registerCommand("reset", args -> var(args[0]).reset());
     registerCommand("alias", args -> {
       try {
         String[] a = new String[args.length - 1];
         System.arraycopy(args, 1, a, 0, args.length - 1);
-        addAlias(args[0], arrayToStringf("%s ", a));
+        addAlias(args[0], arrToStrf("%s ", a));
       } catch (Exception e) {
         print(e.getLocalizedMessage());
       }
@@ -148,7 +148,7 @@ public class Console {
       var.set(parsed.get(1));
     } else if (als != null) {
       // checking the aliases, which goes recursively
-      // replacing ';' with '$|' for a technical purpose
+      // replacing ';' with '$|' for technical reasons
       parse(als.replaceAll(";", "\\$\\|"));
     }
   }

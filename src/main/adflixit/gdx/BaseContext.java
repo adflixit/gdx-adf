@@ -1021,7 +1021,7 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
    * Loads {@link Sound} instances from a file and adds it to the list.
    */
   public void loadSounds(FileHandle... files) {
-    logSetup("Loading sounds "+arrayToStringf("'%s'$|, ", files));
+    logSetup("Loading sounds "+ arrToStrf("'%s'$|, ", files));
     for (FileHandle file : files) {
       soundList.put(file.nameWithoutExtension(), Gdx.audio.newSound(file));
     }
@@ -1070,7 +1070,7 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
    * All music has to be registered.
    */
   public void loadMusic(FileHandle... files) {
-    logSetup("Loading music "+arrayToStringf("'%s'$|, ", files));
+    logSetup("Loading music "+ arrToStrf("'%s'$|, ", files));
     for (FileHandle file : files) {
       Music music = Gdx.audio.newMusic(file);
       music.setVolume(musicVolume());
