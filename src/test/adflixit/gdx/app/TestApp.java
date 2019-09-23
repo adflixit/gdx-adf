@@ -23,6 +23,6 @@ public class TestApp extends BaseGame {
   }
 
   public static void launch(TestApp app) {
-    new LwjglApplication(app, "Test App", 360, 640);
+    new LwjglApplication(app, "Test app", 360, 640);
   }
 }
