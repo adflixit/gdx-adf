@@ -1,5 +1,6 @@
 /trunk/
 /src/test/adflixit/gdx/*.*
+!/src/test/adflixit/gdx/UtilTest.java
 /src/main/adflixit/gdx/collision/
 /src/main/adflixit/gdx/script/
 /src/main/adflixit/gdx/tools/
