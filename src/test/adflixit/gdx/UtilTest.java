@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 package adflixit.gdx;
 
 import static adflixit.gdx.Util.*;
