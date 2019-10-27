@@ -172,7 +172,7 @@ public class Console {
         continue;
       }
       String line = scanner.nextLine();
-      if (line.equals("")) {
+      if (line.isEmpty()) {
         continue;
       }
       queue.add(line);

@@ -112,7 +112,7 @@ public class MutableProperties extends Properties {
     if (key == null) {
       throw new NullPointerException("Key can't be null.");
     }
-    if (value == null || value.equals("")) {
+    if (value == null || value.isEmpty()) {
       throw new NullPointerException("Value can't be null or empty.");
     }
     if (!containsKey(key)) {
@@ -190,7 +190,7 @@ public class MutableProperties extends Properties {
       for (String i : raw) {
         // checking if the entry key is on the flushed list, i.e. if the word before '=' matches a key from the list
         for (String j : flushed) {
-          if (i.startsWith(j) && !i.startsWith("#") && !i.equals("")) {
+          if (i.startsWith(j) && !i.startsWith("#") && !i.isEmpty()) {
             // if a match is found, assemble the key and the new value
             String split = i.split("=")[0];
             output += split+"="+get(split);
@@ -218,7 +218,7 @@ public class MutableProperties extends Properties {
     String output = "";
     // going through the lines of the file
     for (String i : raw) {
-      if (!i.startsWith("#") && !i.equals("")) {
+      if (!i.startsWith("#") && !i.isEmpty()) {
         // if a match is found, assembling the key and the new value
         String split = i.split("=")[0];
         output += split+"="+get(split);

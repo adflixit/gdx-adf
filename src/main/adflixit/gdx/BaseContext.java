@@ -295,11 +295,11 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
   }
 
   public float screenCenterX() {
-    return screenWidth()/2;
+    return screenWidth() / 2;
   }
 
   public float screenCenterY() {
-    return screenHeight()/2;
+    return screenHeight() / 2;
   }
 
   /**

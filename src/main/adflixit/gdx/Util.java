@@ -339,13 +339,13 @@ public final class Util {
     String s = "";
     boolean v = hasFlag(aln,top) || hasFlag(aln,bottom), h = hasFlag(aln,left) || hasFlag(aln,right);
     if (hasFlag(aln, center)) {
-      s += "center" + (v||h?"-":"");
+      s += "center" + (v||h ? "-" : "");
     }
     if (hasFlag(aln, top)) {
-      s += "top" + (h?"-":"");
+      s += "top" + (h ? "-" : "");
     }
     if (hasFlag(aln, bottom)) {
-      s += "bottom" + (h?"-":"");
+      s += "bottom" + (h ? "-" : "");
     }
     if (hasFlag(aln, left)) {
       s += "left";
@@ -483,9 +483,9 @@ public final class Util {
       y = startY + ofsY;
       for (int j=0; j < fullY; j++) {
         batch.draw(region, x, y, regionWidth, regionHeight);
-        y+=regionHeight;
+        y += regionHeight;
       }
-      x+=regionWidth;
+      x += regionWidth;
     }
 
     Texture texture = region.getTexture();
@@ -498,7 +498,7 @@ public final class Util {
       y = startY;
       for (int i=0; i < fullY; i++) {
         batch.draw(texture, x, y, ofsX, regionHeight, u, v2, u2, v);
-        y+=regionHeight;
+        y += regionHeight;
       }
       if (remainingY > 0) {
         v = v2 - remainingY / texture.getHeight();
@@ -512,7 +512,7 @@ public final class Util {
       x = startX;
       for (int i=0; i < fullX; i++) {
         batch.draw(texture, x, y, regionWidth, ofsY, u, v2, u2, v);
-        x+=regionWidth;
+        x += regionWidth;
       }
     }
 
@@ -522,7 +522,7 @@ public final class Util {
       y = fullHeight;
       for (int i=0; i < fullY; i++) {
         batch.draw(texture, x, y, remainingX, regionHeight, u, v2, u2, v);
-        y+=regionHeight;
+        y += regionHeight;
       }
       if (remainingY > 0) {
         v = v2 - remainingY / texture.getHeight();
@@ -536,7 +536,7 @@ public final class Util {
       x = fullWidth;
       for (int i=0; i < fullX; i++) {
         batch.draw(texture, x, y, regionWidth, remainingY, u, v2, u2, v);
-        x+=regionWidth;
+        x += regionWidth;
       }
     }
   }
@@ -863,7 +863,7 @@ public final class Util {
    * @return HSL hue of a color.
    */
   public static float getSat(Color clr) {
-    float min = tmin(clr.r, clr.g, clr.b), max = tmax(clr.r, clr.g, clr.b);
+    float min = min(clr.r, clr.g, clr.b), max = max(clr.r, clr.g, clr.b);
     return (max - min) / max;
   }
 
@@ -871,7 +871,7 @@ public final class Util {
    * @return HSL hue of a color.
    */
   public static float getLgt(Color clr) {
-    return tmax(clr.r, clr.g, clr.b);
+    return max(clr.r, clr.g, clr.b);
   }
 
   public static Vector3 getHsl(Color clr) {
@@ -883,9 +883,9 @@ public final class Util {
    */
   public static Color setHue(Color clr, float h) {
     float r = clr.r, g = clr.g, b = clr.b, u = (float)cos(h * DEG), w = (float)sin(h * DEG);
-    return clr.set((.299f+.701f*u+.168f*w)*r + (.587f-.587f*u+.330f*w)*g + (.114f-.114f*u-.497f*w)*b,
-        (.299f-.299f*u-.328f*w)*r + (.587f+.413f*u+.035f*w)*g + (.114f-.114f*u+.292f*w)*b,
-        (.299f-.3f*u+1.25f*w)*r + (.587f-.588f*u-1.05f*w)*g + (.114f+.886f*u-.203f*w)*b,
+    return clr.set((.299f + .701f*u + .168f*w) * r + (.587f - .587f*u + .330f*w) * g + (.114f - .114f*u - .497f*w) * b,
+        (.299f - .299f*u - .328f*w) * r + (.587f + .413f*u + .035f*w) * g + (.114f - .114f*u + .292f*w) * b,
+        (.299f - .3f*u + 1.25f*w) * r + (.587f - .588f*u - 1.05f*w) * g + (.114f + .886f*u - .203f*w) * b,
         clr.a);
   }
 
@@ -894,7 +894,7 @@ public final class Util {
    */
   public static Color setSat(Color clr, float s) {
     float r = clr.r, g = clr.g, b = clr.b,
-        min = tmin(clr.r, clr.g, clr.b), max = tmax(clr.r, clr.g, clr.b), amin = (1-s)*max;
+        min = min(clr.r, clr.g, clr.b), max = max(clr.r, clr.g, clr.b), amin = (1-s)*max;
     return clr.set(r==max ? r : (r==min ? amin : amin + (max-amin) * ((r-min)/(max-min))),
         g==max ? g : (g==min ? amin : amin + (max-amin) * ((g-min)/(max-min))),
         b==max ? b : (b==min ? amin : amin + (max-amin) * ((b-min)/(max-min))),
@@ -905,7 +905,11 @@ public final class Util {
    * Sets HSL lightness.
    */
   public static Color setLgt(Color clr, float l) {
-    return clr.mul(l / getLgt(clr));
+    float m = l / getLgt(clr);
+    clr.r *= l;
+    clr.g *= l;
+    clr.b *= l;
+    return clr;
   }
 
   public static Vector3 HslToRgb(float h, float s, float l) {
@@ -926,7 +930,7 @@ public final class Util {
   }
 
   public static Color setHsl(Color clr, float h, float s, float l) {
-    tmpv3.set(HslToRgb(h,s,l));
+    HslToRgb(h,s,l);
     return clr.set(tmpv3.x, tmpv3.y, tmpv3.z, clr.a);
   }
 
@@ -1231,57 +1235,57 @@ public final class Util {
   /**
    * @return the greatest of the three numbers.
    */
-  public static int tmax(int a, int b, int c) {
-    return max(a, max(b, c));
+  public static int max(int a, int b, int c) {
+    return Math.max(a, Math.max(b, c));
   }
 
   /**
    * @return the greatest of the three numbers.
    */
-  public static long tmax(long a, long b, long c) {
-    return max(a, max(b, c));
+  public static long max(long a, long b, long c) {
+    return Math.max(a, Math.max(b, c));
   }
 
   /**
    * @return the greatest of the three numbers.
    */
-  public static float tmax(float a, float b, float c) {
-    return max(a, max(b, c));
+  public static float max(float a, float b, float c) {
+    return Math.max(a, Math.max(b, c));
   }
 
   /**
    * @return the greatest of the three numbers.
    */
-  public static double tmax(double a, double b, double c) {
-    return max(a, max(b, c));
+  public static double max(double a, double b, double c) {
+    return Math.max(a, Math.max(b, c));
   }
 
   /**
    * @return the smallest of the three numbers.
    */
-  public static int tmin(int a, int b, int c) {
-    return min(a, min(b, c));
+  public static int min(int a, int b, int c) {
+    return Math.min(a, Math.min(b, c));
   }
 
   /**
    * @return the smallest of the three numbers.
    */
-  public static long tmin(long a, long b, long c) {
-    return min(a, min(b, c));
+  public static long min(long a, long b, long c) {
+    return Math.min(a, Math.min(b, c));
   }
 
   /**
    * @return the smallest of the three numbers.
    */
-  public static float tmin(float a, float b, float c) {
-    return min(a, min(b, c));
+  public static float min(float a, float b, float c) {
+    return Math.min(a, Math.min(b, c));
   }
 
   /**
    * @return the smallest of the three numbers.
    */
-  public static double tmin(double a, double b, double c) {
-    return min(a, min(b, c));
+  public static double min(double a, double b, double c) {
+    return Math.min(a, Math.min(b, c));
   }
 
   /**
@@ -1379,7 +1383,7 @@ public final class Util {
    * @return distance between two given points.
    */
   public static float dist(float x1, float y1, float x2, float y2) {
-    return hypotf(x2-x1, y2-y1);
+    return hypotf(x2 - x1, y2 - y1);
   }
 
   /**
