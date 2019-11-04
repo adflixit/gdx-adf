@@ -173,9 +173,9 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
   private final MutableFloat          camShake            = new MutableFloat(0);  // camera shake amplitude
   private final MutableFloat          timescale           = new MutableFloat(1);  // time multiplier
   private final MutableFloat          uiTimescale         = new MutableFloat(1);
-  private final MutableFloat          masterVolume        = new MutableFloat(1);  // sound volume
-  private final MutableFloat          soundVolume         = new MutableFloat(1);  // sound effects volume
-  private final Map<String, Sound>    soundList           = new HashMap<>();
+  private final MutableFloat          soundVolume = new MutableFloat(1);  // master volume
+  private final MutableFloat          sfxVolume           = new MutableFloat(1);  // sound effects volume
+  private final Map<String, Sound>    sfxList             = new HashMap<>();
   private final MutableFloat          musicVolume         = new MutableFloat(1);
   private final Map<String, Music>    musicList           = new HashMap<>();
   private boolean                     updatingVolume;
@@ -286,7 +286,7 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
   public Vector2 lastScreenSize() {
     return lastScreenSizeJunc ? evenLastScreenSize : oddLastScreenSize;
   }
-  
+
   /**
    * @return x and y of the screen center.
    */
@@ -450,7 +450,6 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
     shapeRenderer.setProjectionMatrix(camera.combined);
     ui.act();
     uiShapeRenderer.setProjectionMatrix(ui.getCamera().combined);
-    overlay.update();
     updateInput();
 
     // music has to be manually updated when is changed through transitions
@@ -559,7 +558,7 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
     uiShapeRenderer.dispose();
     frameBuffer.dispose();
     blur.dispose();
-    for (Map.Entry<String, Sound> e : soundList.entrySet()) {
+    for (Map.Entry<String, Sound> e : sfxList.entrySet()) {
       e.getValue().dispose();
     }
     for (Map.Entry<String, Music> e : musicList.entrySet()) {
@@ -674,8 +673,8 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
         ", cam shake = "+camShake() +
         ", timescale = "+timescale() +
         ", UI timescale = "+uiTimescale() +
-        ", master volume = "+masterVolume() +
-        ", sound volume = "+soundVolume() +
+        ", sound volume = "+ soundVolume() +
+        ", sfx volume = "+ sfxVolume() +
         ", music volume = "+musicVolume());
   }
 
@@ -796,7 +795,7 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
   }
 
   /**
-   * Tweens the camera shake amplitude.
+   * Tweens camera shake amplitude.
    * @param v value
    * @param d duration
    */
@@ -805,7 +804,7 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
   }
 
   /**
-   * Tweens the camera shake amplitude.
+   * Tweens camera shake amplitude.
    * @param v value
    */
   public void tweenCamShake(float v) {
@@ -813,14 +812,14 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
   }
 
   /**
-   * Tweens the camera shake amplitude to 1.
+   * Tweens camera shake amplitude to 1.
    */
   public void tweenCamShakeIn() {
     $tweenCamShakeIn().start(tweenMgr);
   }
 
   /**
-   * Tweens the camera shake amplitude to 0.
+   * Tweens camera shake amplitude to 0.
    * @param d duration
    */
   public void tweenCamShakeOut(float d) {
@@ -828,14 +827,14 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
   }
 
   /**
-   * Tweens the camera shake amplitude to 0.
+   * Tweens camera shake amplitude to 0.
    */
   public void tweenCamShakeOut() {
     $tweenCamShakeOut().start(tweenMgr);
   }
 
   /**
-   * Sets the camera shake amplitude.
+   * Sets camera shake amplitude.
    * @param v value
    */
   public void setCamShake(float v) {
@@ -844,14 +843,14 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
   }
 
   /**
-   * Sets the camera shake amplitude to 1.
+   * Sets camera shake amplitude to 1.
    */
-  public void setCamShake() {
+  public void setupCamShake() {
     setCamShake(1);
   }
 
   /**
-   * Sets the camera shake amplitude to 0.
+   * Sets camera shake amplitude to 0.
    */
   public void resetCamShake() {
     setCamShake(0);
@@ -930,7 +929,7 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
   /**
    * Sets the timescale multiplier to 1.
    */
-  public void setTimescale() {
+  public void setupTimescale() {
     setTimescale(1);
   }
 
@@ -1006,7 +1005,7 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
   /**
    * Sets the UI timescale multiplier to 1.
    */
-  public void setUiTimescale() {
+  public void setupUiTimescale() {
     setUiTimescale(1);
   }
 
@@ -1018,12 +1017,12 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
   }
 
   /**
-   * Loads {@link Sound} instances from a file and adds it to the list.
+   * Loads {@link Sound} instances from a file and adds them to the list.
    */
-  public void loadSounds(FileHandle... files) {
+  public void loadSfx(FileHandle... files) {
     logSetup("Loading sounds "+ arrToStrf("'%s'$|, ", files));
     for (FileHandle file : files) {
-      soundList.put(file.nameWithoutExtension(), Gdx.audio.newSound(file));
+      sfxList.put(file.nameWithoutExtension(), Gdx.audio.newSound(file));
     }
     logDone();
   }
@@ -1031,42 +1030,42 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
   /**
    * Loads {@link Sound} instances into the list from an internal file path.
    */
-  public void loadSounds(String... paths) {
+  public void loadSfx(String... paths) {
     FileHandle[] files = new FileHandle[paths.length];
     for (int i=0; i < paths.length; i++) {
       files[i] = internalFile(paths[i]);
     }
-    loadSounds(files);
+    loadSfx(files);
   }
 
   /**
    * Loads {@link Sound} instances into the list from a list of file paths.
    */
-  public void loadSounds(String list) {
-    loadSounds(list.split("\\s*\\r?\\n\\s*"));
+  public void loadSfx(String list) {
+    loadSfx(list.split("\\s*\\r?\\n\\s*"));
   }
 
   /**
    * Loads {@link Sound} instances into the list from a list from an internal text file.
    */
-  public void loadSounds(FileHandle file) {
-    loadSounds(file.readString());
+  public void loadSfx(FileHandle file) {
+    loadSfx(file.readString());
   }
 
   /**
-   * Clears the sound list.
+   * Clears the sfx list.
    */
-  public void clearSounds() {
-    logSetup("Clearing sound list");
-    for (Map.Entry<String, Sound> e : soundList.entrySet()) {
+  public void clearSfx() {
+    logSetup("Clearing sfx list");
+    for (Map.Entry<String, Sound> e : sfxList.entrySet()) {
       e.getValue().dispose();
     }
-    soundList.clear();
+    sfxList.clear();
     logDone();
   }
 
   /**
-   * Loads {@link Music} instances from a file and adds it to the list.
+   * Loads {@link Music} instances from a file and adds them to the list.
    * All music has to be registered.
    */
   public void loadMusic(FileHandle... files) {
@@ -1119,85 +1118,85 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
     logDone();
   }
 
-  public Sound sound(String name) {
-    return soundList.get(name);
+  public Sound sfx(String name) {
+    return sfxList.get(name);
   }
 
   public Music music(String name) {
     return musicList.get(name);
   }
 
-  public float masterVolume() {
-    return masterVolume.floatValue();
+  public float soundVolume() {
+    return soundVolume.floatValue();
   }
 
   /**
-   * Tweens the master volume.
+   * Tweens the sound volume.
    * @param v value
    * @param d duration
    */
-  public void tweenMasterVolume(float v, float d) {
+  public void tweenSoundVolume(float v, float d) {
     $tweenMasterVolume(v, d).start(tweenMgr);
   }
 
   /**
-   * Tweens the master volume.
+   * Tweens the sound volume.
    * @param v value
    */
-  public void tweenMasterVolume(float v) {
+  public void tweenSoundVolume(float v) {
     $tweenMasterVolume(v).start(tweenMgr);
   }
 
   /**
-   * Tweens the master volume to 1.
+   * Tweens the sound volume to 1.
    */
-  public void tweenMasterVolumeIn() {
+  public void tweenSoundVolumeIn() {
     $tweenMasterVolumeIn().start(tweenMgr);
   }
 
   /**
-   * Tweens the master volume to 0.
+   * Tweens the sound volume to 0.
    * @param d duration
    */
-  public void tweenMasterVolumeOut(float d) {
+  public void tweenSoundVolumeOut(float d) {
     $tweenMasterVolumeOut(d).start(tweenMgr);
   }
 
   /**
-   * Tweens the master volume to 0.
+   * Tweens the sound volume to 0.
    */
-  public void tweenMasterVolumeOut() {
+  public void tweenSoundVolumeOut() {
     $tweenMasterVolumeOut().start(tweenMgr);
   }
 
   /**
-   * Sets the master volume.
+   * Sets the sound volume.
    * @param v value
    */
-  public void setMasterVolume(float v) {
-    killTweenTarget(masterVolume);
-    masterVolume.setValue(v);
+  public void setSoundVolume(float v) {
+    killTweenTarget(soundVolume);
+    soundVolume.setValue(v);
   }
 
   /**
-   * Sets the master volume to 1.
+   * Sets the sound volume to 1.
    */
-  public void setMasterVolume() {
-    setMasterVolume(1);
+  public void setupSoundVolume() {
+    setSoundVolume(1);
   }
 
   /**
-   * Sets the master volume to 0.
+   * Sets the sound volume to 0.
    */
-  public void resetMasterVolume() {
-    setMasterVolume(0);
+  public void resetSoundVolume() {
+    setSoundVolume(0);
   }
 
   /**
    * @return sound effects volume.
    */
-  public float soundVolume() {
-    return soundVolume.floatValue() * masterVolume();
+  public float sfxVolume() {
+    return sfxVolume.floatValue() * soundVolume();
   }
 
   /**
@@ -1205,7 +1204,7 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
    * @param v value
    * @param d duration
    */
-  public void tweenSndVolume(float v, float d) {
+  public void tweenSfxVolume(float v, float d) {
     $tweenSndVolume(v, d).start(tweenMgr);
   }
 
@@ -1213,14 +1212,14 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
    * Tweens the sound effects volume.
    * @param v value
    */
-  public void tweenSndVolume(float v) {
+  public void tweenSfxVolume(float v) {
     $tweenSndVolume(v).start(tweenMgr);
   }
 
   /**
    * Tweens the sound effects volume to 1.
    */
-  public void tweenSndVolumeIn() {
+  public void tweenSfxVolumeIn() {
     $tweenSndVolumeIn().start(tweenMgr);
   }
 
@@ -1228,14 +1227,14 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
    * Tweens the sound effects volume to 0.
    * @param d duration
    */
-  public void tweenSndVolumeOut(float d) {
+  public void tweenSfxVolumeOut(float d) {
     $tweenSndVolumeOut(d).start(tweenMgr);
   }
 
   /**
    * Tweens the sound effects volume to 0.
    */
-  public void tweenSndVolumeOut() {
+  public void tweenSfxVolumeOut() {
     $tweenSndVolumeOut().start(tweenMgr);
   }
 
@@ -1243,27 +1242,27 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
    * Sets the sound effects volume.
    * @param v value
    */
-  public void setSndVolume(float v) {
-    killTweenTarget(soundVolume);
-    soundVolume.setValue(v);
+  public void setSfxVolume(float v) {
+    killTweenTarget(sfxVolume);
+    sfxVolume.setValue(v);
   }
 
   /**
    * Sets the sound effects volume to 1.
    */
-  public void setSndVolume() {
-    setSndVolume(1);
+  public void setupSfxVolume() {
+    setSfxVolume(1);
   }
 
   /**
    * Sets the sound effects volume to 0.
    */
-  public void resetSndVolume() {
-    setSndVolume(0);
+  public void resetSfxVolume() {
+    setSfxVolume(0);
   }
 
   public float musicVolume() {
-    return musicVolume.floatValue() * masterVolume();
+    return musicVolume.floatValue() * soundVolume();
   }
 
   /**
@@ -1317,7 +1316,7 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
   /**
    * Sets the music volume to 1.
    */
-  public void setMusicVolume() {
+  public void setupMusicVolume() {
     setMusicVolume(1);
   }
 
@@ -1889,19 +1888,19 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
   }
 
   /**
-   * Creates a handle to tween the master volume.
+   * Creates a handle to tween the sound volume.
    * @param v value
    * @param d duration
    * @return tween handle
    */
   public Tween $tweenMasterVolume(float v, float d) {
-    killTweenTarget(masterVolume);
-    return Tween.to(masterVolume, 0, d).target(v).ease(Soft.INOUT)
+    killTweenTarget(soundVolume);
+    return Tween.to(soundVolume, 0, d).target(v).ease(Soft.INOUT)
            .setCallbackTriggers(BEGIN|COMPLETE).setCallback(masterVolumeCallback);
   }
 
   /**
-   * Creates a handle to tween the master volume.
+   * Creates a handle to tween the sound volume.
    * @param v value
    * @return tween handle
    */
@@ -1910,7 +1909,7 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
   }
 
   /**
-   * Creates a handle to tween the master volume to 1.
+   * Creates a handle to tween the sound volume to 1.
    * @param d duration
    * @return tween handle
    */
@@ -1919,7 +1918,7 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
   }
 
   /**
-   * Creates a handle to tween the master volume to 1.
+   * Creates a handle to tween the sound volume to 1.
    * @return tween handle
    */
   public Tween $tweenMasterVolumeIn() {
@@ -1927,7 +1926,7 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
   }
 
   /**
-   * Creates a handle to tween the master volume to 0.
+   * Creates a handle to tween the sound volume to 0.
    * @param d duration
    * @return tween handle
    */
@@ -1936,7 +1935,7 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
   }
 
   /**
-   * Creates a handle to tween the master volume to 0.
+   * Creates a handle to tween the sound volume to 0.
    * @return tween handle
    */
   public Tween $tweenMasterVolumeOut() {
@@ -1944,7 +1943,7 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
   }
 
   /**
-   * Creates a handle to set the master volume.
+   * Creates a handle to set the sound volume.
    * @param v value
    * @return tween handle
    */
@@ -1953,7 +1952,7 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
   }
 
   /**
-   * Creates a handle to set the master volume to 1.
+   * Creates a handle to set the sound volume to 1.
    * @return tween handle
    */
   public Tween $setMasterVolume() {
@@ -1961,7 +1960,7 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
   }
 
   /**
-   * Creates a handle to set the master volume to 0.
+   * Creates a handle to set the sound volume to 0.
    * @return tween handle
    */
   public Tween $resetMasterVolume() {
@@ -1975,8 +1974,8 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
    * @return tween handle
    */
   public Tween $tweenSndVolume(float v, float d) {
-    killTweenTarget(soundVolume);
-    return Tween.to(soundVolume, 0, d).target(v).ease(Soft.INOUT);
+    killTweenTarget(sfxVolume);
+    return Tween.to(sfxVolume, 0, d).target(v).ease(Soft.INOUT);
   }
 
   /**
@@ -2492,7 +2491,7 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
   /**
    * Sets the blur to 1 if advanced performance is on.
    */
-  public void setBlur() {
+  public void setupBlur() {
     setBlur(1);
   }
 
@@ -2557,7 +2556,7 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
   /**
    * Sets the blur to 1 if advanced performance is on.
    */
-  /*public void setBlur() {
+  /*public void setupBlur() {
     setBlur(1);
   }*/
 
@@ -2629,7 +2628,7 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
   /**
    * Sets the y tilt shift to 1 if advanced performance is on.
    */
-  /*public void setTiltshiftY() {
+  /*public void setupTiltshiftY() {
     setTiltshiftY(1);
   }*/
 
@@ -2701,7 +2700,7 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
   /**
    * Sets the x tilt shift to 1 if advanced performance is on.
    */
-  /*public void setTiltshiftX() {
+  /*public void setupTiltshiftX() {
     setTiltshiftX(1);
   }*/
 
@@ -2927,7 +2926,7 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
   /**
    * Sets the {@link Overlay} sheers layer opacity to 1.
    */
-  public void setSheers() {
+  public void setupSheers() {
     setSheers(1);
   }
 
@@ -3040,7 +3039,7 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
   /**
    * Sets the {@link Overlay} tint layer opacity to 1.
    */
-  public void setTint() {
+  public void setupTint() {
     setTint(1);
   }
 
@@ -3087,7 +3086,7 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
    * Instantly applies the screen dim.
    * Used to create a dark contrasting background for the UI.
    */
-  public void setDim() {
+  public void setupDim() {
     $setDim().start(tweenMgr);
   }
 
@@ -3119,7 +3118,7 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
    * Instantly applies the medium screen dim.
    * Used to create a slightly dark contrasting background for the UI.
    */
-  public void setDimM() {
+  public void setupDimM() {
     $setDimM().start(tweenMgr);
   }
 
@@ -3144,7 +3143,7 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
    * Instantly applies the light screen dim.
    * Used to create a slightly dark contrasting background for the UI.
    */
-  public void setDimL() {
+  public void setupDimL() {
     $setDimL().start(tweenMgr);
   }
 
@@ -3302,7 +3301,7 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
   /**
    * Sets the {@link Overlay} vignette layer opacity to 1.
    */
-  public void setVignette() {
+  public void setupVignette() {
     $setVignette(1).start(tweenMgr);
   }
 
@@ -4822,8 +4821,7 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
     return $dimInL(0);
   }
 
-  protected void updateInput() {
-  }
+  protected void updateInput() {}
 
   @Override public boolean keyDown(int keycode) {
     return false;

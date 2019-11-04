@@ -915,13 +915,13 @@ public final class Util {
   public static Vector3 HslToRgb(float h, float s, float l) {
     float hs = fract(h)*6, f = fract(hs), p = l*(1-s), q = l*(1-f*s), t = l*(1-(1-f)*s);
     switch ((int)hs) {
-      case 0: return tmpv3.set(l,t,p);
-      case 1: return tmpv3.set(q,l,p);
-      case 2: return tmpv3.set(p,l,t);
-      case 3: return tmpv3.set(p,q,l);
-      case 4: return tmpv3.set(t,p,l);
-      case 5: return tmpv3.set(l,p,q);
-      default: illegalArgument("hs = "+hs); return null;
+    case 0: return tmpv3.set(l,t,p);
+    case 1: return tmpv3.set(q,l,p);
+    case 2: return tmpv3.set(p,l,t);
+    case 3: return tmpv3.set(p,q,l);
+    case 4: return tmpv3.set(t,p,l);
+    case 5: return tmpv3.set(l,p,q);
+    default: illegalArgument("hs = "+hs); return null;
     }
   }
 

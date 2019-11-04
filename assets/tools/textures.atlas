@@ -24,8 +24,8 @@ bg-r
 cursor
   rotate: false
   xy: 144, 0
-  size: 1, 32
-  orig: 1, 32
+  size: 3, 32
+  orig: 3, 32
   offset: 0, 0
   index: -1
 l-32

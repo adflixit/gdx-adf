@@ -33,9 +33,6 @@ public class Overlay extends ScreenComponent<BaseContext<?>> {
     setRgb(dim, color("black"));
   }
 
-  public void update() {
-  }
-
   /**
    * @return is {@link #sheers} visible.
    */
@@ -121,7 +118,7 @@ public class Overlay extends ScreenComponent<BaseContext<?>> {
   /**
    * Sets the {@link #blackouts} opacity to 1.
    */
-  public void setBlackouts() {
+  public void setupBlackouts() {
     killTweenTarget(blackouts, ActorAccessor.A);
     setAlpha(blackouts, 1);
   }
@@ -165,7 +162,7 @@ public class Overlay extends ScreenComponent<BaseContext<?>> {
   /**
    * Sets the {@link #tint} opacity to 1.
    */
-  public void setTint() {
+  public void setupTint() {
     killTweenTarget(tint, ActorAccessor.A);
     setAlpha(tint, 1);
   }
@@ -465,17 +462,10 @@ public class Overlay extends ScreenComponent<BaseContext<?>> {
   }
 
   public void resize() {
-    // linear filter workaround
-    sheers.setPosition(-5, -5);
-    blackouts.setPosition(-5, -5);
-    tint.setPosition(-5, -5);
-    dim.setPosition(-5, -5);
-    vignette.setSize(-5, -5);
-
-    sheers.setSize(ctx.screenWidth() + 10, ctx.screenHeight() + 10);
-    blackouts.setSize(ctx.screenWidth() + 10, ctx.screenHeight() + 10);
-    tint.setSize(ctx.screenWidth() + 10, ctx.screenHeight() + 10);
-    dim.setSize(ctx.screenWidth() + 10, ctx.screenHeight() + 10);
-    vignette.setSize(ctx.screenWidth() + 10, ctx.screenHeight() + 10);
+    sheers.setSize(ctx.screenWidth(), ctx.screenHeight());
+    blackouts.setSize(ctx.screenWidth(), ctx.screenHeight());
+    tint.setSize(ctx.screenWidth(), ctx.screenHeight());
+    dim.setSize(ctx.screenWidth(), ctx.screenHeight());
+    vignette.setSize(ctx.screenWidth(), ctx.screenHeight());
   }
 }
