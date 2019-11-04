@@ -88,8 +88,9 @@ vignette
 white
   rotate: false
   xy: 407, 328
-  size: 3, 3
-  split: 1, 1, 1, 1
-  orig: 3, 3
+  size: 24, 24
+  split: 16, 16, 16, 16
+  pad: 1, 22, 1, 22
+  orig: 24, 24
   offset: 0, 0
   index: -1

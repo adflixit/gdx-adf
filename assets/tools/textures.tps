@@ -306,7 +306,7 @@
                 <key>scale9Enabled</key>
                 <true/>
                 <key>scale9Borders</key>
-                <rect>1,1,1,1</rect>
+                <rect>16,16,-8,-8</rect>
                 <key>scale9Paddings</key>
                 <rect>1,1,1,1</rect>
                 <key>scale9FromFile</key>
