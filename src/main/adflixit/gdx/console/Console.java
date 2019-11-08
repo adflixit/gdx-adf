@@ -10,10 +10,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Utilizes input and output streams in a thread-safe manner. Works on current thread, has a separate thread to read input.
+ * Utilizes input and output streams in a thread-safe manner. Works on the current thread, has a separate thread to read input.
  */
 public class Console {
-  private boolean                   active  = true;
+  private boolean                   active;
   private InputStream               in;
   private PrintStream               out;
   private final Scanner             scanner;
@@ -28,11 +28,13 @@ public class Console {
     out = sout;
     scanner = new Scanner(in);
 
-    (new Thread("Console") {
+    new Thread("Console") {
       @Override public void run() {
         read();
       }
-    }).start();
+    };
+
+    enable();
 
     registerCommand("print", args -> print(arrToStrf("%s ", args)));
     registerCommand("reset", args -> var(args[0]).reset());
@@ -179,8 +181,23 @@ public class Console {
     }
   }
 
-  public synchronized void dispose() {
+  public void enable() {
+    if (!active) {
+      active = true;
+      new Thread("Console") {
+        @Override public void run() {
+          read();
+        }
+      }.start();
+    }
+  }
+
+  public synchronized void disable() {
     active = false;
+  }
+
+  public void dispose() {
+    disable();
   }
 
   public void print(String msg) {
