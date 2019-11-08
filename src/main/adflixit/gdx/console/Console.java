@@ -27,7 +27,7 @@ public class Console {
     in = sin;
     out = sout;
     scanner = new Scanner(in);
-    
+
     enable();
 
     registerCommand("print", args -> print(arrToStrf("%s ", args)));

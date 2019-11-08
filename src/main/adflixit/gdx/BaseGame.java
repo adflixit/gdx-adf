@@ -48,7 +48,7 @@ import java.util.Arrays;
  * </ul>
  */
 public abstract class BaseGame implements ApplicationListener {
-  private final XApi noXApi = new XApi() {
+  private static final XApi noXApi = new XApi() {
     @Override public AdView getAdView() {return null;}
     @Override public void showAd() {}
     @Override public void hideAd() {}
@@ -78,12 +78,12 @@ public abstract class BaseGame implements ApplicationListener {
   private static Preferences            prefs;
   protected BaseContext<?>              context; // current context
 
-  public BaseGame() {
-    setXApi(noXApi);
-  }
-
   public BaseGame(XApi xApi) {
     setXApi(xApi);
+  }
+
+  public BaseGame() {
+    this(null);
   }
 
   @Override public void create() {
@@ -151,7 +151,7 @@ public abstract class BaseGame implements ApplicationListener {
   }
 
   private static void setXApi(XApi api) {
-    xApi = api;
+    xApi = api == null ? noXApi : api;
   }
 
   /**
