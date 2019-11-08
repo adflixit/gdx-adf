@@ -1,6 +1,6 @@
 package adflixit.gdx;
 
-import static java.lang.Math.*;
+import static java.lang.Math.round;
 
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
