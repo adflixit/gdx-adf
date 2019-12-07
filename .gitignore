@@ -1,19 +1,21 @@
 /trunk/
-/src/test/adflixit/gdx/*.*
-!/src/test/adflixit/gdx/UtilTest.java
-/src/main/adflixit/gdx/collision/
-/src/main/adflixit/gdx/script/
-/src/main/adflixit/gdx/tools/
-/src/main/adflixit/gdx/BaseAndroidLauncher.java
-/src/main/adflixit/gdx/Box2DController.java
-/src/main/adflixit/gdx/DistortionMesh.java
-/src/main/adflixit/gdx/Randseq.java
-/src/main/adflixit/gdx/Trail.java
-/src/main/adflixit/gdx/TrailMesh.java
+/libs/exclude/
+/src/test/java/adflixit/gdx/*.*
+!/src/test/java/adflixit/gdx/UtilTest.java
+/src/main/java/adflixit/gdx/collision/
+/src/main/java/adflixit/gdx/script/
+/src/main/java/adflixit/gdx/tools/
+/src/main/java/adflixit/gdx/BaseAndroidLauncher.java
+/src/main/java/adflixit/gdx/Box2DController.java
+/src/main/java/adflixit/gdx/DistortionMesh.java
+/src/main/java/adflixit/gdx/Randseq.java
+/src/main/java/adflixit/gdx/Trail.java
+/src/main/java/adflixit/gdx/TrailMesh.java
 /assets/data/plasma.frag
 /assets/data/pp.frag
 /assets/data/starnest.frag
 /colors.txt
+/android-lib/build/
 
 ## Java
 

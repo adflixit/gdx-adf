@@ -1,60 +1,54 @@
-apply plugin: "java"
-apply plugin: "eclipse"
-apply plugin: "idea"
+apply plugin: "java-library"
 
-[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
-
-sourceSets.main.java.srcDirs = [ "src/main" ]
-sourceSets.test.java.srcDirs = [ "src/test" ]
-
-
-compileJava {
-    sourceCompatibility = '1.8'
-    targetCompatibility = '1.8'
-}
-
-ext {
-    gdxVersion = '1.9.8'
-    roboVMVersion = '2.3.1'
-}
-
-repositories {
-    mavenLocal()
-    mavenCentral()
-    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
-    maven { url "https://oss.sonatype.org/content/repositories/releases/" }
-    google()
-}
+sourceCompatibility = '1.8'
+sourceSets.main.java.srcDirs = [ "src/main/java" ]
+sourceSets.main.resources.srcDirs = [ "assets/" ]
+sourceSets.test.java.srcDirs = [ "src/test/java" ]
+sourceSets.test.resources.srcDirs = [ "src/test/data" ]
 
 buildscript {
     repositories {
         mavenLocal()
         mavenCentral()
+        maven { url "https://plugins.gradle.org/m2/" }
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         jcenter()
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.0'
-        classpath 'com.mobidevelop.robovm:robovm-gradle-plugin:2.3.3'
-        classpath 'org.multi-os-engine:moe-gradle:1.4.0'
+        classpath 'com.android.tools.build:gradle:3.4.1'
+        classpath 'com.mobidevelop.robovm:robovm-gradle-plugin:2.3.7'
+        classpath 'org.wisepersist:gwt-gradle-plugin:1.0.9'
     }
 }
 
-dependencies {
-    implementation "com.badlogicgames.gdx:gdx:$gdxVersion"
-    implementation "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
-    implementation "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
-    implementation "com.badlogicgames.gdx:gdx-bullet:$gdxVersion"
-    implementation "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
-    implementation "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
-    implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
-    implementation "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
-    implementation 'com.google.android:android:4.1.1.4'
-    implementation fileTree(dir: 'libs', include: '*.jar')
-    testImplementation 'junit:junit:4.12'
+version = '1.0'
+
+ext {
+    gdxVersion = '1.9.10'
+    roboVMVersion = '2.3.7'
 }
 
-eclipse.project {
-    name = "gdx-adflixit"
+repositories {
+    mavenLocal()
+    mavenCentral()
+    jcenter()
+    google()
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+    maven { url "https://oss.sonatype.org/content/repositories/releases/" }
+}
+
+dependencies {
+    implementation project(":android-lib")
+    api "com.badlogicgames.gdx:gdx:$gdxVersion"
+    api "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
+    api "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
+    api "com.badlogicgames.gdx:gdx-bullet:$gdxVersion"
+    api "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
+    api "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
+    api "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+    api "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
+    /*api "com.google.android:android:4.1.1.4"*/
+    implementation fileTree(dir: 'libs', include: '*.jar')
+    testImplementation 'junit:junit:4.12'
 }
