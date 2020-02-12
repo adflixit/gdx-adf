@@ -23,7 +23,7 @@ public class CollisionTracker {
     }
 
     public boolean match(Collideable a, Collideable b) {
-      return (c.a==a&&c.b==b) || (c.b==a&&c.a==b);
+      return (c.a == a && c.b == b) || (c.b == a && c.a == b);
     }
   }
 

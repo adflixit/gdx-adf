@@ -11,12 +11,12 @@
 /src/main/java/adflixit/gdx/Randseq.java
 /src/main/java/adflixit/gdx/Trail.java
 /src/main/java/adflixit/gdx/TrailMesh.java
-/android-lib/src/main/java/adflixit/gdx/BaseAndroidLauncher.java
+/android/src/main/java/adflixit/gdx/BaseAndroidLauncher.java
 /assets/data/plasma.frag
 /assets/data/pp.frag
 /assets/data/starnest.frag
 /colors.txt
-/android-lib/build/
+/android/build/
 
 ## Java
 
