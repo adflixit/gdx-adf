@@ -34,7 +34,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Array;
-import com.google.android.gms.ads.AdView;
 import java.util.Arrays;
 
 /**
@@ -48,42 +47,20 @@ import java.util.Arrays;
  * </ul>
  */
 public abstract class BaseGame implements ApplicationListener {
-  private static final XApi noXApi = new XApi() {
-    @Override public AdView getAdView() {return null;}
-    @Override public void showAd() {}
-    @Override public void hideAd() {}
-    @Override public void refreshAd() {}
-    @Override public void showLeaderboard(String id) {}
-    @Override public void showAchievements() {}
-    @Override public void shareText(String txt) {}
-    @Override public boolean isSignedIn() {return false;}
-    @Override public void signIn() {}
-    @Override public String getPlayerId() {return "";}
-    @Override public long getPersonalBest(String id) {return 0;}
-    @Override public long getAllTimeRecord(String id) {return 0;}
-    @Override public long getWeeklyRecord(String id) {return 0;}
-    @Override public long getDailyRecord(String id) {return 0;}
-    @Override public void submitScore(String id, long score) {}
-    @Override public void unlockAchievement(String id) {}
-    @Override public void quit() {Gdx.app.exit();}
-  };
-
   private static BaseGame               instance;
 
   public static Class<? extends Actor>  actorClassDescendants; // used as the Actor class signature for tween engine
-  private static XApi                   xApi;
+  private static AndroidApi             aApi;
   public static final Console           console = new Console();
   private static Skin                   skin;
   private static MutableProperties      props   = new MutableProperties();
   private static Preferences            prefs;
   protected BaseContext<?>              context; // current context
 
-  public BaseGame(XApi xApi) {
-    setXApi(xApi);
-  }
+  public BaseGame() {}
 
-  public BaseGame() {
-    this(null);
+  public BaseGame(AndroidApi api) {
+    aApi = api;
   }
 
   @Override public void create() {
@@ -143,149 +120,15 @@ public abstract class BaseGame implements ApplicationListener {
     registerCommand("pref", args -> log(pref(args[0])));
     registerCommand("setpref", args -> setProp(args[0], arrToStrf("%s ", Arrays.copyOfRange(args, 1, args.length))));
     registerCommand("flushprefs", args -> flushPrefs());
-    registerCommand("quit", args -> quit());
+    registerCommand("quit", args -> Gdx.app.exit());
   }
 
   public static BaseGame getInstance() {
     return instance;
   }
 
-  private static void setXApi(XApi api) {
-    xApi = api == null ? noXApi : api;
-  }
-
-  /**
-   * @see XApi#getAdView()
-   */
-  public static AdView getAdView() {
-    return xApi.getAdView();
-  }
-
-  /**
-   * @see XApi#showAd()
-   */
-  public static void showAd() {
-    logSetup("Showing ad");
-    xApi.showAd();
-    logDone();
-  }
-
-  /**
-   * @see XApi#hideAd()
-   */
-  public static void hideAd() {
-    logSetup("Hiding ad");
-    xApi.hideAd();
-    logDone();
-  }
-
-  /**
-   * @see XApi#refreshAd()
-   */
-  public static void refreshAd() {
-    logSetup("Refreshing ad");
-    xApi.refreshAd();
-    logDone();
-  }
-
-  /**
-   * @see XApi#showLeaderboard(String)
-   */
-  public static void showLeaderboard(String id) {
-    logSetup("Showing leaderboard");
-    xApi.showLeaderboard(id);
-    logDone();
-  }
-
-  /**
-   * @see XApi#showAchievements()
-   */
-  public static void showAchievements() {
-    logSetup("Showing achievements");
-    xApi.showAchievements();
-    logDone();
-  }
-
-  /**
-   * @see XApi#shareText(String)
-   */
-  public static void shareText(String txt) {
-    logSetup("Sharing text '"+txt+"'");
-    xApi.shareText(txt);
-    logDone();
-  }
-
-  /**
-   * @see XApi#isSignedIn()
-   */
-  public static boolean isSignedIn() {
-    return xApi.isSignedIn();
-  }
-
-  /**
-   * @see XApi#signIn()
-   */
-  public static void signIn() {
-    logSetup("Signing in");
-    xApi.signIn();
-    logDone();
-  }
-
-  /**
-   * @see XApi#getPlayerId()
-   */
-  public static String getPlayerId() {
-    return xApi.getPlayerId();
-  }
-
-  /**
-   * @see XApi#getPersonalBest(String)
-   */
-  public static long getPersonalBest(String id) {
-    log("Retrieving personal best from id "+id);
-    return xApi.getPersonalBest(id);
-  }
-
-  /**
-   * @see XApi#getAllTimeRecord(String)
-   */
-  public static long getAllTimeRecord(String id) {
-    log("Retrieving all time record from id "+id);
-    return xApi.getAllTimeRecord(id);
-  }
-
-  /**
-   * @see XApi#getWeeklyRecord(String)
-   */
-  public static long getWeeklyRecord(String id) {
-    log("Retrieving weekly record from id "+id);
-    return xApi.getWeeklyRecord(id);
-  }
-
-  /**
-   * @see XApi#getDailyRecord(String)
-   */
-  public static long getDailyRecord(String id) {
-    log("Retrieving daily record from id "+id);
-    return xApi.getDailyRecord(id);
-  }
-
-  /**
-   * @see XApi#submitScore(String, long)
-   */
-  public static void submitScore(String id, long score) {
-    logSetup("Submitting score "+score);
-    xApi.submitScore(id, score);
-    logDone();
-  }
-
-  /**
-   * @see XApi#unlockAchievement(String)
-   */
-  public static void unlockAchievement(String id) {
-    logSetup("Unlocking achievement "+id);
-    xApi.unlockAchievement(id);
-    logDone();
+  public static AndroidApi aApi() {
+    return aApi;
   }
 
   public static void loadSkin(FileHandle skinFile, FileHandle atlas) {
@@ -700,11 +543,6 @@ public abstract class BaseGame implements ApplicationListener {
    */
   public static TextureAtlas atlas() {
     return skin.getAtlas();
-  }
-
-  public static void quit() {
-    log("Closing app");
-    xApi.quit();
   }
 
   @Override public void dispose() {

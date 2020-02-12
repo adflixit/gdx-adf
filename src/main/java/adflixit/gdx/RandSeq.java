@@ -27,7 +27,7 @@ public class RandSeq {
   }
 
   public void init(int start, int end) {
-    // in case the range is misplaced
+    // in case if the range is misplaced
     if (start > end) {
       int t = end;
       end = start;

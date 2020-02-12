@@ -24,7 +24,7 @@ public class Tapper extends ScreenComponent<BaseContext<?>> {
 
   public void set(Group parent, int z, final Callback cb, boolean down) {
     parent.addActor(area);
-    // setting position to the absolute zero
+    // set position to the absolute zero
     updatePos();
     area.setZIndex(z);
 
@@ -51,7 +51,7 @@ public class Tapper extends ScreenComponent<BaseContext<?>> {
 
   public void setOnce(Group parent, int z, final Callback cb, boolean down) {
     parent.addActor(area);
-    // setting position to the absolute zero
+    // set position to the absolute zero
     updatePos();
     area.setZIndex(z);
 

@@ -119,16 +119,16 @@ public class Console {
       throw new IllegalArgumentException("An evaluated line cannot be null.");
     }
 
-    // parsing the input into either whole words or text bounded by quotation marks
+    // parse the input into either whole words or text bounded by quotation marks
     parsed.clear();
     Matcher m = Pattern.compile("([^\"']\\S*|[\"'].+?[\"'])\\s*").matcher(line);
-    // removing quotation marks from grouped text
+    // remove quotation marks from grouped text
     while (m.find()) {
       parsed.add(m.group(1).replaceAll("[\"']", ""));
     }
     String name = parsed.get(0);
 
-    // searching for a command or a variable matching the name
+    // search for a command or a variable matching the name
     ConCmd cmd = cmd(name);
     ConVar var = var(name);
     String als = als(name);
@@ -137,14 +137,14 @@ public class Console {
       // if nothing found
       print("Unknown command: "+name);
     } else if (cmd != null) {
-      // if a command with this name is found, it will be queued to be called on the main thread
+      // if a command with this name is found, it will be queued to be called on main thread
       cmd.exec(parsed.subList(1, parsed.size()).toArray(new String[0]));
     } else if (var != null) {
       // if no command found, it will be used to set a variable
       var.set(parsed.get(1));
     } else if (als != null) {
-      // checking the aliases, which goes recursively
-      // replacing ';' with '$|' for technical reasons
+      // check the aliases, which goes recursively
+      // replace ';' with '$|' for technical reasons
       parse(als.replaceAll(";", "\\$\\|"));
     }
   }

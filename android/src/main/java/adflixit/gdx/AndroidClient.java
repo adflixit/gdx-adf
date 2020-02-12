@@ -1,7 +1,5 @@
 package adflixit.gdx;
 
-import static com.google.android.gms.games.leaderboard.LeaderboardVariant.*;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -17,17 +15,10 @@ import com.google.android.gms.ads.AdView;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.games.Games;
 
-public abstract class BaseAndroidLauncher extends AndroidApplication {
-  /*protected AndroidClient client;
-  protected BaseGame      game;
-
-  protected abstract String getAdUnitId();
-  protected abstract ApplicationListener getInstance();  
-
-  public void initializeEx(BaseGame game) {
-    this.game = game;
-    initialize(game);
-  }
+public class AndroidClient {
+  protected static long       tmpScore; // used as proxy to retrieve data
+  protected AdView            adView;
+  protected AdRequest.Builder adRequestBuilder;
 
   @Override public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -105,7 +96,7 @@ public abstract class BaseAndroidLauncher extends AndroidApplication {
 
   private void getTopScore(String id, int span, int collection) {
     Games.Leaderboards.loadTopScores(getApiClient(), id, span, collection, 1)
-        .setResultCallback(scoreResult -> setTmpScore(scoreResult.getScores().get(0).getRawScore()));
+            .setResultCallback(scoreResult -> setTmpScore(scoreResult.getScores().get(0).getRawScore()));
   }
 
   @Override public void showAd() {
@@ -131,7 +122,7 @@ public abstract class BaseAndroidLauncher extends AndroidApplication {
   }
 
   @Override public void openLeaderboard(String id) {
-    logSetup("Showing leaderboard");
+    logSetup("Opening leaderboard");
     if (gameHelper.isSignedIn()) {
       startActivityForResult(Games.Leaderboards.getLeaderboardIntent(getApiClient(), id), 100);
     } else if (!gameHelper.isConnecting()) {
@@ -141,7 +132,7 @@ public abstract class BaseAndroidLauncher extends AndroidApplication {
   }
 
   @Override public void openAchievements() {
-    logSetup("Showing achievements");
+    logSetup("Opening achievements");
     if (gameHelper.isSignedIn()) {
       startActivityForResult(Games.Achievements.getAchievementsIntent(getApiClient()), 101);
     } else if (!gameHelper.isConnecting()) {
@@ -181,7 +172,7 @@ public abstract class BaseAndroidLauncher extends AndroidApplication {
   @Override public long getPersonalBest(String id) {
     log("Retrieving personal best from id "+id);
     Games.Leaderboards.loadCurrentPlayerLeaderboardScore(getApiClient(), id, LeaderboardVariant.TIME_SPAN_ALL_TIME, LeaderboardVariant.COLLECTION_PUBLIC)
-        .setResultCallback(scoreResult -> setTmpScore(scoreResult.getScore().getRawScore()));
+            .setResultCallback(scoreResult -> setTmpScore(scoreResult.getScore().getRawScore()));
     return tmpScore;
   }
 
@@ -224,5 +215,5 @@ public abstract class BaseAndroidLauncher extends AndroidApplication {
       intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
       startActivity(intent);
     });
-  }*/
+  }
 }

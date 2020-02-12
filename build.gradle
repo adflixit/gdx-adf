@@ -39,7 +39,7 @@ repositories {
 }
 
 dependencies {
-    implementation project(":android-lib")
+    implementation project(":android")
     api "com.badlogicgames.gdx:gdx:$gdxVersion"
     api "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
     api "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
@@ -48,7 +48,7 @@ dependencies {
     api "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
     api "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
     api "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
-    /*api "com.google.android:android:4.1.1.4"*/
+    api "com.google.android:android:4.1.1.4"
     implementation fileTree(dir: 'libs', include: '*.jar')
     testImplementation 'junit:junit:4.12'
 }

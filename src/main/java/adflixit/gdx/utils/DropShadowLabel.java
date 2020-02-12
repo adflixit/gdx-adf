@@ -91,7 +91,7 @@ public class DropShadowLabel extends Label {
     blur.init(radius, color);
     blur.setSize((int)vp.getWorldWidth(), (int)vp.getWorldHeight());
 
-    // imprinting the text
+    // imprint the text
     blur.begin();
     batch.begin();
       super.draw(batch, 1);

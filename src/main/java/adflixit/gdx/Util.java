@@ -400,15 +400,15 @@ public final class Util {
    */
   public static <T> String arrToStrf(String pattern, T... array) {
     String s = "";
-    // merging all except the last one
+    // merge all except the last one
     for (int i=0; i < array.length-1; i++) {
       s += String.format(pattern, wrpToStr(array[i]));
     }
-    // clearing the tokens
+    // clear the tokens
     s = s.replaceAll("\\$\\|", "");
-    // adding last item with token
+    // add last item with token
     s += String.format(pattern, wrpToStr(array[array.length-1]));
-    // trimming
+    // trim
     return s.substring(0, s.length() - (pattern.length() -
         (pattern.contains("$|") ? pattern.indexOf("$|") : pattern.indexOf("%s") + 2)));
   }

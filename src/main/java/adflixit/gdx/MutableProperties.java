@@ -186,9 +186,9 @@ public class MutableProperties extends Properties {
 
       // was line altered
       boolean altered = false;
-      // going through the lines of the file
+      // go through the lines of the file
       for (String i : raw) {
-        // checking if the entry key is on the flushed list, i.e. if the word before '=' matches a key from the list
+        // check if the entry key is on the flushed list, i.e. if the word before '=' matches a key from the list
         for (String j : flushed) {
           if (i.startsWith(j) && !i.startsWith("#") && !i.isEmpty()) {
             // if a match is found, assemble the key and the new value
@@ -216,7 +216,7 @@ public class MutableProperties extends Properties {
   public void flushAll() throws IllegalArgumentException, RuntimeException {
     flushed.clear();
     String output = "";
-    // going through the lines of the file
+    // go through the lines of the file
     for (String i : raw) {
       if (!i.startsWith("#") && !i.isEmpty()) {
         // if a match is found, assembling the key and the new value

@@ -17,7 +17,7 @@ public class Logger {
 
   public static final void logSetup(String msg) {
     if (isAndroidApp()) {
-      Gdx.app.log("App", msg);
+      Gdx.app.log("App", msg + "...");
     } else {
       System.out.print(msg);
     }
@@ -32,6 +32,6 @@ public class Logger {
   }
 
   public static final void warning(String msg) {
-    log("\u001B[31m"+msg+"\u001B[0m");
+    log("\u001B[31m" + msg + "\u001B[0m");
   }
 }

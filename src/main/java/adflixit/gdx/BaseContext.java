@@ -194,19 +194,19 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
   private boolean                     drawDebug;
   protected boolean                   doPostprocess;
 
-  private final Color                 black               = new Color(0x0f1114ff);
+  private final Color                 onyx                = new Color(0x0f1114ff);
 
   public BaseContext(G game) {
     this.game = game;
     ui.setViewport(uiViewport);
-    // adding all UI layers to the stage
+    // add all UI layers to the stage
     for (Group layer : uiLayers) {
       ui.addActor(layer);
     }
     // overlay shouldn't receive input
     uiLayers[UI_OVERLAY].setTouchable(Touchable.disabled);
     timestamp.set();
-    // stacking all input listeners
+    // stack all input listeners
     inputMultiplexer.addProcessor(ui);
     inputMultiplexer.addProcessor(this);
     inputMultiplexer.addProcessor(new GestureDetector(this));
@@ -426,7 +426,7 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
    * Performs the camera shake procedure.
    */
   private void shakeCamera() {
-    // moving both camera and UI off their pivots
+    // move both camera and UI off their pivots
     if (camShake() > 0) {
       double camAngle = rand(CIRC), uiAngle = rand(CIRC);
       float camRange = camShake(), uiRange = camRange * .5f;
@@ -568,7 +568,7 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
 
   public void resize() {
     logSetup(String.format("Resizing to %.1f %.1f", screenWidth(), screenHeight()));
-    // recording previous screen size
+    // record previous screen size
     if (lastScreenSizeJunc) {
       evenLastScreenSize.set(screenWidth(), screenHeight());
     } else {
@@ -3877,7 +3877,7 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
    * @return tween handle
    */
   public Tween $fadeSheers(float v, float d) {
-    return $fadeSheers(black, v, d);
+    return $fadeSheers(onyx, v, d);
   }
 
   /**
@@ -3886,7 +3886,7 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
    * @return tween handle
    */
   public Tween $fadeSheers(float v) {
-    return $fadeSheers(black, v, C_D);
+    return $fadeSheers(onyx, v, C_D);
   }
 
   /**
@@ -3999,7 +3999,7 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
    * @return tween handle
    */
   public Tween $setSheers(float v) {
-    return $setSheers(black, v);
+    return $setSheers(onyx, v);
   }
 
   /**
@@ -4007,7 +4007,7 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
    * @return tween handle
    */
   public Tween $setSheers() {
-    return $setSheers(black, 1);
+    return $setSheers(onyx, 1);
   }
 
   /**
@@ -4065,7 +4065,7 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
    * @return tween handle
    */
   public Tween $fadeBo(float v, float d) {
-    return $fadeBo(black, v, d);
+    return $fadeBo(onyx, v, d);
   }
 
   /**
@@ -4074,7 +4074,7 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
    * @return tween handle
    */
   public Tween $fadeBo(float v) {
-    return $fadeBo(black, v, C_D);
+    return $fadeBo(onyx, v, C_D);
   }
 
   /**
@@ -4142,7 +4142,7 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
    * @return tween handle
    */
   public Tween $setBlackouts(float v) {
-    return $setBo(black, v);
+    return $setBo(onyx, v);
   }
 
   /**
@@ -4150,7 +4150,7 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
    * @return tween handle
    */
   public Tween $setBlackouts() {
-    return $setBo(black, 1);
+    return $setBo(onyx, 1);
   }
 
   /**
@@ -4208,7 +4208,7 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
    * @return tween handle
    */
   public Tween $fadeTint(float v, float d) {
-    return $fadeTint(black, v, d);
+    return $fadeTint(onyx, v, d);
   }
 
   /**
@@ -4217,7 +4217,7 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
    * @return tween handle
    */
   public Tween $fadeTint(float v) {
-    return $fadeTint(black, v, C_D);
+    return $fadeTint(onyx, v, C_D);
   }
 
   /**
@@ -4261,7 +4261,7 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
    * @return tween handle
    */
   public Tween $setTint(float v) {
-    return $setTint(black, v);
+    return $setTint(onyx, v);
   }
 
   /**
@@ -4269,7 +4269,7 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
    * @return tween handle
    */
   public Tween $setTint() {
-    return $setTint(black, 1);
+    return $setTint(onyx, 1);
   }
 
   /**
@@ -4336,7 +4336,7 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
    * @return tween handle
    */
   public Tween $fadeVignette(float v, float d) {
-    return $fadeVignette(black, v, d);
+    return $fadeVignette(onyx, v, d);
   }
 
   /**
@@ -4345,7 +4345,7 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
    * @return tween handle
    */
   public Tween $fadeVignetteIn(float d) {
-    return $fadeVignette(black, 1, d);
+    return $fadeVignette(onyx, 1, d);
   }
 
   /**
@@ -4449,7 +4449,7 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
    * @return tween handle
    */
   public Tween $setVignette(float v) {
-    return $setVignette(black, v);
+    return $setVignette(onyx, v);
   }
 
   /**
@@ -4457,7 +4457,7 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
    * @return tween handle
    */
   public Tween $setVignette() {
-    return $setVignette(black, 1);
+    return $setVignette(onyx, 1);
   }
 
   /**

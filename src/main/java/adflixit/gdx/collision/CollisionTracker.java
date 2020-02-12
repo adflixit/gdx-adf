@@ -183,7 +183,7 @@ public class CollisionTracker {
     }
 
     for (Box i : boxes) {
-      // checking box on box
+      // check box on box
       for (Box j : boxes) {
         // not checking the same box
         if (i==j) {
@@ -206,7 +206,7 @@ public class CollisionTracker {
         }
       }
       i.pos.add(i.vx(), i.vy());
-      // checking box on line
+      // check box on line
       for (Line j : lines) {
         if (checkCollision(testBoxLineIntersection(i,j), i,j)) {
           

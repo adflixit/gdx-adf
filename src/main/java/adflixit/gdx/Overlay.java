@@ -30,7 +30,7 @@ public class Overlay extends ScreenComponent<BaseContext<?>> {
 
   public void init() {
     resetAlpha(sheers, blackouts, tint, dim, vignette);
-    setRgb(dim, color("black"));
+    setRgb(dim, color("onyx"));
   }
 
   /**
