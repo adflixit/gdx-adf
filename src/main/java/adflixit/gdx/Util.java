@@ -359,7 +359,7 @@ public final class Util {
   /**
    * @return wrapped primitive converted to text.
    */
-  public static String wrpToStr(Object obj) {
+  public static String wrapToStr(Object obj) {
     if (obj instanceof Boolean) {
       return String.valueOf(((Boolean)obj).booleanValue());
     } else if (obj instanceof Character) {
@@ -387,7 +387,7 @@ public final class Util {
   public static <T> String arrToStr(T... array) {
     String s = "";
     for (T i : array) {
-      s += wrpToStr(i) + ", ";
+      s += wrapToStr(i) + ", ";
     }
     return s.substring(0, s.length() - 2);
   }
@@ -402,12 +402,12 @@ public final class Util {
     String s = "";
     // merge all except the last one
     for (int i=0; i < array.length-1; i++) {
-      s += String.format(pattern, wrpToStr(array[i]));
+      s += String.format(pattern, wrapToStr(array[i]));
     }
     // clear the tokens
     s = s.replaceAll("\\$\\|", "");
     // add last item with token
-    s += String.format(pattern, wrpToStr(array[array.length-1]));
+    s += String.format(pattern, wrapToStr(array[array.length-1]));
     // trim
     return s.substring(0, s.length() - (pattern.length() -
         (pattern.contains("$|") ? pattern.indexOf("$|") : pattern.indexOf("%s") + 2)));
@@ -446,7 +446,7 @@ public final class Util {
     int c = 0;
     for (StackTraceElement i : Thread.currentThread().getStackTrace()) {
       if (c != 1) {
-        System.out.println((c > 0 ? "    " : "") + i);
+        System.out.println(((c > 0) ? "    " : "") + i);
       }
       c++;
     }
@@ -541,7 +541,7 @@ public final class Util {
     }
   }
 
-  /********** Scene utilities **********/
+  /********** Scene utils **********/
 
   public static Group addActors(Group group, Actor... actors) {
     for (Actor actor : actors) {
@@ -771,7 +771,7 @@ public final class Util {
     };
   }
 
-  /********** Box2D utilities **********/
+  /********** Box2D utils **********/
 
   /**
    * @return {@link Filter#categoryBits} of a Box2D {@link Fixture}.
@@ -846,7 +846,7 @@ public final class Util {
     return checkUnorderedContactByGroup(contact.getFixtureA(), contact.getFixtureB(), gia, gib);
   }
 
-  /********** Color utilities **********/
+  /********** Color utils **********/
 
   public static void setAlpha(Color clr, float a) {
     clr.a = a;
@@ -885,7 +885,7 @@ public final class Util {
     float r = clr.r, g = clr.g, b = clr.b, u = (float)cos(h * DEG), w = (float)sin(h * DEG);
     return clr.set((.299f + .701f*u + .168f*w) * r + (.587f - .587f*u + .330f*w) * g + (.114f - .114f*u - .497f*w) * b,
         (.299f - .299f*u - .328f*w) * r + (.587f + .413f*u + .035f*w) * g + (.114f - .114f*u + .292f*w) * b,
-        (.299f - .3f*u + 1.25f*w) * r + (.587f - .588f*u - 1.05f*w) * g + (.114f + .886f*u - .203f*w) * b,
+        (.299f - .300f*u + 1.25f*w) * r + (.587f - .588f*u - 1.05f*w) * g + (.114f + .886f*u - .203f*w) * b,
         clr.a);
   }
 
@@ -934,7 +934,7 @@ public final class Util {
     return clr.set(tmpv3.x, tmpv3.y, tmpv3.z, clr.a);
   }
 
-  /********** Math utilities **********/
+  /********** Math utils **********/
 
   public static float sinf(float a)               {return (float)sin(a);}
   public static float sinf(double a)              {return (float)sin(a);}
@@ -1193,7 +1193,7 @@ public final class Util {
       min = max;
       max = t;
     }
-    return a < min ? min : (a > max ? max : a);
+    return (a < min) ? min : ((a > max) ? max : a);
   }
 
   /**
@@ -1205,7 +1205,7 @@ public final class Util {
       min = max;
       max = t;
     }
-    return a < min ? min : (a > max ? max : a);
+    return (a < min) ? min : ((a > max) ? max : a);
   }
 
   /**
@@ -1217,7 +1217,7 @@ public final class Util {
       min = max;
       max = t;
     }
-    return a < min ? min : (a > max ? max : a);
+    return (a < min) ? min : ((a > max) ? max : a);
   }
 
   /**
@@ -1229,7 +1229,7 @@ public final class Util {
       min = max;
       max = t;
     }
-    return a < min ? min : (a > max ? max : a);
+    return (a < min) ? min : ((a > max) ? max : a);
   }
 
   /**

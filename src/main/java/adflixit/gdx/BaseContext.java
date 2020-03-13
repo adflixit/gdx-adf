@@ -147,7 +147,7 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
   }
 
   private static void setAdvancedPerformance(boolean v) {
-    log("Advanced performance "+(v?"enabled":"disabled"));
+    log("Advanced performance " + (v ? "enabled" : "disabled"));
     advancedPerformance = v;
   }
 
@@ -620,7 +620,7 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
       AdView av = getAdView();
       killTarget(av);
       Tween.to(av, AndViewAccessor.Y, d)
-      .targetRelative(av.getTop() > av.getBottom() ? -av.getHeight() : av.getHeight()).ease(Soft.INOUT)
+      .targetRelative((av.getTop() > av.getBottom()) ? -av.getHeight() : av.getHeight()).ease(Soft.INOUT)
       .start(tweenMgr);
     }*/
   }
@@ -640,7 +640,7 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
       AdView av = getAdView();
       killTarget(av);
       Tween.to(av, AndViewAccessor.Y, d)
-      .targetRelative(av.getTop() > av.getBottom() ? av.getHeight() : -av.getHeight()).ease(Soft.INOUT)
+      .targetRelative((av.getTop() > av.getBottom()) ? av.getHeight() : -av.getHeight()).ease(Soft.INOUT)
       .start(tweenMgr);
     }*/
   }
@@ -2437,7 +2437,7 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
     return $setUiLayerAlpha(i, 0);
   }
 
-  /******************************************/
+  /****************************************/
 
   /**
    * Tweens the blur.
