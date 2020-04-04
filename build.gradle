@@ -1,10 +1,10 @@
-apply plugin: "java-library"
+group = 'adf.gdx'
+version = '1.0'
 
-sourceCompatibility = '1.8'
-sourceSets.main.java.srcDirs = [ "src/main/java" ]
-sourceSets.main.resources.srcDirs = [ "assets/" ]
-sourceSets.test.java.srcDirs = [ "src/test/java" ]
-sourceSets.test.resources.srcDirs = [ "src/test/data" ]
+ext {
+    gdxVersion = '1.9.10'
+    roboVMVersion = '2.3.7'
+}
 
 buildscript {
     repositories {
@@ -22,33 +22,47 @@ buildscript {
     }
 }
 
-version = '1.0'
-
-ext {
-    gdxVersion = '1.9.10'
-    roboVMVersion = '2.3.7'
+allprojects {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        jcenter()
+        google()
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+        maven { url "https://oss.sonatype.org/content/repositories/releases/" }
+    }
 }
 
-repositories {
-    mavenLocal()
-    mavenCentral()
-    jcenter()
-    google()
-    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
-    maven { url "https://oss.sonatype.org/content/repositories/releases/" }
+project(":core") {
+    dependencies {
+        implementation project(":android")
+        api "com.badlogicgames.gdx:gdx:$gdxVersion"
+        api "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
+        api "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
+        api "com.badlogicgames.gdx:gdx-bullet:$gdxVersion"
+        api "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
+        api "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
+        api "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+        api "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
+        api "com.google.android:android:4.1.1.4"
+        implementation fileTree(dir: '../libs', include: ['*.jar'])
+        testImplementation 'junit:junit:4.12'
+    }
 }
 
-dependencies {
-    implementation project(":android")
-    api "com.badlogicgames.gdx:gdx:$gdxVersion"
-    api "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
-    api "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
-    api "com.badlogicgames.gdx:gdx-bullet:$gdxVersion"
-    api "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
-    api "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
-    api "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
-    api "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
-    api "com.google.android:android:4.1.1.4"
-    implementation fileTree(dir: 'libs', include: '*.jar')
-    testImplementation 'junit:junit:4.12'
+project(":android") {
+    configurations {
+        custom
+        compile.extendsFrom custom
+    }
+
+    dependencies {
+        implementation fileTree(dir: '../libs', include: ['*.jar'])
+        implementation "androidx.core:core:1.2.0"
+        implementation "com.google.android.gms:play-services-games:18.0.1"
+        implementation "com.google.android.gms:play-services-auth:17.0.0"
+        implementation "com.google.android.gms:play-services-ads:18.3.0"
+        api "com.badlogicgames.gdx:gdx:1.9.10"
+        api "com.badlogicgames.gdx:gdx-backend-android:1.9.10"
+    }
 }
