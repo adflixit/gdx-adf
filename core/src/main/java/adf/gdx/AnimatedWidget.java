@@ -24,8 +24,8 @@ import com.badlogic.gdx.utils.Array;
 public class AnimatedWidget extends Widget {
   private Animation<TextureRegion>  anim;
   private float                     duration;
-  private Tween                     tween;  // used to manipulate the playtime mark
-  private final MutableFloat        time  = new MutableFloat(0);  // current playtime mark
+  private Tween                     tween;  // used to manipulate the playtime position
+  private final MutableFloat        time  = new MutableFloat(0);  // current playtime position
 
   public AnimatedWidget(float frameDuration, Array<? extends TextureRegion> keyFrames, PlayMode playMode) {
     setAnimation(new Animation<TextureRegion>(frameDuration, keyFrames, playMode));
@@ -70,7 +70,7 @@ public class AnimatedWidget extends Widget {
   }
 
   /**
-   * @return current playtime mark.
+   * @return current playtime position.
    */
   public float time() {
     return time.floatValue();
@@ -88,7 +88,7 @@ public class AnimatedWidget extends Widget {
   }
 
   /**
-   * Tweens the playtime mark.
+   * Tweens the playtime position.
    * @param v value
    * @param d duration
    * @param eq tween equation
@@ -98,7 +98,7 @@ public class AnimatedWidget extends Widget {
   }
 
   /**
-   * Tweens the playtime mark with predetermined tween equation.
+   * Tweens the playtime position with predetermined tween equation.
    * @param v value
    * @param d duration
    */
@@ -107,7 +107,7 @@ public class AnimatedWidget extends Widget {
   }
 
   /**
-   * Tweens the playtime mark with predetermined duration and tween equation.
+   * Tweens the playtime position with predetermined duration and tween equation.
    * @param v value
    */
   public void tween(float v) {
@@ -115,7 +115,7 @@ public class AnimatedWidget extends Widget {
   }
 
   /**
-   * Creates a handle to tween the playtime mark.
+   * Creates a tween handle for playtime position.
    * @param v value
    * @param d duration
    * @param eq tween equation
@@ -127,7 +127,7 @@ public class AnimatedWidget extends Widget {
   }
 
   /**
-   * Creates a handle to tween the playtime mark.
+   * Creates a tween handle for playtime position.
    * @param v value
    * @param d duration
    * @return tween handle
@@ -137,7 +137,7 @@ public class AnimatedWidget extends Widget {
   }
 
   /**
-   * Creates a tween handle to tween the playtime mark.
+   * Creates a tween handle for playtime position.
    * @param v value
    * @return tween handle
    */

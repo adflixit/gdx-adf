@@ -7,18 +7,3 @@ sourceSets {
     test.java.srcDirs = [ "src/test/java" ]
     test.resources.srcDirs = [ "src/test/data" ]
 }
-
-dependencies {
-    implementation project(":android")
-    api "com.badlogicgames.gdx:gdx:$gdxVersion"
-    api "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
-    api "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
-    api "com.badlogicgames.gdx:gdx-bullet:$gdxVersion"
-    api "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
-    api "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
-    api "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
-    api "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
-    api "com.google.android:android:4.1.1.4"
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    testImplementation 'junit:junit:4.12'
-}

@@ -1,11 +1,3 @@
-group = 'adf.gdx'
-version = '1.0'
-
-ext {
-    gdxVersion = '1.9.10'
-    roboVMVersion = '2.3.7'
-}
-
 buildscript {
     repositories {
         mavenLocal()
@@ -23,6 +15,14 @@ buildscript {
 }
 
 allprojects {
+    ext {
+        gdxVersion = '1.9.10'
+        roboVMVersion = '2.3.7'
+    }
+
+    group = 'adf.gdx'
+    version = '1.0'
+
     repositories {
         mavenLocal()
         mavenCentral()
@@ -34,6 +34,8 @@ allprojects {
 }
 
 project(":core") {
+    apply plugin: 'java-library'
+
     dependencies {
         implementation project(":android")
         api "com.badlogicgames.gdx:gdx:$gdxVersion"
@@ -51,11 +53,6 @@ project(":core") {
 }
 
 project(":android") {
-    configurations {
-        custom
-        compile.extendsFrom custom
-    }
-
     dependencies {
         implementation fileTree(dir: '../libs', include: ['*.jar'])
         implementation "androidx.core:core:1.2.0"

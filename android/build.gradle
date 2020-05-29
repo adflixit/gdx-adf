@@ -1,7 +1,5 @@
 apply plugin: "com.android.library"
 
-project.group = 'adf.gdx'
-
 android {
     buildToolsVersion "28.0.3"
     compileSdkVersion 28
@@ -21,15 +19,5 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-    }
-}
-
-buildscript {
-    repositories {
-        jcenter()
-        google()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:3.4.1'
     }
 }
