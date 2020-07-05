@@ -210,13 +210,13 @@ public abstract class BaseGame implements ApplicationListener {
    * Loads the specified properties.
    */
   public static void loadProps(String path) {
-    logSetup("Loading properties '"+path+"'");
+    logSetup("Load properties '"+path+"'");
     props.load(path);
     logDone();
   }
 
   public static void reloadProps() {
-    logSetup("Reloading properties");
+    logSetup("Reload properties");
     props.reload();
     logDone();
   }
@@ -269,7 +269,7 @@ public abstract class BaseGame implements ApplicationListener {
    * @return the previous value of the specified key.
    */
   public static Object setProp(String key, String value) {
-    log("Changing property '"+key+"' from '"+prop(key)+"' to '"+value+"'");
+    log("Change property '"+key+"' from '"+prop(key)+"' to '"+value+"'");
     return props.set(key, value);
   }
 
@@ -277,7 +277,7 @@ public abstract class BaseGame implements ApplicationListener {
    * Changes the existing property to an {@code int} value.
    */
   public static void setPropInt(String key, int value) {
-    log("Changing property '"+key+"' from '"+prop(key)+"' to '"+value+"'");
+    log("Change property '"+key+"' from '"+prop(key)+"' to '"+value+"'");
     props.setInt(key, value);
     logDone();
   }
@@ -286,7 +286,7 @@ public abstract class BaseGame implements ApplicationListener {
    * Changes the existing property to an {@code long} value.
    */
   public static void setPropLong(String key, long value) {
-    log("Changing property '"+key+"' from '"+prop(key)+"' to '"+value+"'");
+    log("Change property '"+key+"' from '"+prop(key)+"' to '"+value+"'");
     props.setLong(key, value);
     logDone();
   }
@@ -295,7 +295,7 @@ public abstract class BaseGame implements ApplicationListener {
    * Changes the existing property to an {@code float} value.
    */
   public static void setPropFloat(String key, float value) {
-    log("Changing property '"+key+"' from '"+prop(key)+"' to '"+value+"'");
+    log("Change property '"+key+"' from '"+prop(key)+"' to '"+value+"'");
     props.setFloat(key, value);
     logDone();
   }
@@ -304,7 +304,7 @@ public abstract class BaseGame implements ApplicationListener {
    * Changes the existing property to an {@code double} value.
    */
   public static void setPropDouble(String key, double value) {
-    log("Changing property '"+key+"' from '"+prop(key)+"' to '"+value+"'");
+    log("Change property '"+key+"' from '"+prop(key)+"' to '"+value+"'");
     props.setDouble(key, value);
     logDone();
   }
@@ -313,7 +313,7 @@ public abstract class BaseGame implements ApplicationListener {
    * Changes the existing property to an {@code boolean} value.
    */
   public static void setPropBool(String key, boolean value) {
-    log("Changing property '"+key+"' from '"+prop(key)+"' to '"+value+"'");
+    log("Change property '"+key+"' from '"+prop(key)+"' to '"+value+"'");
     props.setBool(key, value);
     logDone();
   }
@@ -322,7 +322,7 @@ public abstract class BaseGame implements ApplicationListener {
    * Resets the property to the default value.
    */
   public static void resetProp(String key) {
-    logSetup("Resetting property '"+key+"'");
+    logSetup("Reset property '"+key+"'");
     props.reset(key);
     logDone();
   }
@@ -331,7 +331,7 @@ public abstract class BaseGame implements ApplicationListener {
    * Resets all property to the default values.
    */
   public static void resetProps() {
-    logSetup("Resetting properties");
+    logSetup("Reset properties");
     props.resetAll();
     logDone();
   }
@@ -340,7 +340,7 @@ public abstract class BaseGame implements ApplicationListener {
    * Saves the specified property to the file.
    */
   public static void flushProp(String key) {
-    logSetup("Flushing property '"+key+"'");
+    logSetup("Flush property '"+key+"'");
     props.flush(key);
     logDone();
   }
@@ -349,7 +349,7 @@ public abstract class BaseGame implements ApplicationListener {
    * Saves properties to the file.
    */
   public static void flushProps() {
-    logSetup("Flushing properties");
+    logSetup("Flush properties");
     props.flushAll();
     logDone();
   }
@@ -359,7 +359,7 @@ public abstract class BaseGame implements ApplicationListener {
   }
 
   public static void loadPrefs(String name) {
-    logSetup("Loading preferences '"+name+"'");
+    logSetup("Load preferences '"+name+"'");
     prefs = Gdx.app.getPreferences(name);
     logDone();
   }
@@ -410,7 +410,7 @@ public abstract class BaseGame implements ApplicationListener {
    * Adds a string entry to the preferences.
    */
   public static void putPref(String key, String value) {
-    logSetup("Setting preference '"+key+"' to '"+value+"'");
+    logSetup("Set preference '"+key+"' to '"+value+"'");
     prefs.putString(key, value);
     logDone();
   }
@@ -419,7 +419,7 @@ public abstract class BaseGame implements ApplicationListener {
    * Adds an int entry to the preferences.
    */
   public static void putPrefInt(String key, int value) {
-    logSetup("Setting preference '"+key+"' to '"+value+"'");
+    logSetup("Set preference '"+key+"' to '"+value+"'");
     prefs.putInteger(key, value);
     logDone();
   }
@@ -428,7 +428,7 @@ public abstract class BaseGame implements ApplicationListener {
    * Adds a long entry to the preferences.
    */
   public static void putPrefLong(String key, long value) {
-    logSetup("Setting preference '"+key+"' to '"+value+"'");
+    logSetup("Set preference '"+key+"' to '"+value+"'");
     prefs.putLong(key, value);
     logDone();
   }
@@ -437,7 +437,7 @@ public abstract class BaseGame implements ApplicationListener {
    * Adds a float entry to the preferences.
    */
   public static void putPrefFloat(String key, float value) {
-    logSetup("Setting preference '"+key+"' to '"+value+"'");
+    logSetup("Set preference '"+key+"' to '"+value+"'");
     prefs.putFloat(key, value);
     logDone();
   }
@@ -446,7 +446,7 @@ public abstract class BaseGame implements ApplicationListener {
    * Adds a boolean entry to the preferences.
    */
   public static void putPrefBool(String key, boolean value) {
-    logSetup("Setting preference '"+key+"' to '"+value+"'");
+    logSetup("Set preference '"+key+"' to '"+value+"'");
     prefs.putBoolean(key, value);
     logDone();
   }
@@ -455,7 +455,7 @@ public abstract class BaseGame implements ApplicationListener {
    * Has to be called after every set of preferences is changed.
    */
   public static void flushPrefs() {
-    logSetup("Flushing preferences");
+    logSetup("Flush preferences");
     prefs.flush();
     logDone();
   }
@@ -546,15 +546,15 @@ public abstract class BaseGame implements ApplicationListener {
   }
 
   @Override public void dispose() {
-    logSetup("Disposing of skin");
+    logSetup("Dispose of skin");
     skin.dispose();
     logDone();
     if (context != null) {
-      logSetup("Disposing of context");
+      logSetup("Dispose of context");
       context.dispose();
       logDone();
     }
-    logSetup("Disposing of console");
+    logSetup("Dispose of console");
     console.dispose();
     logDone();
   }
@@ -587,11 +587,11 @@ public abstract class BaseGame implements ApplicationListener {
   public void setContext(BaseContext<?> newContext, boolean dispose) {
     if (context != null) {
       if (dispose) {
-        logSetup("Disposing of context "+newContext.getClass().getSimpleName());
+        logSetup("Dispose of context "+newContext.getClass().getSimpleName());
         context.dispose();
         logDone();
       } else {
-        logSetup("Hiding context "+newContext.getClass().getSimpleName());
+        logSetup("Hide context "+newContext.getClass().getSimpleName());
         context.hide();
         logDone();
       }
@@ -600,7 +600,7 @@ public abstract class BaseGame implements ApplicationListener {
     context = newContext;
 
     if (context != null) {
-      logSetup("Setting context "+newContext.getClass().getSimpleName());
+      logSetup("Set context "+newContext.getClass().getSimpleName());
       context.contextChangeSuccess();
       context.show();
       context.resize();
