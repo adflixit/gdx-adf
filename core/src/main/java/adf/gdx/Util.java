@@ -121,7 +121,7 @@ public final class Util {
   }
 
   public static void illegalArgument(String info) {
-    throw new IllegalArgumentException("Illegal argument(s): "+info+".");
+    throw new IllegalArgumentException(String.format("Illegal argument(s): %s.", info));
   }
 
   /**
@@ -421,7 +421,7 @@ public final class Util {
    */
   public static String repeat(String s, int r) {
     if (r < 0) {
-      throw new IllegalArgumentException("A number of repetitions can't be negative: "+r+".");
+      throw new IllegalArgumentException(String.format("A number of repetitions can't be negative: %d.", r);
     }
 
     final int len = s.length();
@@ -921,7 +921,7 @@ public final class Util {
     case 3: return tmpv3.set(p,q,l);
     case 4: return tmpv3.set(t,p,l);
     case 5: return tmpv3.set(l,p,q);
-    default: illegalArgument("hs = "+hs); return null;
+    default: illegalArgument("hs = " + hs); return null;
     }
   }
 

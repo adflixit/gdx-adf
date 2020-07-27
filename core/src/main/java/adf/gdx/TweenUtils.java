@@ -518,7 +518,7 @@ public final class TweenUtils {
       case L:
         returnValues[0] = getLgt(target.getColor());
         return 1;
-      default: illegalArgument("tweenType = "+tweenType); return -1;
+      default: illegalArgument("tweenType = " + tweenType); return -1;
       }
     }
 
@@ -587,7 +587,7 @@ public final class TweenUtils {
       case L:
         target.setColor(setLgt(target.getColor(), newValues[0]));
         break;
-      default: illegalArgument("tweenType = "+tweenType);
+      default: illegalArgument("tweenType = " + tweenType);
       }
     }
   }
@@ -699,7 +699,7 @@ public final class TweenUtils {
       case L:
         returnValues[0] = getLgt(target.getColor());
         return 1;
-      default: illegalArgument("tweenType = "+tweenType); return -1;
+      default: illegalArgument("tweenType = " + tweenType); return -1;
       }
     }
 
@@ -776,7 +776,7 @@ public final class TweenUtils {
       case L:
         target.setColor(setLgt(target.getColor(), newValues[0]));
         break;
-      default: illegalArgument("tweenType = "+tweenType);
+      default: illegalArgument("tweenType = " + tweenType);
       }
     }
   }
@@ -901,7 +901,7 @@ public final class TweenUtils {
       case RADIUS:
         returnValues[0] = target.radius;
         return 1;
-      default: illegalArgument("tweenType = "+tweenType); return -1;
+      default: illegalArgument("tweenType = " + tweenType); return -1;
       }
     }
 
@@ -990,7 +990,7 @@ public final class TweenUtils {
       case RADIUS:
         target.radius = (int)newValues[0];
         break;
-      default: illegalArgument("tweenType = "+tweenType);
+      default: illegalArgument("tweenType = " + tweenType);
       }
     }
   }
@@ -1076,7 +1076,7 @@ public final class TweenUtils {
       case L:
         returnValues[0] = getLgt(target.getColor());
         return 1;
-      default: illegalArgument("tweenType = "+tweenType); return -1;
+      default: illegalArgument("tweenType = " + tweenType); return -1;
       }
     }
 
@@ -1136,7 +1136,7 @@ public final class TweenUtils {
       case L:
         target.setColor(setLgt(target.getColor(), newValues[0]));
         break;
-      default: illegalArgument("tweenType = "+tweenType);
+      default: illegalArgument("tweenType = " + tweenType);
       }
     }
   }
@@ -1152,7 +1152,7 @@ public final class TweenUtils {
         case OFFSET_Y:
           returnValues[0] = target.offsetY;
           return 1;
-        default: illegalArgument("tweenType = "+tweenType); return -1;
+        default: illegalArgument("tweenType = " + tweenType); return -1;
       }
     }
 
@@ -1164,7 +1164,7 @@ public final class TweenUtils {
         case OFFSET_Y:
           target.offsetY = newValues[0];
           break;
-        default: illegalArgument("tweenType = "+tweenType);
+        default: illegalArgument("tweenType = " + tweenType);
       }
     }
   }
@@ -1180,7 +1180,7 @@ public final class TweenUtils {
       case VOL:
         returnValues[0] = target.getVolume();
         return 1;
-      default: illegalArgument("tweenType = "+tweenType); return -1;
+      default: illegalArgument("tweenType = " + tweenType); return -1;
       }
     }
 
@@ -1189,7 +1189,7 @@ public final class TweenUtils {
       case VOL:
         target.setVolume(newValues[0]);
         break;
-      default: illegalArgument("tweenType = "+tweenType);
+      default: illegalArgument("tweenType = " + tweenType);
       }
     }
   }
@@ -1212,7 +1212,7 @@ public final class TweenUtils {
       case ZOOM:
         returnValues[0] = target.zoom;
         return 1;
-      default: illegalArgument("tweenType = "+tweenType); return -1;
+      default: illegalArgument("tweenType = " + tweenType); return -1;
       }
     }
 
@@ -1230,7 +1230,7 @@ public final class TweenUtils {
       case ZOOM:
         target.zoom = newValues[0];
         break;
-      default: illegalArgument("tweenType = "+tweenType);
+      default: illegalArgument("tweenType = " + tweenType);
       }
     }
   }
@@ -1259,7 +1259,7 @@ public final class TweenUtils {
       case ANG:
         returnValues[0] = target.getAngularVelocity();
         return 1;
-      default: illegalArgument("tweenType = "+tweenType); return -1;
+      default: illegalArgument("tweenType = " + tweenType); return -1;
       }
     }
 
@@ -1277,7 +1277,7 @@ public final class TweenUtils {
       case ANG:
         target.setAngularVelocity(newValues[0]);
         break;
-      default: illegalArgument("tweenType = "+tweenType);
+      default: illegalArgument("tweenType = " + tweenType);
       }
     }
   }
@@ -1345,7 +1345,7 @@ public final class TweenUtils {
       case ALPHA:
         returnValues[0] = target.getAlpha();
         return 1;
-      default: illegalArgument("tweenType = "+tweenType); return -1;
+      default: illegalArgument("tweenType = " + tweenType); return -1;
       }
     }
 
@@ -1397,7 +1397,7 @@ public final class TweenUtils {
       case ALPHA:
         target.setAlpha(newValues[0]);
         break;
-      default: illegalArgument("tweenType = "+tweenType);
+      default: illegalArgument("tweenType = " + tweenType);
       }
     }
   }
@@ -1417,7 +1417,7 @@ public final class TweenUtils {
       case Y:
         returnValues[0] = target.y;
         return 1;
-      default: illegalArgument("tweenType = "+tweenType); return -1;
+      default: illegalArgument("tweenType = " + tweenType); return -1;
       }
     }
 
@@ -1433,7 +1433,7 @@ public final class TweenUtils {
       case Y:
         target.y = newValues[0];
         break;
-      default: illegalArgument("tweenType = "+tweenType);
+      default: illegalArgument("tweenType = " + tweenType);
       }
     }
   }
@@ -1461,7 +1461,7 @@ public final class TweenUtils {
       case Z:
         returnValues[0] = target.z;
         return 1;
-      default: illegalArgument("tweenType = "+tweenType); return -1;
+      default: illegalArgument("tweenType = " + tweenType); return -1;
       }
     }
 
@@ -1485,7 +1485,7 @@ public final class TweenUtils {
       case Z:
         target.z = newValues[0];
         break;
-      default: illegalArgument("tweenType = "+tweenType);
+      default: illegalArgument("tweenType = " + tweenType);
       }
     }
   }
@@ -1530,7 +1530,7 @@ public final class TweenUtils {
       case L:
         returnValues[0] = getLgt(target);
         return 1;
-      default: illegalArgument("tweenType = "+tweenType); return -1;
+      default: illegalArgument("tweenType = " + tweenType); return -1;
       }
     }
 
@@ -1562,7 +1562,7 @@ public final class TweenUtils {
       case L:
         setLgt(target, newValues[0]);
         break;
-      default: illegalArgument("tweenType = "+tweenType);
+      default: illegalArgument("tweenType = " + tweenType);
       }
     }
   }

@@ -78,7 +78,7 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
    */
   public static void setLdm(float v) {
     if (!ldmDeadlock) {
-      log("Set lesser screen dimension to "+v);
+      log("Set lesser screen dimension to " + v);
       ldmDeadlock = true;    
       ldm = v;
     }
@@ -224,7 +224,7 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
 
   protected void finishBenchmark() {
     float fps = benchmarkFrames / benchmarkTime;
-    log("Benchmark finished, fps = "+fps);
+    log("Benchmark finished, fps = " + fps);
     benchmarkTesting = false;
     boolean result = fps > 50;
     setAdvancedPerformance(result);
@@ -665,17 +665,10 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
    * Prints debug info.
    */
   public void printDebug() {
-    log("screen size = "+screenWidth()+" "+screenHeight() +
-        ", fps = "+fps() +
-        ", cam = "+cameraPos().x+" "+cameraPos().y +
-        ", cam at zero = "+cameraX0()+" "+cameraY0() +
-        ", time = "+timestamp.elapsed() +
-        ", cam shake = "+camShake() +
-        ", timescale = "+timescale() +
-        ", UI timescale = "+uiTimescale() +
-        ", sound volume = "+ soundVolume() +
-        ", sfx volume = "+ sfxVolume() +
-        ", music volume = "+musicVolume());
+    log(String.format("screen size = %.2f %.2f, fps = %.2f, cam = %.2f %.2f, cam at zero = %.2f %.2f, time = %d, " +
+        "cam shake = %f, timescale = %f, UI timescale = %f, sound vol = %f, sfx vol = %f, music vol = %f",
+        screenWidth(), screenHeight(), fps(), cameraPos().x, cameraPos().y, cameraX0(), cameraY0(), timestamp.elapsed(),
+        camShake(), timescale(), uiTimescale(), soundVolume(), sfxVolume(), musicVolume()));
   }
 
   /**
@@ -1020,7 +1013,7 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
    * Loads {@link Sound} instances from a file and adds them to the list.
    */
   public void loadSfx(FileHandle... files) {
-    logSetup("Load sounds "+ arrToStrf("'%s'$|, ", files));
+    logSetup("Load sounds " + arrToStrf("'%s'$|, ", files));
     for (FileHandle file : files) {
       sfxList.put(file.nameWithoutExtension(), Gdx.audio.newSound(file));
     }
@@ -1069,7 +1062,7 @@ public abstract class BaseContext<G extends BaseGame> implements InputProcessor,
    * All music has to be registered.
    */
   public void loadMusic(FileHandle... files) {
-    logSetup("Load music "+ arrToStrf("'%s'$|, ", files));
+    logSetup("Load music " + arrToStrf("'%s'$|, ", files));
     for (FileHandle file : files) {
       Music music = Gdx.audio.newMusic(file);
       music.setVolume(musicVolume());
