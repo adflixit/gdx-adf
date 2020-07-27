@@ -50,7 +50,7 @@ public class Console {
 
   public void registerCommand(String name, ConCmd cmd) {
     if (cmds.get(name) != null) {
-      throw new RuntimeException("Command '"+name+"' already exists.");
+      throw new RuntimeException("Command '" + name + "' already exists.");
     } else {
       cmds.put(name, cmd);
     }
@@ -58,7 +58,7 @@ public class Console {
 
   public void registerVariable(String name, ConVar var) {
     if (vars.get(name) != null) {
-      throw new RuntimeException("Variable '"+name+"' already exists.");
+      throw new RuntimeException("Variable '" + name + "' already exists.");
     } else {
       vars.put(name, var);
     }
@@ -135,7 +135,7 @@ public class Console {
 
     if (cmd == null && var == null && als == null) {
       // if nothing found
-      print("Unknown command: "+name);
+      print("Unknown command: " + name);
     } else if (cmd != null) {
       // if a command with this name is found, it will be queued to be called on main thread
       cmd.exec(parsed.subList(1, parsed.size()).toArray(new String[0]));
