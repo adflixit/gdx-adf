@@ -45,11 +45,11 @@ public class DropShadowDrawable extends BaseDrawable implements TransformDrawabl
   }
 
   public DropShadowDrawable(Skin skin, String drawable, float radius, float opacity, float offsetX, float offsetY) {
-    this(skin, drawable, drawable+"_shd", radius, opacity, offsetX, offsetY);
+    this(skin, drawable, drawable + "_shd", radius, opacity, offsetX, offsetY);
   }
 
   public DropShadowDrawable(Skin skin, String drawable) {
-    this(skin, drawable, drawable+"_shd", C_SHD_RAD, C_SHD_OP, 0, C_SHD_OFS);
+    this(skin, drawable, drawable + "_shd", C_SHD_RAD, C_SHD_OP, 0, C_SHD_OFS);
   }
 
   public DropShadowDrawable(String drawable, String shadow, float radius, float opacity, float offsetX, float offsetY) {
