@@ -5,6 +5,7 @@
 /core/src/main/java/adf/gdx/collision/
 /core/src/main/java/adf/gdx/script/
 /core/src/main/java/adf/gdx/tools/
+/core/src/main/java/adf/gdx/utils/Confetti.java
 /core/src/main/java/adf/gdx/BaseAndroidLauncher.java
 /core/src/main/java/adf/gdx/Box2DController.java
 /core/src/main/java/adf/gdx/DistortionMesh.java

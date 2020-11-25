@@ -20,33 +20,82 @@ import com.badlogic.gdx.scenes.scene2d.ui.Widget;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 
 /**
- * Widget that draws an arc aka radial progress bar.
+ * Draws an arc aka radial progress bar.
  */
 public class Arc extends Widget {
   private Drawable            drawable;
-  private ShapeRenderer       shr;
+  private ShapeRenderer       rend;
   private final MutableFloat  progress  = new MutableFloat(0);
   private float               radius;
   private boolean             clockwise = true;
 
-  public Arc(Drawable drawable, float radius, ShapeRenderer shprnd) {
+  public Arc(Drawable drawable, float radius, ShapeRenderer rnd) {
     setDrawable(drawable);
     setRadius(radius);
     setSize(getPrefWidth(), getPrefHeight());
     setOrigin(center);
-    shr = shprnd;
+    rend = rnd;
   }
 
-  public Arc(String drawable, float radius, ShapeRenderer shprnd) {
-    this(drawable(drawable), radius, shprnd);
+  public Arc(String drawable, float radius, ShapeRenderer rnd) {
+    this(drawable(drawable), radius, rnd);
   }
 
-  public Arc(float radius, ShapeRenderer shprnd) {
-    this("arc", radius, shprnd);
+  public Arc(float radius, ShapeRenderer rnd) {
+    this("arc", radius, rnd);
   }
 
-  public Arc(ShapeRenderer shprnd) {
-    this(200, shprnd);
+  public Arc(ShapeRenderer rnd) {
+    this(200, rnd);
+  }
+
+  @Override public void draw(Batch batch, float parentAlpha) {
+    validate();
+    Color color = getColor();
+    batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
+    float x = getX();
+    float y = getY();
+    float width = getWidth();
+    float height = getHeight();
+    float rotation = getRotation();
+
+    // nested position
+    float nx = x;
+    float ny = y;
+    Group parent = getParent();
+    while (parent != getStage().getRoot()) {
+      nx += parent.getX();
+      ny += parent.getY();
+      parent = parent.getParent();
+    }
+
+    batch.end();
+    Gdx.gl.glClearDepthf(1.0f);
+    Gdx.gl.glClear(GL20.GL_DEPTH_BUFFER_BIT);
+    Gdx.gl.glColorMask(false, false, false, false);
+    Gdx.gl.glDepthFunc(GL20.GL_LESS);
+    Gdx.gl.glEnable(GL20.GL_DEPTH_TEST);
+    Gdx.gl.glDepthMask(true);
+
+    rend.begin(ShapeType.Filled);
+      rend.setColor(1, 1, 1, .5f);
+      if (clockwise) {
+        rend.arc(nx + radius, ny + radius, radius + 10, rotation - degrees() + 90, degrees());
+      } else {
+        rend.arc(nx + radius, ny + radius, radius + 10, rotation + 90, degrees());
+      }
+    rend.end();
+
+    Gdx.gl.glColorMask(true, true, true, true);
+    Gdx.gl.glDepthMask(true);
+    Gdx.gl.glDepthFunc(GL20.GL_EQUAL);
+
+    batch.begin();
+      drawable.draw(batch, x, y, width, height);
+    batch.end();
+
+    Gdx.gl.glDisable(GL20.GL_DEPTH_TEST);
+    batch.begin();
   }
 
   public Arc setDrawable(Drawable drawable) {
@@ -147,55 +196,6 @@ public class Arc extends Widget {
 
   public Tween $reset() {
     return $set(0);
-  }
-
-  @Override public void draw(Batch batch, float parentAlpha) {
-    validate();
-    Color color = getColor();
-    batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
-    float x = getX();
-    float y = getY();
-    float width = getWidth();
-    float height = getHeight();
-    float rotation = getRotation();
-
-    // nested position
-    float nx = x;
-    float ny = y;
-    Group parent = getParent();
-    while (parent != getStage().getRoot()) {
-      nx += parent.getX();
-      ny += parent.getY();
-      parent = parent.getParent();
-    }
-
-    batch.end();
-    Gdx.gl.glClearDepthf(1.0f);
-    Gdx.gl.glClear(GL20.GL_DEPTH_BUFFER_BIT);
-    Gdx.gl.glColorMask(false, false, false, false);
-    Gdx.gl.glDepthFunc(GL20.GL_LESS);
-    Gdx.gl.glEnable(GL20.GL_DEPTH_TEST);
-    Gdx.gl.glDepthMask(true);
-
-    shr.begin(ShapeType.Filled);
-      shr.setColor(1, 1, 1, .5f);
-      if (clockwise) {
-        shr.arc(nx + radius, ny + radius, radius + 10, rotation - degrees() + 90, degrees());
-      } else {
-        shr.arc(nx + radius, ny + radius, radius + 10, rotation + 90, degrees());
-      }
-    shr.end();
-
-    Gdx.gl.glColorMask(true, true, true, true);
-    Gdx.gl.glDepthMask(true);
-    Gdx.gl.glDepthFunc(GL20.GL_EQUAL);
-
-    batch.begin();
-      drawable.draw(batch, x, y, width, height);
-    batch.end();
-
-    Gdx.gl.glDisable(GL20.GL_DEPTH_TEST);
-    batch.begin();
   }
 
   @Override public float getPrefWidth() {

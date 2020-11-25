@@ -15,6 +15,8 @@ buildscript {
 }
 
 allprojects {
+    apply plugin: "idea"
+
     ext {
         gdxVersion = '1.9.10'
         roboVMVersion = '2.3.7'
@@ -34,32 +36,42 @@ allprojects {
 }
 
 project(":core") {
-    apply plugin: 'java-library'
+    apply plugin: "java"
+
+    configurations {
+        custom
+        compile.extendsFrom custom
+    }
 
     dependencies {
         implementation project(":android")
-        api "com.badlogicgames.gdx:gdx:$gdxVersion"
-        api "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
-        api "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
-        api "com.badlogicgames.gdx:gdx-bullet:$gdxVersion"
-        api "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
-        api "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
-        api "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
-        api "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
-        api "com.google.android:android:4.1.1.4"
-        implementation fileTree(dir: '../libs', include: ['*.jar'])
-        testImplementation 'junit:junit:4.12'
+        implementation "com.badlogicgames.gdx:gdx:$gdxVersion"
+        implementation "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
+        implementation "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
+        implementation "com.badlogicgames.gdx:gdx-bullet:$gdxVersion"
+        implementation "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
+        implementation "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
+        implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+        implementation "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
+        implementation "com.google.android:android:4.1.1.4"
+        implementation fileTree(dir: 'libs', include: ['*.jar'])
+        testImplementation "junit:junit:4.12"
     }
 }
 
 project(":android") {
+    configurations {
+        custom
+        compile.extendsFrom custom
+    }
+
     dependencies {
-        implementation fileTree(dir: '../libs', include: ['*.jar'])
-        implementation "androidx.core:core:1.2.0"
-        implementation "com.google.android.gms:play-services-games:18.0.1"
-        implementation "com.google.android.gms:play-services-auth:17.0.0"
-        implementation "com.google.android.gms:play-services-ads:18.3.0"
-        api "com.badlogicgames.gdx:gdx:1.9.10"
-        api "com.badlogicgames.gdx:gdx-backend-android:1.9.10"
+        compile fileTree(dir: 'libs', include: ['*.jar'])
+        compile "androidx.core:core:1.2.0"
+        compile "com.google.android.gms:play-services-games:18.0.1"
+        compile "com.google.android.gms:play-services-auth:17.0.0"
+        compile "com.google.android.gms:play-services-ads:18.3.0"
+        compile "com.badlogicgames.gdx:gdx:1.9.10"
+        compile "com.badlogicgames.gdx:gdx-backend-android:1.9.10"
     }
 }

@@ -100,19 +100,19 @@ public class AndroidClient {
   }
 
   @Override public void showAd() {
-    logSetup("Showing ad");
+    logSetup("Show ad");
     adView.setVisibility(View.VISIBLE);
     logDone();
   }
 
   @Override public void hideAd() {
-    logSetup("Hiding ad");
+    logSetup("Hide ad");
     adView.setVisibility(View.INVISIBLE);
     logDone();
   }
 
   @Override public void loadAd() {
-    logSetup("Loading ad");
+    logSetup("Load ad");
     adView.loadAd(adRequestBuilder.build());
     logDone();
   }
@@ -122,7 +122,7 @@ public class AndroidClient {
   }
 
   @Override public void openLeaderboard(String id) {
-    logSetup("Opening leaderboard");
+    logSetup("Open leaderboard");
     if (gameHelper.isSignedIn()) {
       startActivityForResult(Games.Leaderboards.getLeaderboardIntent(getApiClient(), id), 100);
     } else if (!gameHelper.isConnecting()) {
@@ -132,7 +132,7 @@ public class AndroidClient {
   }
 
   @Override public void openAchievements() {
-    logSetup("Opening achievements");
+    logSetup("Open achievements");
     if (gameHelper.isSignedIn()) {
       startActivityForResult(Games.Achievements.getAchievementsIntent(getApiClient()), 101);
     } else if (!gameHelper.isConnecting()) {
@@ -142,7 +142,7 @@ public class AndroidClient {
   }
 
   @Override public void shareText(String txt) {
-    logSetup("Sharing text '"+txt+"'");
+    logSetup(String.format("Share text '%s'", txt);
     Intent intent = new Intent();
     intent.setAction(Intent.ACTION_SEND);
     intent.putExtra(Intent.EXTRA_TEXT, txt);
@@ -156,7 +156,7 @@ public class AndroidClient {
   }
 
   @Override public void signIn() {
-    logSetup("Signing in");
+    logSetup("Sign in");
     try {
       runOnUiThread(() -> gameHelper.beginUserInitiatedSignIn());
     } catch (Exception e) {
@@ -170,44 +170,44 @@ public class AndroidClient {
   }
 
   @Override public long getPersonalBest(String id) {
-    log("Retrieving personal best from id "+id);
+    log("Retrieve personal best from id " + id);
     Games.Leaderboards.loadCurrentPlayerLeaderboardScore(getApiClient(), id, LeaderboardVariant.TIME_SPAN_ALL_TIME, LeaderboardVariant.COLLECTION_PUBLIC)
             .setResultCallback(scoreResult -> setTmpScore(scoreResult.getScore().getRawScore()));
     return tmpScore;
   }
 
   @Override public long getAllTimeRecord(String id) {
-    log("Retrieving all time record from id "+id);
+    log("Retrieve all time record from id " + id);
     getTopScore(id, LeaderboardVariant.TIME_SPAN_ALL_TIME, LeaderboardVariant.COLLECTION_PUBLIC);
     return tmpScore;
   }
 
   @Override public long getWeeklyRecord(String id) {
-    log("Retrieving weekly record from id "+id);
+    log("Retrieve weekly record from id " + id);
     getTopScore(id, LeaderboardVariant.TIME_SPAN_WEEKLY, LeaderboardVariant.COLLECTION_PUBLIC);
     return tmpScore;
   }
 
   @Override public long getDailyRecord(String id) {
-    log("Retrieving daily record from id "+id);
+    log("Retrieve daily record from id " + id);
     getTopScore(id, LeaderboardVariant.TIME_SPAN_DAILY, LeaderboardVariant.COLLECTION_PUBLIC);
     return tmpScore;
   }
 
   @Override public void submitScore(String id, long score) {
-    logSetup("Submitting score "+score);
+    logSetup("Submit score " + score);
     Games.Leaderboards.submitScore(getApiClient(), id, score);
     logDone();
   }
 
   @Override public void unlockAchievement(String id) {
-    logSetup("Unlocking achievement "+id);
+    logSetup("Unlock achievement " + id);
     Games.Achievements.unlock(getApiClient(), id);
     logDone();
   }
 
   @Override public void quit() {
-    log("Closing app");
+    log("Close app");
     // minimize the app, not actually close it
     handler.post(() -> {
       Intent intent = new Intent(Intent.ACTION_MAIN);

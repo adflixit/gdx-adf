@@ -1,9 +1,13 @@
-apply plugin: "java-library"
+apply plugin: "java"
 
+targetCompatibility = '1.8'
 sourceCompatibility = '1.8'
+
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
 sourceSets {
     main.java.srcDirs = [ "src/main/java" ]
-    main.resources.srcDirs = [ "assets/" ]
+    main.resources.srcDirs = [ "../assets" ]
     test.java.srcDirs = [ "src/test/java" ]
     test.resources.srcDirs = [ "src/test/data" ]
 }

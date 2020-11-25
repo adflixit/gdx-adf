@@ -14,12 +14,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
  * Set of full-screen overlay rectangles which create effects such as screen fading, tinting, flashing, etc.
  */
 public class Overlay extends ScreenComponent<BaseContext<?>> {
-  private final Group root      = new Group();
-  private final Image sheers    = new Image(drawable("white")); // used for light color effects
-  private final Image blackouts = new Image(drawable("white")); // used for fading the screen in and out
-  private final Image tint      = new Image(drawable("white")); // used for long-term screen tinting
-  private final Image dim       = new Image(drawable("white")); // used to add contrast to focus out the menus
-  private final Image vignette  = new Image(drawable("vignette"));
+  private final Group root            = new Group();
+  private final Image sheers          = new Image(drawable("white"));   // used for light color effects
+  private final Image blackouts       = new Image(drawable("white"));   // used for fading the screen in and out
+  private final Image tint            = new Image(drawable("white"));   // used for long-term screen tinting
+  private final Image dim             = new Image(drawable("white"));   // used to add contrast to focus out the menus
+  private final Image vignette        = new Image(drawable("vignette"));
+
+  private final Color blackoutsColor  = new Color(0x000000);            // base color used by default
 
   public Overlay(BaseContext<?> context) {
     super(context);
@@ -75,7 +77,7 @@ public class Overlay extends ScreenComponent<BaseContext<?>> {
    * @param clr color
    * @param v value
    */
-  public void setSheers(Color clr, float v) {
+  public void setupSheers(Color clr, float v) {
     setSheersColor(clr);
     setAlpha(sheers, v);
   }
@@ -84,7 +86,7 @@ public class Overlay extends ScreenComponent<BaseContext<?>> {
    * Sets the {@link #sheers} opacity.
    * @param v value
    */
-  public void setSheers(float v) {
+  public void setupSheers(float v) {
     killTweenTarget(sheers, ActorAccessor.A);
     setAlpha(sheers, v);
   }
@@ -107,12 +109,32 @@ public class Overlay extends ScreenComponent<BaseContext<?>> {
   }
 
   /**
+   * Sets the {@link #blackouts} base color used by default.
+   * @param clr color
+   */
+  public void setBlackoutsBaseColor(Color clr) {
+    killTweenTarget(blackouts, ActorAccessor.RGB);
+    setRgb(blackouts, clr);
+    blackoutsColor.set(clr);
+  }
+
+  /**
+   * Sets the {@link #blackouts} base color used by default.
+   * @param clr rgba8888 int color
+   */
+  public void setBlackoutsBaseColor(int clr) {
+    killTweenTarget(blackouts, ActorAccessor.RGB);
+    blackoutsColor.set(clr);
+    setRgb(blackouts, blackoutsColor);
+  }
+
+  /**
    * Sets the {@link #blackouts} color and sets the opacity to 1.
    * @param clr color
    */
-  public void setBlackouts(Color clr) {
+  public void setupBlackouts(Color clr) {
     setBlackoutsColor(clr);
-    setAlpha(blackouts, 1);
+    setupAlpha(blackouts);
   }
 
   /**
@@ -120,7 +142,7 @@ public class Overlay extends ScreenComponent<BaseContext<?>> {
    */
   public void setupBlackouts() {
     killTweenTarget(blackouts, ActorAccessor.A);
-    setAlpha(blackouts, 1);
+    setupAlpha(blackouts);
   }
 
   /**
@@ -128,7 +150,7 @@ public class Overlay extends ScreenComponent<BaseContext<?>> {
    */
   public void resetBlackouts() {
     killTweenTarget(blackouts, ActorAccessor.A);
-    setAlpha(blackouts, 0);
+    resetAlpha(blackouts);
   }
 
   /**
@@ -145,7 +167,7 @@ public class Overlay extends ScreenComponent<BaseContext<?>> {
    * @param clr color
    * @param v value
    */
-  public void setTint(Color clr, float v) {
+  public void setupTint(Color clr, float v) {
     setTintColor(clr);
     setAlpha(tint, v);
   }
@@ -154,7 +176,7 @@ public class Overlay extends ScreenComponent<BaseContext<?>> {
    * Sets the {@link #tint} opacity.
    * @param v value
    */
-  public void setTint(float v) {
+  public void setupTint(float v) {
     killTweenTarget(tint, ActorAccessor.A);
     setAlpha(tint, v);
   }
@@ -164,7 +186,7 @@ public class Overlay extends ScreenComponent<BaseContext<?>> {
    */
   public void setupTint() {
     killTweenTarget(tint, ActorAccessor.A);
-    setAlpha(tint, 1);
+    setupAlpha(tint);
   }
 
   /**
@@ -172,14 +194,14 @@ public class Overlay extends ScreenComponent<BaseContext<?>> {
    */
   public void resetTint() {
     killTweenTarget(tint, ActorAccessor.A);
-    setAlpha(tint, 0);
+    resetAlpha(tint);
   }
 
   /**
    * Sets the {@link #dim} opacity.
    * @param v value
    */
-  public void setDim(float v) {
+  public void setupDim(float v) {
     killTweenTarget(sheers, ActorAccessor.A);
     setAlpha(dim, v);
   }
@@ -189,7 +211,7 @@ public class Overlay extends ScreenComponent<BaseContext<?>> {
    */
   public void resetDim() {
     killTweenTarget(sheers, ActorAccessor.A);
-    setAlpha(dim, 0);
+    resetAlpha(dim);
   }
 
   /**
@@ -206,7 +228,7 @@ public class Overlay extends ScreenComponent<BaseContext<?>> {
    * @param clr color
    * @param v value
    */
-  public void setVignette(Color clr, float v) {
+  public void setupVignette(Color clr, float v) {
     setBlackoutsColor(clr);
     setAlpha(vignette, v);
   }
@@ -215,7 +237,7 @@ public class Overlay extends ScreenComponent<BaseContext<?>> {
    * Sets the {@link #vignette} opacity.
    * @param v value
    */
-  public void setVignette(float v) {
+  public void setupVignette(float v) {
     killTweenTarget(vignette, ActorAccessor.A);
     setAlpha(vignette, v);
   }
@@ -225,7 +247,7 @@ public class Overlay extends ScreenComponent<BaseContext<?>> {
    */
   public void resetVignette() {
     killTweenTarget(vignette, ActorAccessor.A);
-    setAlpha(vignette, 0);
+    resetAlpha(vignette);
   }
 
   /**
@@ -269,7 +291,7 @@ public class Overlay extends ScreenComponent<BaseContext<?>> {
    * @param clr color
    * @param v value
    */
-  public Tween $setSheers(Color clr, float v) {
+  public Tween $setupSheers(Color clr, float v) {
     return $fadeSheers(clr, v, 0);
   }
 
@@ -285,7 +307,7 @@ public class Overlay extends ScreenComponent<BaseContext<?>> {
    * @param clr color
    * @param d duration
    */
-  public Tween $tweenBoColor(Color clr, float d) {
+  public Tween $tweenBlackoutsColor(Color clr, float d) {
     return $tweenActorColor(blackouts, clr, d);
   }
 
@@ -295,7 +317,7 @@ public class Overlay extends ScreenComponent<BaseContext<?>> {
    * @param v value
    * @param d duration
    */
-  public Tween $fadeBo(Color clr, float v, float d) {
+  public Tween $fadeBlackouts(Color clr, float v, float d) {
     setRgb(blackouts, clr);
     return $fadeActor(blackouts, v, d);
   }
@@ -304,7 +326,7 @@ public class Overlay extends ScreenComponent<BaseContext<?>> {
    * Creates a handle to tween the {@link #blackouts} opacity to 0.
    * @param d duration
    */
-  public Tween $fadeBoOut(float d) {
+  public Tween $fadeBlackoutsOut(float d) {
     return $fadeActor(blackouts, 0, d);
   }
 
@@ -313,15 +335,15 @@ public class Overlay extends ScreenComponent<BaseContext<?>> {
    * @param clr color
    * @param v value
    */
-  public Tween $setBlackouts(Color clr, float v) {
-    return $fadeBo(clr, v, 0);
+  public Tween $setupBlackouts(Color clr, float v) {
+    return $fadeBlackouts(clr, v, 0);
   }
 
   /**
    * Creates a handle to set the {@link #blackouts} opacity to 0.
    */
   public Tween $resetBlackouts() {
-    return $fadeBoOut(0);
+    return $fadeBlackoutsOut(0);
   }
 
   /**
@@ -357,7 +379,7 @@ public class Overlay extends ScreenComponent<BaseContext<?>> {
    * @param clr color
    * @param v value
    */
-  public Tween $setTint(Color clr, float v) {
+  public Tween $setupTint(Color clr, float v) {
     return $fadeTint(clr, v, 0);
   }
 
@@ -389,7 +411,7 @@ public class Overlay extends ScreenComponent<BaseContext<?>> {
    * Creates a handle to set the {@link #dim} opacity.
    * @param v value
    */
-  public Tween $setDim(float v) {
+  public Tween $setupDim(float v) {
     return $dimIn(v, 0);
   }
 
@@ -442,7 +464,7 @@ public class Overlay extends ScreenComponent<BaseContext<?>> {
    * @param clr color
    * @param v value
    */
-  public Tween $setVignette(Color clr, float v) {
+  public Tween $setupVignette(Color clr, float v) {
     return $fadeVignette(clr, v, 0);
   }
 
@@ -450,7 +472,7 @@ public class Overlay extends ScreenComponent<BaseContext<?>> {
    * Creates a handle to set the {@link #vignette} opacity.
    * @param v value
    */
-  public Tween $setVignette(float v) {
+  public Tween $setupVignette(float v) {
     return $fadeVignette(v, 0);
   }
 

@@ -12,7 +12,7 @@
 varying LOWP vec4 v_color;
 varying vec2 v_texCoords;
 varying vec2 v_blurTexCoords[14];
-uniform sampler2D u_texture;
+uniform LOWP sampler2D u_texture;
 
 uniform float u_blur;
 

@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
  * Utilizes input and output streams in a thread-safe manner. Works on the current thread, has a separate thread to read input.
  */
 public class Console {
-  private boolean                   active;
+  private boolean                   isActive;
   private InputStream               in;
   private PrintStream               out;
   private final Scanner             scanner;
@@ -30,13 +30,13 @@ public class Console {
 
     enable();
 
-    registerCommand("print", args -> print(arrToStrf("%s ", args)));
+    registerCommand("print", args -> print(arrToStrf("%s$| ", args)));
     registerCommand("reset", args -> var(args[0]).reset());
     registerCommand("alias", args -> {
       try {
         String[] a = new String[args.length - 1];
         System.arraycopy(args, 1, a, 0, args.length - 1);
-        addAlias(args[0], arrToStrf("%s ", a));
+        addAlias(args[0], arrToStrf("%s$| ", a));
       } catch (Exception e) {
         print(e.getLocalizedMessage());
       }
@@ -50,7 +50,7 @@ public class Console {
 
   public void registerCommand(String name, ConCmd cmd) {
     if (cmds.get(name) != null) {
-      throw new RuntimeException("Command '"+name+"' already exists.");
+      throw new RuntimeException("Command '" + name + "' already exists.");
     } else {
       cmds.put(name, cmd);
     }
@@ -58,7 +58,7 @@ public class Console {
 
   public void registerVariable(String name, ConVar var) {
     if (vars.get(name) != null) {
-      throw new RuntimeException("Variable '"+name+"' already exists.");
+      throw new RuntimeException("Variable '" + name + "' already exists.");
     } else {
       vars.put(name, var);
     }
@@ -135,7 +135,7 @@ public class Console {
 
     if (cmd == null && var == null && als == null) {
       // if nothing found
-      print("Unknown command: "+name);
+      print("Unknown command: " + name);
     } else if (cmd != null) {
       // if a command with this name is found, it will be queued to be called on main thread
       cmd.exec(parsed.subList(1, parsed.size()).toArray(new String[0]));
@@ -163,7 +163,7 @@ public class Console {
    * Reads input from {@link #in}.
    */
   private synchronized void read() {
-    while (active) {
+    while (isActive) {
       if (!scanner.hasNextLine()) {
         continue;
       }
@@ -176,8 +176,8 @@ public class Console {
   }
 
   public void enable() {
-    if (!active) {
-      active = true;
+    if (!isActive) {
+      isActive = true;
       new Thread("Console") {
         @Override public void run() {
           read();
@@ -187,7 +187,7 @@ public class Console {
   }
 
   public synchronized void disable() {
-    active = false;
+    isActive = false;
   }
 
   public void dispose() {
