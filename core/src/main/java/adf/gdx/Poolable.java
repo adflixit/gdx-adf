@@ -1,13 +1,14 @@
 package adf.gdx;
 
-public class Poolable {
-  protected boolean free = true;
+public final class Poolable<T> {
+  private T obj;
+  public boolean isFree = true;
 
-  public void release() {
-    free = true;
+  public Poolable(T obj) {
+    this.obj = obj;
   }
 
-  public boolean isFree() {
-    return free;
+  public T obj() {
+    return obj;
   }
 }
