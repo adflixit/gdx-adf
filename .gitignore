@@ -6,7 +6,6 @@
 /core/src/main/java/adf/gdx/script/
 /core/src/main/java/adf/gdx/tools/
 /core/src/main/java/adf/gdx/utils/Confetti.java
-/core/src/main/java/adf/gdx/BaseAndroidLauncher.java
 /core/src/main/java/adf/gdx/Box2DController.java
 /core/src/main/java/adf/gdx/DistortionMesh.java
 /core/src/main/java/adf/gdx/Randseq.java
@@ -15,8 +14,6 @@
 /assets/data/plasma.frag
 /assets/data/pp.frag
 /assets/data/starnest.frag
-/colors.txt
-/android/build/
 
 ## Java
 
