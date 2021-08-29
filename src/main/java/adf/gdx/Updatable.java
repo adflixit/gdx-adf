@@ -1,5 +1,5 @@
 package adf.gdx;
 
-public interface Updatable {
+@FunctionalInterface public interface Updatable {
   public void update();
 }

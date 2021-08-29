@@ -103,9 +103,9 @@ public abstract class BaseContext<AL extends BaseAppListener> implements InputPr
                                       UI_MENUS            = 2,
                                       UI_LENGTH           = 3,
                                       // flags
-                                      UI_OVERLAY_FL       = 1<<0,
-                                      UI_GAME_FL          = 1<<1,
-                                      UI_MENUS_FL         = 1<<2,
+                                      UI_OVERLAY_FL       = 0x1,
+                                      UI_GAME_FL          = 0x2,
+                                      UI_MENUS_FL         = 0x4,
                                       UI_ALL              = sumFlags(UI_MENUS_FL),
                                       UI_GENERAL          = UI_GAME_FL | UI_MENUS_FL;
 

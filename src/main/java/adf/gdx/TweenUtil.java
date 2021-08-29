@@ -51,7 +51,7 @@ public final class TweenUtil {
   }
 
   /**
-   * Tweens the actor's opacity.
+   * Fades the actor's opacity.
    * @param a alpha
    * @param d duration
    */
@@ -61,7 +61,7 @@ public final class TweenUtil {
   }
 
   /**
-   * Tweens the actor's opacity.
+   * Fades the actor's opacity.
    * @param a alpha
    */
   public static void fadeActor(Actor target, float a) {
@@ -70,7 +70,6 @@ public final class TweenUtil {
   }
 
   /**
-   * Tweens the actor's color.
    * @param clr color
    * @param d duration
    */
@@ -80,7 +79,6 @@ public final class TweenUtil {
   }
 
   /**
-   * Tweens the actor's color.
    * @param clr color
    */
   public static void fadeActorColor(Actor target, Color clr) {
@@ -89,7 +87,6 @@ public final class TweenUtil {
   }
 
   /**
-   * Tweens the actor's color.
    * @param clr color name
    * @param d duration
    */

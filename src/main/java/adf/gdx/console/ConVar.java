@@ -1,13 +1,20 @@
 package adf.gdx.console;
 
 public class ConVar {
+  public static Console console;
+
   private final String  defValue;
   private String        rawValue;
-  private double        value;  // numerical data is stored as double
-  private boolean       bool;
+  private double        value;
 
-  public ConVar(String def) {
+  public ConVar(String name, String def) {
     defValue = def;
+    set(def);
+
+    if (console == null) {
+      throw new RuntimeException("Console has to be initialized first.");
+    }
+    console.registerVariable(name, this);
   }
 
   public ConVar set(String val) {
@@ -17,13 +24,14 @@ public class ConVar {
     } catch (Exception e) {
       value = 0;
     }
-    try {
-      bool = Boolean.parseBoolean(rawValue);
-    } catch (Exception e) {
-      bool = false;
-    }
     return this;
   }
+
+  public ConVar set(int val) {return set(String.valueOf(val));}
+  public ConVar set(long val) {return set(String.valueOf(val));}
+  public ConVar set(float val) {return set(String.valueOf(val));}
+  public ConVar set(double val) {return set(String.valueOf(val));}
+  public ConVar set(boolean val) {return set(String.valueOf(val));}
 
   public ConVar reset() {
     return set(defValue);
@@ -35,7 +43,7 @@ public class ConVar {
   public long longValue()     {return (long)value;}
   public float floatValue()   {return (float)value;}
   public double doubleValue() {return value;}
-  public boolean boolValue()  {return bool;}
+  public boolean boolValue()  {return value > 0;}
 
   @Override public String toString() {
     return rawValue;

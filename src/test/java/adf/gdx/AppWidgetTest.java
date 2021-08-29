@@ -8,8 +8,8 @@ import adf.gdx.app.TestAppContext;
 import com.badlogic.gdx.Input.Keys;
 
 public class AppWidgetTest extends TestApp {
-  private class Screen extends TestAppContext {
-    public Screen(TestApp al) {
+  private class Context extends TestAppContext {
+    public Context(TestApp al) {
       super(al);
     }
 
@@ -38,7 +38,7 @@ public class AppWidgetTest extends TestApp {
   }
 
   public void reset() {
-    setContext(new Screen(this));
+    setContext(new Context(this));
   }
 
   public static void main(String[] argv) {

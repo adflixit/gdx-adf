@@ -18,7 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 /**
- * {@link TextButton} {@link ClickListener}. Tweens the TextButton font color and the background color.
+ * {@link TextButton} {@link ClickListener}. Fades the TextButton font color and the background color.
  */
 public class TbClickListener extends ClickListener {
   private TextButton    btn;

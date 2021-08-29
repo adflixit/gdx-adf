@@ -1,5 +1,5 @@
 package adf.gdx;
 
-public interface Callback {
+@FunctionalInterface public interface Callback {
   public void call();
 }

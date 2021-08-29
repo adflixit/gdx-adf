@@ -15,11 +15,12 @@ public final class ColorUtil {
    * @return HSL hue of a color.
    */
   public static float getHue(Color clr) {
-    return atan2f(SQRT3 * (clr.g - clr.b), 2 * clr.r - clr.g - clr.b) / PI2;
+    float hue = atan2f(SQRT3 * (clr.g - clr.b), 2 * clr.r - clr.g - clr.b) / PI2;
+    return hue < 0 ? 1 + hue : hue;
   }
 
   /**
-   * @return HSL hue of a color.
+   * @return HSL saturation of a color.
    */
   public static float getSat(Color clr) {
     float min = min(clr.r, clr.g, clr.b), max = max(clr.r, clr.g, clr.b);
@@ -27,7 +28,7 @@ public final class ColorUtil {
   }
 
   /**
-   * @return HSL hue of a color.
+   * @return HSL lightness of a color.
    */
   public static float getLgt(Color clr) {
     return max(clr.r, clr.g, clr.b);
@@ -41,23 +42,14 @@ public final class ColorUtil {
    * Sets HSL hue.
    */
   public static Color setHue(Color clr, float h) {
-    float r = clr.r, g = clr.g, b = clr.b, u = cosf(h * DEG), w = sinf(h * DEG);
-    return clr.set((.299f + .701f*u + .168f*w) * r + (.587f - .587f*u + .330f*w) * g + (.114f - .114f*u - .497f*w) * b,
-        (.299f - .299f*u - .328f*w) * r + (.587f + .413f*u + .035f*w) * g + (.114f - .114f*u + .292f*w) * b,
-        (.299f - .300f*u + 1.25f*w) * r + (.587f - .588f*u - 1.05f*w) * g + (.114f + .886f*u - .203f*w) * b,
-        clr.a);
+    return setHsl(clr, h, getSat(clr), getLgt(clr));
   }
 
   /**
    * Sets HSL saturation.
    */
   public static Color setSat(Color clr, float s) {
-    float r = clr.r, g = clr.g, b = clr.b,
-        min = min(clr.r, clr.g, clr.b), max = max(clr.r, clr.g, clr.b), amin = (1-s)*max;
-    return clr.set(r == max ? r : (r == min ? amin : amin + (max-amin) * ((r-min) / (max-min))),
-        g == max ? g : (g == min ? amin : amin + (max-amin) * ((g-min) / (max-min))),
-        b == max ? b : (b == min ? amin : amin + (max-amin) * ((b-min) / (max-min))),
-        clr.a);
+    return setHsl(clr, getHue(clr), s, getLgt(clr));
   }
 
   /**
@@ -65,9 +57,9 @@ public final class ColorUtil {
    */
   public static Color setLgt(Color clr, float l) {
     float m = l / getLgt(clr);
-    clr.r *= l;
-    clr.g *= l;
-    clr.b *= l;
+    clr.r *= m;
+    clr.g *= m;
+    clr.b *= m;
     return clr;
   }
 

@@ -18,7 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 /**
- * {@link ImageButton} {@link ClickListener}. Tweens the ImageButton image color and the background color.
+ * {@link ImageButton} {@link ClickListener}. Fades the ImageButton image color and the background color.
  */
 public class IbClickListener extends ClickListener {
   private ImageButton   btn;

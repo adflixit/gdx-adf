@@ -76,14 +76,14 @@ public final class MathUtil {
    * @return binary shift of {@code a}.
    */
   public static int getShift(int a) {
-    return (int)(log(a) / LOG2);
+    return (int)ceilf(logf(a) / LOG2);
   }
 
   /**
    * @return binary shift of {@code a}.
    */
   public static long getShift(long a) {
-    return (long)(log(a) / LOG2);
+    return (long)ceilf(logf(a) / LOG2);
   }
 
   /**
@@ -338,14 +338,14 @@ public final class MathUtil {
   }
 
   /**
-   * @return linear interpolation of {@code c} between {@code a} and {@code b}.
+   * @return linear interpolation of {@code c} normal in range [0,1] between {@code a} and {@code b}.
    */
   public static float lerp(float a, float b, float c) {
     return (a * (1 - c)) + (b * c);
   }
 
   /**
-   * @return linear interpolation of {@code c} between {@code a} and {@code b}.
+   * @return linear interpolation of {@code c} normal in range [0,1] between {@code a} and {@code b}.
    */
   public static double lerp(double a, double b, double c) {
     return (a * (1 - c)) + (b * c);

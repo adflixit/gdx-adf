@@ -28,6 +28,7 @@ public class Console {
     in = sin;
     out = sout;
     scanner = new Scanner(in);
+    ConVar.console = this;
 
     enable();
 
@@ -169,10 +170,9 @@ public class Console {
         continue;
       }
       String line = scanner.nextLine();
-      if (line.isEmpty()) {
-        continue;
+      if (!line.isEmpty()) {
+        queue.add(line);
       }
-      queue.add(line);
     }
   }
 
@@ -196,6 +196,10 @@ public class Console {
   }
 
   public void print(String msg) {
-    out.println(msg);
+    if (vars.containsKey(msg)) {
+      out.println(vars.get(msg).toString());
+    } else {
+      out.println(msg);
+    }
   }
 }

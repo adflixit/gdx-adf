@@ -1,5 +1,5 @@
 package adf.gdx.console;
 
-public interface ConCmd {
+@FunctionalInterface public interface ConCmd {
   public void exec(String... args);
 }

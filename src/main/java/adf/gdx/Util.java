@@ -420,7 +420,7 @@ public final class Util {
 
   /**
    * Draws a rectangle tiled with {@link TextureRegion} with an offset.
-   * TODO: unfinished.
+   * TODO: WIP.
    */
   public static void drawTiledRect(Batch batch, TextureRegion region, float x, float y,
       float ofsX, float ofsY, float width, float height) {
