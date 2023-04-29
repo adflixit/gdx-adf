@@ -161,7 +161,7 @@ public final class TweenUtil {
         for (TweenCallback callback : callbacks) {
           callback.onEvent(type, source);
         }
-      } else if (type == BEGIN) {
+      } else if (type == COMPLETE) {
         for (TweenCallback callback : callbacks) {
           callback.onEvent(type, source);
         }
