@@ -48,11 +48,11 @@ import java.util.Map;
  * <ul>
  * <li>Three instances of {@link TweenManager}:<ul><li>General purpose</li>
  * <li>Timescaled</li><li>UI</li></ul></li>
- * <li>Adaptive viewport adjustments.</li>
+ * <li>Adaptive viewport adjustments</li>
  * <li>UI layers:<ul><li>Overlay</li><li>Game</li><li>Menus</li></ul></li>
- * <li>Benchmark.</li>
- * <li>Graphics and postprocessing adjustments.</li>
- * <li>Blur.</li>
+ * <li>Benchmark</li>
+ * <li>Graphics and postprocessing adjustments</li>
+ * <li>Blur</li>
  * <li>Tween handlers:<ul><li>Timescale</li><li>Sound volume</li><li>Camera</li>
  * <li>UI layers</li><li>Overlay</li><li>Blur</li></ul></li>
  * </ul>
@@ -183,12 +183,12 @@ public abstract class BaseContext<AL extends BaseAppListener> implements InputPr
   private boolean                     updatingVolume;
   private final TweenCallback         masterVolumeCallback  = (type, source) -> updatingVolume = type == BEGIN;
 
-  // Temporal values
+  // Temporary values
   protected final Vector2             tmpv2                 = new Vector2();
   protected final Vector3             tmpv3                 = new Vector3();
   protected final Color               tmpclr                = new Color();
 
-  // Last screen size info is stored in two different fields switching after each resize
+  // Last screen size info stored in two separate fields switching after each resize
   private boolean                     lastScreenSizeJunc;
   private final Vector2               evenLastScreenSize    = new Vector2();
   private final Vector2               oddLastScreenSize     = new Vector2();
@@ -203,7 +203,7 @@ public abstract class BaseContext<AL extends BaseAppListener> implements InputPr
     for (Group layer : uiLayers) {
       ui.addActor(layer);
     }
-    // ol shouldn't receive input
+    // overlay shouldn't receive input
     uiLayers[UI_OVERLAY].setTouchable(Touchable.disabled);
     timestamp.set();
     // stack all input listeners
