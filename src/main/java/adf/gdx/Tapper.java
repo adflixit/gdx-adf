@@ -22,7 +22,6 @@ public class Tapper extends ContextComponent<BaseContext<?>> {
     area.removeListener(listener);
   }
 
-
   /**
    * Sets to fire on touch.
    * @param parent container
